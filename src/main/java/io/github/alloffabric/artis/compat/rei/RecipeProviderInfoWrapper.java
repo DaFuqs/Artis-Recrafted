@@ -3,8 +3,9 @@ package io.github.alloffabric.artis.compat.rei;
 import io.github.alloffabric.artis.api.ArtisTableType;
 import io.github.alloffabric.artis.api.RecipeProvider;
 import me.shedaniel.rei.server.ContainerInfo;
-import me.shedaniel.rei.server.RecipeFinder;
+import me.shedaniel.rei.server.RecipeMatcher;
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.RecipeMatcher;
 import net.minecraft.screen.ScreenHandler;
 
 public class RecipeProviderInfoWrapper<T extends ScreenHandler> implements ContainerInfo<T> {
@@ -48,8 +49,8 @@ public class RecipeProviderInfoWrapper<T extends ScreenHandler> implements Conta
     }
 
     @Override
-    public void populateRecipeFinder(T container, RecipeFinder var1) {
-        ((RecipeProvider) container).populateRecipeFinder(new net.minecraft.recipe.RecipeFinder() {
+    public void populateRecipeMatcher(T container, RecipeMatcher var1) {
+        ((RecipeProvider) container).populateRecipeMatcher(new RecipeMatcher() {
             @Override
             public void addNormalItem(ItemStack itemStack_1) {
                 var1.addNormalItem(itemStack_1);

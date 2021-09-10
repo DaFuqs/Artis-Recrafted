@@ -22,8 +22,6 @@ import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Recipe;
-import net.minecraft.screen.CraftingScreenHandler;
-import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.LiteralText;
@@ -61,7 +59,7 @@ public class ArtisClient implements ClientModInitializer {
     @Environment(EnvType.CLIENT)
     public void onInitializeClient() {
         for (ArtisTableType type : Artis.ARTIS_TABLE_TYPES) {
-            ScreenRegistry.register((ScreenHandlerType<ArtisCraftingController>) Registry.SCREEN_HANDLER.get(type.getId()), (ScreenRegistry.Factory<ArtisCraftingController, ArtisCraftingScreen>) ArtisCraftingScreen::new);
+            ScreenRegistry.register((ScreenHandlerType<ArtisCraftingController>) Registry.SCREEN_HANDLER.get(type.getId()), ArtisCraftingScreen::new);
             if (!(type instanceof ArtisExistingBlockType) && !(type instanceof ArtisExistingItemType)) {
                 if (type.shouldGenerateAssets()) {
                     BLOCKSTATES.put(type.getId(), builder -> builder.variant("", variant -> variant.model(new Identifier(Artis.MODID, "block/table" + (type.hasColor() ? "_overlay" : "")))));

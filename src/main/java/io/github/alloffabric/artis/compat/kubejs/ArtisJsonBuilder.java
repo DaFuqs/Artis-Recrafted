@@ -165,7 +165,7 @@ public class ArtisJsonBuilder extends BuilderBase {
 //        }
 //    }
 
-    public String getType() {
+    public String getBuilderType() {
         return "block";
     }
 }

@@ -5,7 +5,7 @@ import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.CraftingRecipe;
-import net.minecraft.recipe.RecipeFinder;
+import net.minecraft.recipe.RecipeMatcher;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.collection.DefaultedList;
 
@@ -66,7 +66,7 @@ public class ArtisCraftingInventory extends CraftingInventory {
     }
 
     @Override
-    public void provideRecipeInputs(RecipeFinder finder) {
+    public void provideRecipeInputs(RecipeMatcher finder) {
         for (ItemStack stack : stacks) {
             finder.addNormalItem(stack);
         }

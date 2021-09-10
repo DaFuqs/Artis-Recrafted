@@ -15,6 +15,6 @@ public class ArtisRegistry<T> extends SimpleRegistry<T> {
     }
 
     public boolean hasId(Identifier id) {
-        return this.entriesById.containsKey(id);
+        return this.idToEntry.containsKey(id);
     }
 }

@@ -17,6 +17,7 @@ import io.github.alloffabric.artis.util.ArtisRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.fabric.impl.screenhandler.ExtendedScreenHandlerType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -78,8 +79,8 @@ public class Artis implements ModInitializer {
         return Registry.register(ARTIS_TABLE_TYPES, id, type);
     }
 
-    private static <B extends BlockEntity> BlockEntityType<B> registerBlockEntity(String name, Supplier<B> supplier, Block... supportedBlocks) {
-        return Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(MODID, name), BlockEntityType.Builder.create(supplier, supportedBlocks).build(null));
+    private static <B extends ArtisTableBlockEntity> BlockEntityType<B> registerBlockEntity(String name, Supplier<B> supplier, Block... supportedBlocks) {
+        return Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(MODID, name), FabricBlockEntityTypeBuilder.create(supplier, supportedBlocks).build(null));
     }
 
     @Override

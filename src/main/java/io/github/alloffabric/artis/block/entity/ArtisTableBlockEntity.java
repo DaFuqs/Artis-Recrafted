@@ -15,7 +15,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
@@ -24,25 +24,22 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 
 public class ArtisTableBlockEntity extends BlockEntity implements DefaultInventory, BlockEntityClientSerializable, ExtendedScreenHandlerFactory {
     private ArtisTableType tableType;
     private DefaultedList<ItemStack> stacks;
 
-    public ArtisTableBlockEntity() {
-        super(Artis.ARTIS_BLOCK_ENTITY);
+    public ArtisTableBlockEntity(BlockPos pos, BlockState state) {
+        super(Artis.ARTIS_BLOCK_ENTITY, pos, state);
     }
 
-    public ArtisTableBlockEntity(ArtisTableType tableType) {
-        super(Artis.ARTIS_BLOCK_ENTITY);
+    public ArtisTableBlockEntity(ArtisTableType tableType, BlockPos pos, BlockState state) {
+        super(Artis.ARTIS_BLOCK_ENTITY, pos, state);
 
         this.tableType = tableType;
         this.stacks = DefaultedList.ofSize((tableType.getWidth() * tableType.getHeight()) + 1, ItemStack.EMPTY);
-    }
-
-    public <T extends BlockEntity> ArtisTableBlockEntity(BlockEntityType<T> type) {
-        super(type);
     }
 
     @Override
@@ -67,30 +64,31 @@ public class ArtisTableBlockEntity extends BlockEntity implements DefaultInvento
     }
 
     @Override
-    public void fromTag(BlockState state, CompoundTag tag) {
-        super.fromTag(state, tag);
-        tableType = Artis.ARTIS_TABLE_TYPES.get(new Identifier(tag.getString("tableType")));
+    public void readNbt(NbtCompound nbt) {
+        super.readNbt(nbt);
+        tableType = Artis.ARTIS_TABLE_TYPES.get(new Identifier(nbt.getString("tableType")));
         stacks = DefaultedList.ofSize((tableType.getWidth() * tableType.getHeight()) + 1, ItemStack.EMPTY);
-        Inventories.fromTag(tag, stacks);
+        Inventories.readNbt(nbt, stacks);
     }
 
     @Override
-    public void fromClientTag(CompoundTag tag) {
-        fromTag(getCachedState(), tag);
+    public void fromClientTag(NbtCompound nbt) {
+        readNbt(nbt);
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag tag) {
+    public NbtCompound writeNbt(NbtCompound nbt) {
         if (tableType != null)
-            tag.putString("tableType", tableType.getId().toString());
+            nbt.putString("tableType", tableType.getId().toString());
 
         if (stacks != null)
-            Inventories.toTag(tag, stacks);
-        return super.toTag(tag);
+            Inventories.writeNbt(nbt, stacks);
+        return super.writeNbt(nbt);
     }
 
     @Override
-    public CompoundTag toClientTag(CompoundTag tag) {
-        return toTag(tag);
+    public NbtCompound toClientTag(NbtCompound nbt) {
+        return writeNbt(nbt);
     }
+
 }

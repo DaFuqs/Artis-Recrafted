@@ -72,9 +72,9 @@ public class ShapedArtisRecipe extends ShapedRecipe implements ArtisCraftingReci
                 Ingredient ingredient = Ingredient.EMPTY;
                 if (x >= 0 && y >= 0 && x < this.getWidth() && y < this.getHeight()) {
                     if (tall) {
-                        ingredient = this.getPreviewInputs().get(this.getWidth() - x - 1 + y * this.getWidth());
+                        ingredient = this.getIngredients().get(this.getWidth() - x - 1 + y * this.getWidth());
                     } else {
-                        ingredient = this.getPreviewInputs().get(x + y * this.getWidth());
+                        ingredient = this.getIngredients().get(x + y * this.getWidth());
                     }
                 }
 
@@ -90,7 +90,7 @@ public class ShapedArtisRecipe extends ShapedRecipe implements ArtisCraftingReci
     @Override
     public ItemStack craft(CraftingInventory inv) {
         if (FabricLoader.getInstance().isModLoaded("nbtcrafting")) {
-            return NbtCraftingUtil.getOutputStack(getOutput(), getPreviewInputs(), inv);
+            return NbtCraftingUtil.getOutputStack(getOutput(), getIngredients(), inv);
         }
         return this.getOutput().copy();
     }

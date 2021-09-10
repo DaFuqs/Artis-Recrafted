@@ -14,20 +14,10 @@ import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.registry.Registry;
 
-import javax.annotation.Nullable;
+public record ArtisScreenFactory(ArtisTableType tableType,
+                                 Block block,
+                                 BlockHitResult blockHitResult) implements ExtendedScreenHandlerFactory {
 
-public class ArtisScreenFactory implements ExtendedScreenHandlerFactory {
-    private final ArtisTableType tableType;
-    private final Block block;
-    private final BlockHitResult blockHitResult;
-
-    public ArtisScreenFactory(ArtisTableType tableType, Block block, BlockHitResult blockHitResult) {
-        this.tableType = tableType;
-        this.block = block;
-        this.blockHitResult = blockHitResult;
-    }
-
-    @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
         return new ArtisCraftingController(Registry.SCREEN_HANDLER.get(tableType.getId()), tableType, syncId, player, ScreenHandlerContext.create(player.world, blockHitResult.getBlockPos()));

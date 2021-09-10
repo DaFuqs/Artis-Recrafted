@@ -1,8 +1,8 @@
 {
   "required": true,
   "package": "io.github.alloffabric.artis.compat.mixin",
-  "minVersion": "0.7.11",
-  "compatibilityLevel": "JAVA_8",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_16",
   "mixins": [],
   "client": [
     

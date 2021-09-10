@@ -67,7 +67,7 @@ public class ValidatedArtisResultSlot extends ValidatedSlot {
     }
 
     @Override
-    public ItemStack onTakeItem(PlayerEntity player, ItemStack stack) {
+    public void onTakeItem(PlayerEntity player, ItemStack stack) {
         this.onCrafted(stack);
         DefaultedList<ItemStack> remainders = getRemainders(); //= player.world.getRecipeManager().getRemainingStacks(craftingInv.getType(), this.craftingInv, player.world);
         for (int i = 0; i < remainders.size() - 1; ++i) {
@@ -81,10 +81,10 @@ public class ValidatedArtisResultSlot extends ValidatedSlot {
             if (!remainder.isEmpty()) {
                 if (input.isEmpty()) {
                     this.craftingInv.setStack(i, remainder);
-                } else if (ItemStack.areItemsEqualIgnoreDamage(input, remainder) && ItemStack.areTagsEqual(input, remainder)) {
+                } else if (ItemStack.areItemsEqualIgnoreDamage(input, remainder) && ItemStack.areNbtEqual(input, remainder)) {
                     remainder.increment(input.getCount());
                     this.craftingInv.setStack(i, remainder);
-                } else if (!this.player.inventory.insertStack(remainder)) {
+                } else if (!this.player.getInventory().insertStack(remainder)) {
                     this.player.dropItem(remainder, false);
                 }
             }
@@ -109,12 +109,10 @@ public class ValidatedArtisResultSlot extends ValidatedSlot {
                     }
                     this.craftingInv.setStack(catalystSlot, catalyst);
                     if (!player.world.isClient)
-                        ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, new ScreenHandlerSlotUpdateS2CPacket(syncId, 37, catalyst));
+                        ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, new ScreenHandlerSlotUpdateS2CPacket(syncId, 0, 37, catalyst));
                 }
             }
         }
-
-        return stack;
     }
 
     //note: inventory is actually CraftingResultInventory so it's a safe cast
@@ -122,7 +120,7 @@ public class ValidatedArtisResultSlot extends ValidatedSlot {
         Recipe<CraftingInventory> lastRecipe = (Recipe<CraftingInventory>) ((CraftingResultInventory)this.inventory).getLastRecipe();
         if (lastRecipe != null &&
                 lastRecipe.matches(craftingInv, player.world))
-            return lastRecipe.getRemainingStacks(craftingInv);
+            return lastRecipe.getRemainder(craftingInv);
         else return craftingInv.getStacks();
     }
 }

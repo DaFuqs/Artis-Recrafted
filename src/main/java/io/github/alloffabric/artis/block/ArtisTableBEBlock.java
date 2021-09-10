@@ -26,7 +26,8 @@ public class ArtisTableBEBlock extends ArtisTableBlock implements BlockEntityPro
 
     @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockView world) {
-        return new ArtisTableBlockEntity(getType());
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new ArtisTableBlockEntity(getType(), pos, state);
     }
+
 }

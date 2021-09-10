@@ -23,7 +23,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeFinder;
+import net.minecraft.recipe.RecipeMatcher;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
@@ -50,7 +50,7 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
     private WItemSlot catalyst;
 
     public ArtisCraftingController(ScreenHandlerType type, ArtisTableType tableType, int syncId, PlayerEntity player, ScreenHandlerContext context) {
-        super(type, syncId, player.inventory, getBlockInventory(context), getBlockPropertyDelegate(context));
+        super(type, syncId, player.getInventory(), getBlockInventory(context), getBlockPropertyDelegate(context));
 
         this.tableType = tableType;
         this.player = player;
@@ -100,21 +100,19 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
     }
 
     private static BackgroundPainter slotColor(int color) {
-        return (left, top, panel) -> {
+        return (matrices, left, top, panel) -> {
             int lo = ScreenDrawing.multiplyColor(color, 0.5F);
             int bg = 0x4C000000;
             int hi = ScreenDrawing.multiplyColor(color, 1.25F);
-            if (!(panel instanceof WItemSlot)) {
-                ScreenDrawing.drawBeveledPanel(left - 1, top - 1, panel.getWidth() + 2, panel.getHeight() + 2, lo, bg, hi);
+            if (!(panel instanceof WItemSlot slot)) {
+                ScreenDrawing.drawBeveledPanel(matrices, left - 1, top - 1, panel.getWidth() + 2, panel.getHeight() + 2, lo, bg, hi);
             } else {
-                WItemSlot slot = (WItemSlot) panel;
-
                 for (int x = 0; x < slot.getWidth() / 18; ++x) {
                     for (int y = 0; y < slot.getHeight() / 18; ++y) {
                         if (slot.isBigSlot()) {
-                            ScreenDrawing.drawBeveledPanel(x * 18 + left - 3, y * 18 + top - 3, 24, 24, lo, bg, hi);
+                            ScreenDrawing.drawBeveledPanel(matrices, x * 18 + left - 3, y * 18 + top - 3, 24, 24, lo, bg, hi);
                         } else {
-                            ScreenDrawing.drawBeveledPanel(x * 18 + left, y * 18 + top, 18, 18, lo, bg, hi);
+                            ScreenDrawing.drawBeveledPanel(matrices, x * 18 + left, y * 18 + top, 18, 18, lo, bg, hi);
                         }
                     }
                 }
@@ -160,7 +158,7 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
         super.close(player);
         this.context.run((world, pos) -> {
             if (!tableType.hasBlockEntity()) {
-                dropInventory(player, world, craftInv);
+                dropInventory(player, craftInv);
             } else {
                 for (int i = 0; i < craftInv.size(); i++) {
                     blockInventory.setStack(i, craftInv.getStack(i));
@@ -198,9 +196,9 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
     //clientside only
     @Override
     @Environment(EnvType.CLIENT)
-    public void updateSlotStacks(List<ItemStack> stacks) {
+    public void updateSlotStacks(int revision, List<ItemStack> stacks, ItemStack cursorStack) {
         craftInv.setCheckMatrixChanges(false);
-        super.updateSlotStacks(stacks);
+        super.updateSlotStacks(revision, stacks, cursorStack);
         craftInv.setCheckMatrixChanges(true);
         onContentChanged(null);
     }
@@ -211,13 +209,11 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
 
             ItemStack itemstack = ItemStack.EMPTY;
 
-            boolean isArtis = false;
-
             Recipe<CraftingInventory> recipe = (Recipe<CraftingInventory>) result.getLastRecipe();
             //find artis recipe first
             if (recipe == null || !recipe.matches(inv, world)) {
                 recipe = findArtisRecipe(artisTableType,inv, world);
-                if (recipe != null) isArtis = true;
+                if (recipe != null) ;
             }
             //else fall back to vanilla
             if (recipe == null && artisTableType.shouldIncludeNormalRecipes()) {
@@ -250,7 +246,7 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
     public ItemStack transferSlot(PlayerEntity player, int slotIndex) {
         ItemStack stack = ItemStack.EMPTY;
         Slot slot = this.slots.get(slotIndex);
-        if (slot != null && slot.hasStack()) {
+        if (slot.hasStack()) {
             if (slotIndex == getCraftingResultSlotIndex()) {
                 int slotcount = getCraftingSlotCount() + (tableType.hasCatalystSlot() ? 1 : 0);
                 return handleShiftCraft(player,this,slot,craftInv,resultInv,slotcount,slotcount + 36);
@@ -278,16 +274,17 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
     }
 
     @Override
-    public ItemStack onSlotClick(int slotNumber, int button, SlotActionType action, PlayerEntity player) {
+    public void onSlotClick(int slotNumber, int button, SlotActionType action, PlayerEntity player) {
         if (slotNumber == getCraftingResultSlotIndex() && action == SlotActionType.QUICK_MOVE) {
-            return transferSlot(player, slotNumber);
+            transferSlot(player, slotNumber);
         }
-
-        return super.onSlotClick(slotNumber, button, action, player);
+        else {
+            super.onSlotClick(slotNumber, button, action, player);
+        }
     }
 
     @Override
-    public void populateRecipeFinder(RecipeFinder finder) {
+    public void populateRecipeMatcher(RecipeMatcher finder) {
         this.craftInv.provideRecipeInputs(finder);
     }
 
@@ -322,7 +319,7 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
                     return ItemStack.EMPTY;
                 }
 
-                resultSlot.onStackChanged(recipeOutput, outputCopy);
+                resultSlot.onQuickTransfer(recipeOutput, outputCopy);
                 resultSlot.markDirty();
 
                 if (!player.world.isClient && recipeOutput.getCount() == outputCopy.getCount()) {

@@ -106,17 +106,13 @@ public class ShapedArtisSerializer implements RecipeSerializer<ShapedArtisRecipe
 
     private static int findNextIngredient(String ingredients) {
         int i;
-        for (i = 0; i < ingredients.length() && ingredients.charAt(i) == ' '; ++i) {
-        }
-
+        for (i = 0; i < ingredients.length() && ingredients.charAt(i) == ' '; ++i);
         return i;
     }
 
     private static int findNextIngredientReverse(String ingredients) {
         int i;
-        for (i = ingredients.length() - 1; i >= 0 && ingredients.charAt(i) == ' '; --i) {
-        }
-
+        for (i = ingredients.length() - 1; i >= 0 && ingredients.charAt(i) == ' '; --i);
         return i;
     }
 
@@ -128,7 +124,7 @@ public class ShapedArtisSerializer implements RecipeSerializer<ShapedArtisRecipe
         int width = pattern[0].length();
         int height = pattern.length;
         DefaultedList<Ingredient> ingredients = getIngredients(pattern, key, width, height);
-        ItemStack output = ShapedRecipe.getItemStack(JsonHelper.getObject(jsonObject, "result"));
+        ItemStack output = new ItemStack(ShapedRecipe.getItem(JsonHelper.getObject(jsonObject, "result")));
         Ingredient catalyst = JsonHelper.hasElement(jsonObject, "catalyst") ? Ingredient.fromJson(jsonObject.get("catalyst")) : Ingredient.ofStacks(ItemStack.EMPTY);
         int cost = JsonHelper.hasElement(jsonObject, "cost") ? JsonHelper.getInt(jsonObject, "cost") : 0;
         return new ShapedArtisRecipe(type, this, id, group, width, height, ingredients, output, catalyst, cost);
@@ -159,7 +155,7 @@ public class ShapedArtisSerializer implements RecipeSerializer<ShapedArtisRecipe
         buf.writeVarInt(recipe.getHeight());
         buf.writeString(recipe.getGroup());
 
-        for (Ingredient ingredient : recipe.getPreviewInputs()) {
+        for (Ingredient ingredient : recipe.getIngredients()) {
             ingredient.write(buf);
         }
 
