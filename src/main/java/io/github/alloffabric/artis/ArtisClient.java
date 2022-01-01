@@ -74,7 +74,7 @@ public class ArtisClient implements ClientModInitializer {
                 BlockRenderLayerMap.INSTANCE.putBlock(Registry.BLOCK.get(type.getId()), RenderLayer.getCutout());
             }
         }
-        Artifice.registerAssets(new Identifier(Artis.MODID, "artis_assets"), assets -> {
+        Artifice.registerAssetPack(new Identifier(Artis.MODID, "artis_assets"), assets -> {
             for (Identifier id : BLOCKSTATES.keySet()) {
                 assets.addBlockState(id, BLOCKSTATES.get(id));
                 assets.addTranslations(new Identifier(Artis.MODID, "en_us"), translations -> translations
@@ -85,7 +85,7 @@ public class ArtisClient implements ClientModInitializer {
             }
         });
 
-        ClientSidePacketRegistry.INSTANCE.register(Artis.recipe_sync,
+        /*ClientSidePacketRegistry.INSTANCE.register(Artis.recipe_sync,
                 (packetContext, attachedData) -> {
                     Identifier location = attachedData.readIdentifier();
                     packetContext.getTaskQueue().execute(() -> {
@@ -95,10 +95,10 @@ public class ArtisClient implements ClientModInitializer {
                             updateLastRecipe((ArtisRecipeProvider) packetContext.getPlayer().currentScreenHandler, (Recipe<CraftingInventory>) r);
                         }
                     });
-                });
+                });*/
     }
 
-    public static void updateLastRecipe(ArtisRecipeProvider container, Recipe<CraftingInventory> rec) {
+    /*public static void updateLastRecipe(ArtisRecipeProvider container, Recipe<CraftingInventory> rec) {
 
         CraftingInventory craftInput = container.getCraftInv();
         CraftingResultInventory craftResult = container.getResultInv();
@@ -110,6 +110,6 @@ public class ArtisClient implements ClientModInitializer {
             if (rec != null) craftResult.setStack(0, rec.craft(craftInput));
             else craftResult.setStack(0, ItemStack.EMPTY);
         }
-    }
+    }*/
 
 }

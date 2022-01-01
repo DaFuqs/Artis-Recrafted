@@ -86,7 +86,11 @@ public class REIClientIntegration implements REIClientPlugin {
      */
     @Override
     public void registerScreens(ScreenRegistry registry) {
-    
+        /*for (ArtisTableType type : Artis.ARTIS_TABLE_TYPES) {
+            ContainerInfoHandler.registerContainerInfo(type.getId(), RecipeProviderInfoWrapper.create(ArtisRecipeProvider.class));
+        }
+
+        ContainerInfoHandler.registerContainerInfo(BuiltinPlugin.CRAFTING, RecipeProviderInfoWrapper.create(ArtisRecipeProvider.class));*/
     }
     
 }
