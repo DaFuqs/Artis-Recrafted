@@ -18,10 +18,8 @@
     "client": [
       "io.github.alloffabric.artis.ArtisClient"
     ],
-    "rei_plugins_v0": [
-      "io.github.alloffabric.artis.compat.rei.REIClientIntegration"
-    ],
-	"rei_containers": [
+    "rei_plugins": [
+      "io.github.alloffabric.artis.compat.rei.REIClientIntegration",
       "io.github.alloffabric.artis.compat.rei.ArtisServerContainerPlugin"
     ],
     "kubejs-init": [

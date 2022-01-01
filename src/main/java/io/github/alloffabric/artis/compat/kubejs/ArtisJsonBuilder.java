@@ -1,8 +1,8 @@
 package io.github.alloffabric.artis.compat.kubejs;
 
 import com.google.gson.JsonObject;
-import dev.latvian.kubejs.KubeJS;
-import dev.latvian.kubejs.util.BuilderBase;
+import dev.latvian.mods.kubejs.KubeJS;
+import dev.latvian.mods.kubejs.util.BuilderBase;
 import net.minecraft.util.Identifier;
 
 public class ArtisJsonBuilder extends BuilderBase {

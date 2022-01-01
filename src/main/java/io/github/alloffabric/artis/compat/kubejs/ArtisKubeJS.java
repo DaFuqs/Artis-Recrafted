@@ -4,16 +4,15 @@ import blue.endless.jankson.api.SyntaxError;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import dev.latvian.kubejs.KubeJSInitializer;
-import dev.latvian.kubejs.item.EmptyItemStackJS;
-import dev.latvian.kubejs.item.ItemStackJS;
-import dev.latvian.kubejs.item.ingredient.IngredientJS;
-import dev.latvian.kubejs.recipe.RecipeExceptionJS;
-import dev.latvian.kubejs.recipe.RecipeJS;
-import dev.latvian.kubejs.recipe.RecipeTypeJS;
-import dev.latvian.kubejs.recipe.RegisterRecipeHandlersEvent;
-import dev.latvian.kubejs.util.ListJS;
-import dev.latvian.kubejs.util.MapJS;
+import dev.latvian.mods.kubejs.KubeJSInitializer;
+import dev.latvian.mods.kubejs.item.ItemStackJS;
+import dev.latvian.mods.kubejs.item.ingredient.IngredientJS;
+import dev.latvian.mods.kubejs.recipe.RecipeExceptionJS;
+import dev.latvian.mods.kubejs.recipe.RecipeJS;
+import dev.latvian.mods.kubejs.recipe.RecipeTypeJS;
+import dev.latvian.mods.kubejs.recipe.RegisterRecipeHandlersEvent;
+import dev.latvian.mods.kubejs.util.ListJS;
+import dev.latvian.mods.kubejs.util.MapJS;
 import io.github.alloffabric.artis.Artis;
 import io.github.alloffabric.artis.ArtisData;
 import io.github.alloffabric.artis.api.ArtisTableType;
@@ -49,7 +48,7 @@ public class ArtisKubeJS implements KubeJSInitializer {
 	public class ArtisShapedRecipeJS extends RecipeJS {
 		private final List<String> pattern = new ArrayList<>();
 		private final List<String> key = new ArrayList<>();
-		public IngredientJS catalystItem = EmptyItemStackJS.INSTANCE;
+		public IngredientJS catalystItem = ItemStackJS.EMPTY;
 		public int cost = 1;
 
 		@Override
@@ -172,7 +171,7 @@ public class ArtisKubeJS implements KubeJSInitializer {
 
 			IngredientJS catalyst = IngredientJS.ingredientFromRecipeJson(json.get("catalyst"));
 
-			if (!catalyst.equals(EmptyItemStackJS.INSTANCE) && !catalyst.isEmpty()) {
+			if (!catalyst.equals(ItemStackJS.EMPTY) && !catalyst.isEmpty()) {
 				catalystItem = catalyst;
 			}
 
@@ -199,14 +198,14 @@ public class ArtisKubeJS implements KubeJSInitializer {
 
 			json.add("key", keyJson);
 			json.add("result", outputItems.get(0).toResultJson());
-			if (!catalystItem.equals(EmptyItemStackJS.INSTANCE))
+			if (!catalystItem.equals(ItemStackJS.EMPTY))
 				json.add("catalyst", catalystItem.toJson());
 			json.addProperty("cost", cost);
 		}
 	}
 
 	public class ArtisShapelessRecipeJS extends RecipeJS {
-		public IngredientJS catalystItem = EmptyItemStackJS.INSTANCE;
+		public IngredientJS catalystItem = ItemStackJS.EMPTY;
 		public int cost = 0;
 
 		public final boolean hasCatalyst(IngredientJS ingredient, boolean exact) {
@@ -285,7 +284,7 @@ public class ArtisKubeJS implements KubeJSInitializer {
 
 			IngredientJS catalyst = IngredientJS.ingredientFromRecipeJson(json.get("catalyst"));
 
-			if (!catalyst.equals(EmptyItemStackJS.INSTANCE) && !catalyst.isEmpty()) {
+			if (!catalyst.equals(ItemStackJS.EMPTY) && !catalyst.isEmpty()) {
 				catalystItem = catalyst;
 			}
 
@@ -304,7 +303,7 @@ public class ArtisKubeJS implements KubeJSInitializer {
 
 			json.add("ingredients", ingredientsJson);
 			json.add("result", outputItems.get(0).toResultJson());
-			if (!catalystItem.equals(EmptyItemStackJS.INSTANCE))
+			if (!catalystItem.equals(ItemStackJS.EMPTY))
 				json.add("catalyst", catalystItem.toJson());
 			json.addProperty("cost", cost);
 		}

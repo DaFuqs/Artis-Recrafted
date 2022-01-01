@@ -1,11 +1,12 @@
 package io.github.alloffabric.artis.compat.kubejs;
 
-import dev.latvian.kubejs.event.EventJS;
+import dev.latvian.mods.kubejs.event.EventJS;
 
 /**
  * @author LatvianModder
  */
 public class ArtisJsonRegistryEventJS extends EventJS {
+	
 	public ArtisJsonBuilder create(String name) {
 		ArtisJsonBuilder builder = new ArtisJsonBuilder(name);
 		ArtisKubeJS.ARTIS_JSON_BUILDERS.add(builder);
