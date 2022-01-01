@@ -20,7 +20,7 @@ public class ArtisEvents {
         UseBlockCallback.EVENT.register((playerEntity, world, hand, blockHitResult) -> {
             Block block = world.getBlockState(blockHitResult.getBlockPos()).getBlock();
             Identifier identifier = Registry.BLOCK.getId(block);
-            if (Artis.ARTIS_TABLE_TYPES.hasId(identifier)) {
+            if (Artis.ARTIS_TABLE_TYPES.containsId(identifier)) {
                 ArtisTableType type = Artis.ARTIS_TABLE_TYPES.get(identifier);
                 if (type instanceof ArtisExistingBlockType) {
                     if (!world.isClient)
@@ -35,7 +35,7 @@ public class ArtisEvents {
             if (!playerEntity.getStackInHand(hand).isEmpty()) {
                 Item item = playerEntity.getStackInHand(hand).getItem();
                 Identifier identifier = Registry.ITEM.getId(item);
-                if (Artis.ARTIS_TABLE_TYPES.hasId(identifier)) {
+                if (Artis.ARTIS_TABLE_TYPES.containsId(identifier)) {
                     ArtisTableType type = Artis.ARTIS_TABLE_TYPES.get(identifier);
                     if (type instanceof ArtisExistingItemType) {
                         if (!world.isClient)

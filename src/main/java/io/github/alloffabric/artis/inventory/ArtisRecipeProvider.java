@@ -25,6 +25,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeMatcher;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
@@ -34,8 +35,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ArtisCraftingController extends SyncedGuiDescription implements RecipeProvider {
-    
+public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeProvider {
     private final ArtisTableType tableType;
     private final PlayerEntity player;
     private final ArtisCraftingInventory craftInv;
@@ -50,7 +50,7 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
     private WLabel catalystCost;
     private WItemSlot catalyst;
 
-    public ArtisCraftingController(ScreenHandlerType type, ArtisTableType tableType, int syncId, PlayerEntity player, ScreenHandlerContext context) {
+    public ArtisRecipeProvider(ScreenHandlerType type, ArtisTableType tableType, int syncId, PlayerEntity player, ScreenHandlerContext context) {
         super(type, syncId, player.getInventory(), getBlockInventory(context), getBlockPropertyDelegate(context));
 
         this.tableType = tableType;
@@ -101,21 +101,19 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
     }
 
     private static BackgroundPainter slotColor(int color) {
-        return (left, top, panel) -> {
+        return (matrices, left, top, panel) -> {
             int lo = ScreenDrawing.multiplyColor(color, 0.5F);
             int bg = 0x4C000000;
             int hi = ScreenDrawing.multiplyColor(color, 1.25F);
-            if (!(panel instanceof WItemSlot)) {
-                ScreenDrawing.drawBeveledPanel(left - 1, top - 1, panel.getWidth() + 2, panel.getHeight() + 2, lo, bg, hi);
+            if (!(panel instanceof WItemSlot slot)) {
+                ScreenDrawing.drawBeveledPanel(matrices, left - 1, top - 1, panel.getWidth() + 2, panel.getHeight() + 2, lo, bg, hi);
             } else {
-                WItemSlot slot = (WItemSlot) panel;
-
                 for (int x = 0; x < slot.getWidth() / 18; ++x) {
                     for (int y = 0; y < slot.getHeight() / 18; ++y) {
                         if (slot.isBigSlot()) {
-                            ScreenDrawing.drawBeveledPanel(x * 18 + left - 3, y * 18 + top - 3, 24, 24, lo, bg, hi);
+                            ScreenDrawing.drawBeveledPanel(matrices, x * 18 + left - 3, y * 18 + top - 3, 24, 24, lo, bg, hi);
                         } else {
-                            ScreenDrawing.drawBeveledPanel(x * 18 + left, y * 18 + top, 18, 18, lo, bg, hi);
+                            ScreenDrawing.drawBeveledPanel(matrices, x * 18 + left, y * 18 + top, 18, 18, lo, bg, hi);
                         }
                     }
                 }
@@ -161,7 +159,7 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
         super.close(player);
         this.context.run((world, pos) -> {
             if (!tableType.hasBlockEntity()) {
-                dropInventory(player, world, craftInv);
+                dropInventory(player, craftInv);
             } else {
                 for (int i = 0; i < craftInv.size(); i++) {
                     blockInventory.setStack(i, craftInv.getStack(i));
@@ -199,9 +197,9 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
     //clientside only
     @Override
     @Environment(EnvType.CLIENT)
-    public void updateSlotStacks(List<ItemStack> stacks) {
+    public void updateSlotStacks(int revision, List<ItemStack> stacks, ItemStack cursorStack) {
         craftInv.setCheckMatrixChanges(false);
-        super.updateSlotStacks(stacks);
+        super.updateSlotStacks(revision, stacks, cursorStack);
         craftInv.setCheckMatrixChanges(true);
         onContentChanged(null);
     }
@@ -212,13 +210,11 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
 
             ItemStack itemstack = ItemStack.EMPTY;
 
-            boolean isArtis = false;
-
             Recipe<CraftingInventory> recipe = (Recipe<CraftingInventory>) result.getLastRecipe();
             //find artis recipe first
             if (recipe == null || !recipe.matches(inv, world)) {
                 recipe = findArtisRecipe(artisTableType,inv, world);
-                if (recipe != null) isArtis = true;
+                if (recipe != null) ;
             }
             //else fall back to vanilla
             if (recipe == null && artisTableType.shouldIncludeNormalRecipes()) {
@@ -251,7 +247,7 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
     public ItemStack transferSlot(PlayerEntity player, int slotIndex) {
         ItemStack stack = ItemStack.EMPTY;
         Slot slot = this.slots.get(slotIndex);
-        if (slot != null && slot.hasStack()) {
+        if (slot.hasStack()) {
             if (slotIndex == getCraftingResultSlotIndex()) {
                 int slotcount = getCraftingSlotCount() + (tableType.hasCatalystSlot() ? 1 : 0);
                 return handleShiftCraft(player,this,slot,craftInv,resultInv,slotcount,slotcount + 36);
@@ -268,10 +264,10 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
             if (toTake.getCount() == stack.getCount()) {
                 return ItemStack.EMPTY;
             }
-
-            ItemStack takenStack = slot.onTakeItem(player, toTake);
+            
+            slot.onTakeItem(player, toTake);
             if (slotIndex == getCraftingResultSlotIndex()) {
-                player.dropItem(takenStack, false);
+                player.dropItem(toTake, false);
             }
         }
 
@@ -279,19 +275,20 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
     }
 
     @Override
-    public ItemStack onSlotClick(int slotNumber, int button, SlotActionType action, PlayerEntity player) {
+    public void onSlotClick(int slotNumber, int button, SlotActionType action, PlayerEntity player) {
         if (slotNumber == getCraftingResultSlotIndex() && action == SlotActionType.QUICK_MOVE) {
-            return transferSlot(player, slotNumber);
+            transferSlot(player, slotNumber);
         }
-
-        return super.onSlotClick(slotNumber, button, action, player);
+        else {
+            super.onSlotClick(slotNumber, button, action, player);
+        }
     }
-    
+
     @Override
     public void populateRecipeMatcher(RecipeMatcher finder) {
         this.craftInv.provideRecipeInputs(finder);
     }
-    
+
     @Override
     public void clearCraftingSlots() {
         this.craftInv.clear();
@@ -303,7 +300,7 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
         return slot.inventory != this.resultInv && super.canInsertIntoSlot(stack, slot);
     }
 
-    public static ItemStack handleShiftCraft(PlayerEntity player, ArtisCraftingController container, Slot resultSlot, ArtisCraftingInventory input, CraftingResultInventory craftResult, int outStart, int outEnd) {
+    public static ItemStack handleShiftCraft(PlayerEntity player, ArtisRecipeProvider container, Slot resultSlot, ArtisCraftingInventory input, CraftingResultInventory craftResult, int outStart, int outEnd) {
         ItemStack outputCopy = ItemStack.EMPTY;
         input.setCheckMatrixChanges(false);
         if (resultSlot != null && resultSlot.hasStack()) {
@@ -323,16 +320,16 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
                     return ItemStack.EMPTY;
                 }
 
-                resultSlot.onStackChanged(recipeOutput, outputCopy);
+                resultSlot.onQuickTransfer(recipeOutput, outputCopy);
                 resultSlot.markDirty();
 
                 if (!player.world.isClient && recipeOutput.getCount() == outputCopy.getCount()) {
                     input.setCheckMatrixChanges(true);
                     return ItemStack.EMPTY;
                 }
-
-                ItemStack itemstack2 = resultSlot.onTakeItem(player, recipeOutput);
-                player.dropItem(itemstack2, false);
+                
+                resultSlot.onTakeItem(player, recipeOutput);
+                player.dropItem(recipeOutput, false);
             }
             input.setCheckMatrixChanges(true);
             updateResult(player.world, player, input, craftResult, container.tableType);

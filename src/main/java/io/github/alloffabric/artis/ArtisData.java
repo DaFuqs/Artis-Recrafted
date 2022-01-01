@@ -9,8 +9,6 @@ import io.github.alloffabric.artis.api.ArtisExistingItemType;
 import io.github.alloffabric.artis.api.ArtisTableType;
 import io.github.alloffabric.artis.util.BlockSettingsParser;
 import io.github.cottonmc.jankson.JanksonFactory;
-import io.github.cottonmc.staticdata.StaticData;
-import io.github.cottonmc.staticdata.StaticDataItem;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
@@ -48,7 +46,7 @@ public class ArtisData {
     }
 
     public static void loadData() {
-        Set<StaticDataItem> data = StaticData.getAll("artis.json5");
+        /*Set<StaticDataItem> data = StaticData.getAll("artis.json5");
         for (StaticDataItem item : data) {
             try {
                 JsonObject json = jankson.load(item.createInputStream());
@@ -56,7 +54,7 @@ public class ArtisData {
             } catch (IOException | SyntaxError e) {
                 Artis.logger.error("[Artis] Error loading static data item {}: {}", item.getIdentifier().toString(), e.getMessage());
             }
-        }
+        }*/
     }
 
     public static void loadData(JsonObject json) {
@@ -69,7 +67,7 @@ public class ArtisData {
         List<String> keys = new ArrayList<>(json.keySet());
         Collections.sort(keys);
         for (String key : keys) {
-            if (Artis.ARTIS_TABLE_TYPES.hasId(new Identifier(key))) {
+            if (Artis.ARTIS_TABLE_TYPES.containsId(new Identifier(key))) {
                 Artis.logger.error("[Artis] Table type named {} already exists, skipping it in {}", key, from);
                 continue;
             }

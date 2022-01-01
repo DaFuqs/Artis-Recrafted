@@ -2,7 +2,7 @@ package io.github.alloffabric.artis.block.entity;
 
 import io.github.alloffabric.artis.Artis;
 import io.github.alloffabric.artis.api.ArtisTableType;
-import io.github.alloffabric.artis.inventory.ArtisCraftingController;
+import io.github.alloffabric.artis.inventory.ArtisRecipeProvider;
 import io.github.alloffabric.artis.inventory.DefaultInventory;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -10,7 +10,6 @@ import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
@@ -50,7 +49,7 @@ public class ArtisTableBlockEntity extends BlockEntity implements DefaultInvento
     @Override
     @Environment(EnvType.CLIENT)
     public ScreenHandler createMenu(int syncId, PlayerInventory inventory, PlayerEntity player) {
-        return new ArtisCraftingController(Registry.SCREEN_HANDLER.get(tableType.getId()), tableType, syncId, player, ScreenHandlerContext.create(world, getPos()));
+        return new ArtisRecipeProvider(Registry.SCREEN_HANDLER.get(tableType.getId()), tableType, syncId, player, ScreenHandlerContext.create(world, getPos()));
     }
 
     @Override

@@ -1,7 +1,10 @@
 package io.github.alloffabric.artis.api;
 
+import io.github.alloffabric.artis.Artis;
+import io.github.alloffabric.artis.compat.rei.ArtisRecipeDisplay;
 import io.github.alloffabric.artis.recipe.ShapedArtisSerializer;
 import io.github.alloffabric.artis.recipe.ShapelessArtisSerializer;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
@@ -82,5 +85,9 @@ public class ArtisTableType implements RecipeType {
 
     public int getColor() {
         return color;
+    }
+    
+    public CategoryIdentifier<ArtisRecipeDisplay> getCategoryIdentifier() {
+        return CategoryIdentifier.of(id);
     }
 }

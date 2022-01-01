@@ -1,7 +1,7 @@
 package io.github.alloffabric.artis.block;
 
 import io.github.alloffabric.artis.api.ArtisTableType;
-import io.github.alloffabric.artis.inventory.ArtisCraftingController;
+import io.github.alloffabric.artis.inventory.ArtisRecipeProvider;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -55,7 +55,7 @@ public class ArtisTableBlock extends Block implements ExtendedScreenHandlerFacto
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        return new ArtisCraftingController(Registry.SCREEN_HANDLER.get(type.getId()), type, syncId, player, ScreenHandlerContext.create(player.world, player.getBlockPos()));
+        return new ArtisRecipeProvider(Registry.SCREEN_HANDLER.get(type.getId()), type, syncId, player, ScreenHandlerContext.create(player.world, player.getBlockPos()));
     }
 
     @Override

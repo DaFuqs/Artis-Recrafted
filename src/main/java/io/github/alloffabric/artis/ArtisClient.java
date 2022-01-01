@@ -8,6 +8,7 @@ import io.github.alloffabric.artis.api.ArtisExistingBlockType;
 import io.github.alloffabric.artis.api.ArtisExistingItemType;
 import io.github.alloffabric.artis.api.ArtisTableType;
 import io.github.alloffabric.artis.inventory.ArtisCraftingController;
+import io.github.alloffabric.artis.inventory.ArtisRecipeProvider;
 import io.github.alloffabric.artis.inventory.ArtisCraftingScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -59,7 +60,10 @@ public class ArtisClient implements ClientModInitializer {
     @Environment(EnvType.CLIENT)
     public void onInitializeClient() {
         for (ArtisTableType type : Artis.ARTIS_TABLE_TYPES) {
+            
             ScreenRegistry.register((ScreenHandlerType<ArtisCraftingController>) Registry.SCREEN_HANDLER.get(type.getId()), ArtisCraftingScreen::new);
+    
+    
             if (!(type instanceof ArtisExistingBlockType) && !(type instanceof ArtisExistingItemType)) {
                 if (type.shouldGenerateAssets()) {
                     BLOCKSTATES.put(type.getId(), builder -> builder.variant("", variant -> variant.model(new Identifier(Artis.MODID, "block/table" + (type.hasColor() ? "_overlay" : "")))));
@@ -88,15 +92,15 @@ public class ArtisClient implements ClientModInitializer {
                     Identifier location = attachedData.readIdentifier();
                     packetContext.getTaskQueue().execute(() -> {
                         ScreenHandler container = packetContext.getPlayer().currentScreenHandler;
-                        if (container instanceof ArtisCraftingController) {
+                        if (container instanceof ArtisRecipeProvider) {
                             Recipe<?> r = MinecraftClient.getInstance().world.getRecipeManager().get(location).orElse(null);
-                            updateLastRecipe((ArtisCraftingController) packetContext.getPlayer().currentScreenHandler, (Recipe<CraftingInventory>) r);
+                            updateLastRecipe((ArtisRecipeProvider) packetContext.getPlayer().currentScreenHandler, (Recipe<CraftingInventory>) r);
                         }
                     });
                 });
     }
 
-    public static void updateLastRecipe(ArtisCraftingController container, Recipe<CraftingInventory> rec) {
+    public static void updateLastRecipe(ArtisRecipeProvider container, Recipe<CraftingInventory> rec) {
 
         CraftingInventory craftInput = container.getCraftInv();
         CraftingResultInventory craftResult = container.getResultInv();

@@ -7,23 +7,23 @@ import io.github.alloffabric.artis.api.RecipeProvider;
 import it.unimi.dsi.fastutil.ints.IntList;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.TransferRecipeCategory;
+import me.shedaniel.rei.api.client.gui.Renderer;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.client.gui.widgets.Widgets;
-import me.shedaniel.rei.impl.ScreenHelper;
-import me.shedaniel.rei.server.ContainerInfo;
-import me.shedaniel.rei.server.ContainerInfoHandler;
+import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
+import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.entry.EntryIngredient;
+import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
 
@@ -34,36 +34,37 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Environment(EnvType.CLIENT)
-public class ArtisCategory<R extends Recipe> implements TransferRecipeCategory<ArtisDisplay> {
+public class ArtisRecipeCategory<R extends Recipe> implements DisplayCategory<ArtisRecipeDisplay> {
+    
     private final ArtisTableType artisTableType;
 
-    ArtisCategory(ArtisTableType artisTableType) {
+    ArtisRecipeCategory(ArtisTableType artisTableType) {
         this.artisTableType = artisTableType;
     }
 
-    public static int getSlotWithSize(ArtisDisplay recipeDisplay, int num, int craftingGridWidth) {
+    public static int getSlotWithSize(ArtisRecipeDisplay recipeDisplay, int num, int craftingGridWidth) {
         int x = num % recipeDisplay.getDisplay().getWidth();
         int y = (num - x) / recipeDisplay.getDisplay().getWidth();
         return craftingGridWidth * y + x;
     }
-
+    
     @Override
-    public Identifier getIdentifier() {
-        return artisTableType.getId();
+    public CategoryIdentifier<? extends ArtisRecipeDisplay> getCategoryIdentifier() {
+        return artisTableType.getCategoryIdentifier();
     }
-
+    
     @Override
-    public String getCategoryName() {
-        return I18n.translate("rei.category." + artisTableType.getId().getPath());
+    public Renderer getIcon() {
+        return EntryStacks.of(Registry.BLOCK.get(artisTableType.getId()));
     }
-
+    
     @Override
-    public EntryStack getLogo() {
-        return EntryStack.create(Registry.BLOCK.get(artisTableType.getId()));
+    public Text getTitle() {
+        return new TranslatableText("rei.category." + artisTableType.getId().getPath());
     }
-
+    
     @Override
-    public List<Widget> setupDisplay(ArtisDisplay recipeDisplay, Rectangle bounds) {
+    public List<Widget> setupDisplay(ArtisRecipeDisplay recipeDisplay, Rectangle bounds) {
         Point startPoint = new Point(bounds.getCenterX() - (getDisplayWidth(recipeDisplay) / 2) + 17, bounds.getCenterY() - (getDisplayHeight() / 2) + 15);
 
         Artis.logger.info(this::getDisplayHeight);
@@ -76,10 +77,10 @@ public class ArtisCategory<R extends Recipe> implements TransferRecipeCategory<A
             widgets = new LinkedList(Arrays.asList(Widgets.createRecipeBase(bounds).color(artisTableType.getColor(), artisTableType.getColor())));
         }
 
-        List<List<EntryStack>> input = recipeDisplay.getInputEntries();
+        List<EntryIngredient> input = recipeDisplay.getInputEntries();
         List<ColorableEntryWidget> slots = Lists.newArrayList();
 
-        for (int y = 0; y < artisTableType.getHeight(); y++)
+        /*for (int y = 0; y < artisTableType.getHeight(); y++)
             for (int x = 0; x < artisTableType.getWidth(); x++)
                 if (artisTableType.hasColor())
                     slots.add(ColorableEntryWidget.create(startPoint.x + 1 + x * 18, startPoint.y + 1 + y * 18, artisTableType.getColor()));
@@ -105,7 +106,7 @@ public class ArtisCategory<R extends Recipe> implements TransferRecipeCategory<A
             widgets.add(Widgets.createSlot(new Point(slots.get(slots.size() - 1).getX() + 55, startPoint.y + (getDisplayHeight() / 2) - 22)).entry(recipeDisplay.getOutputEntries().get(0)));
             if (artisTableType.hasCatalystSlot())
                 widgets.add(Widgets.createSlot(new Point(slots.get(slots.size() - 1).getX() + 28, startPoint.y + (getDisplayHeight() / 2) - 4)).entries(Stream.of(recipeDisplay.getCatalyst().getMatchingStacksClient()).map(EntryStack::create).collect(Collectors.toList())));
-        }
+        }*/
 
         if (artisTableType.hasCatalystSlot())
             widgets.add(Widgets.createLabel(new Point(slots.get(slots.size() - 1).getX() + 35, startPoint.y + (getDisplayHeight() / 2) + 14), new LiteralText(Formatting.RED + "-" + recipeDisplay.getCatalystCost())).centered());
@@ -113,8 +114,9 @@ public class ArtisCategory<R extends Recipe> implements TransferRecipeCategory<A
         return widgets;
     }
 
+    /*
     @Override
-    public void renderRedSlots(MatrixStack matrices, List<Widget> widgets, Rectangle bounds, ArtisDisplay display, IntList redSlots) {
+    public void renderRedSlots(MatrixStack matrices, List<Widget> widgets, Rectangle bounds, ArtisRecipeDisplay display, IntList redSlots) {
         ScreenHelper screenHelper = ScreenHelper.getInstance();
         ContainerInfo<ScreenHandler> info = (ContainerInfo<ScreenHandler>) ContainerInfoHandler.getContainerInfo(getIdentifier(), screenHelper.getPreviousContainerScreen().getScreenHandler().getClass());
         if (info == null)
@@ -139,7 +141,7 @@ public class ArtisCategory<R extends Recipe> implements TransferRecipeCategory<A
             }
         }
         matrices.pop();
-    }
+    }*/
 
     @Override
     public int getDisplayHeight() {
@@ -147,7 +149,8 @@ public class ArtisCategory<R extends Recipe> implements TransferRecipeCategory<A
     }
 
     @Override
-    public int getDisplayWidth(ArtisDisplay display) {
+    public int getDisplayWidth(ArtisRecipeDisplay display) {
         return 90 + (artisTableType.getWidth() * 18);
     }
+
 }

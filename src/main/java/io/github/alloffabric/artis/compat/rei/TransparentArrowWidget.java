@@ -4,8 +4,7 @@ import io.github.alloffabric.artis.Artis;
 import me.shedaniel.math.Dimension;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.widgets.Arrow;
-import me.shedaniel.rei.plugin.DefaultPlugin;
+import me.shedaniel.rei.api.client.gui.widgets.Arrow;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.util.math.MatrixStack;
@@ -57,7 +56,7 @@ public class TransparentArrowWidget extends Arrow {
             int width = MathHelper.ceil((System.currentTimeMillis() / (animationDuration / 24) % 24d) / 1f);
             drawTexture(matrices, getX(), getY(), 0, 0, width, 17, 48, 17);
         }
-        MinecraftClient.getInstance().getTextureManager().bindTexture(DefaultPlugin.getDisplayTexture());
+        //MinecraftClient.getInstance().getTextureManager().bindTexture(BuiltinPlugin.getDisplayTexture());
     }
 
     @Override

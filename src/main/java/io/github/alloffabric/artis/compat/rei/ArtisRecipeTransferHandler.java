@@ -1,30 +1,7 @@
-/*
- * This file is licensed under the MIT License, part of Roughly Enough Items.
- * Copyright (c) 2018, 2019, 2020 shedaniel
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
-package io.github.alloffabric.artis.compat.rei;
+/*package io.github.alloffabric.artis.compat.rei;
 
 import com.google.common.collect.Lists;
-import io.github.alloffabric.artis.inventory.ArtisCraftingController;
+import io.github.alloffabric.artis.inventory.ArtisRecipeProvider;
 import io.netty.buffer.Unpooled;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
@@ -52,7 +29,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Environment(EnvType.CLIENT)
-public class ArtisCategoryHandler implements AutoTransferHandler {
+public class ArtisRecipeTransferHandler implements AutoTransferHandler {
 
     public static boolean canUseMovePackets() {
         return ClientSidePacketRegistry.INSTANCE.canServerReceive(RoughlyEnoughItemsNetwork.MOVE_ITEMS_PACKET);
@@ -60,21 +37,21 @@ public class ArtisCategoryHandler implements AutoTransferHandler {
 
     @Override
     public Result handle(Context context) {
-        if (!(context.getContainer() instanceof ArtisCraftingController))
+        if (!(context.getContainer() instanceof ArtisRecipeProvider))
             return Result.createNotApplicable();
-        if (context.getContainer() instanceof ArtisCraftingController && !(context.getRecipe() instanceof ArtisDisplay) && context.getRecipe().getRecipeCategory().equals(DefaultPlugin.CRAFTING) && !((ArtisCraftingController) context.getContainer()).getTableType().shouldIncludeNormalRecipes())
+        if (context.getContainer() instanceof ArtisRecipeProvider && !(context.getRecipe() instanceof ArtisRecipeDisplay) && context.getRecipe().getRecipeCategory().equals(DefaultPlugin.CRAFTING) && !((ArtisRecipeProvider) context.getContainer()).getTableType().shouldIncludeNormalRecipes())
             return Result.createNotApplicable().blocksFurtherHandling(false);
         TransferRecipeDisplay recipe = (TransferRecipeDisplay) context.getRecipe();
         HandledScreen<?> containerScreen = context.getContainerScreen();
-        ArtisCraftingController container = (ArtisCraftingController) context.getContainer();
+        ArtisRecipeProvider container = (ArtisRecipeProvider) context.getContainer();
         ContainerInfo<ScreenHandler> containerInfo = (ContainerInfo<ScreenHandler>) ContainerInfoHandler.getContainerInfo(recipe.getRecipeCategory(), container.getClass());
-        RecipeProviderInfoWrapper<ArtisCraftingController> recipeProvider = (RecipeProviderInfoWrapper<ArtisCraftingController>) ContainerInfoHandler.getContainerInfo(recipe.getRecipeCategory(), container.getClass());
-        if (containerInfo == null || context.getRecipe() instanceof ArtisDisplay && !recipeProvider.getTableType(container).getId().equals(recipe.getRecipeCategory()))
+        RecipeProviderInfoWrapper<ArtisRecipeProvider> recipeProvider = (RecipeProviderInfoWrapper<ArtisRecipeProvider>) ContainerInfoHandler.getContainerInfo(recipe.getRecipeCategory(), container.getClass());
+        if (containerInfo == null || context.getRecipe() instanceof ArtisRecipeDisplay && !recipeProvider.getTableType(container).getId().equals(recipe.getRecipeCategory()))
             return Result.createNotApplicable().blocksFurtherHandling(false);
         if (recipe.getHeight() > containerInfo.getCraftingHeight(container) || recipe.getWidth() > containerInfo.getCraftingWidth(container))
             return Result.createFailed(I18n.translate("error.rei.transfer.too_small", containerInfo.getCraftingWidth(container), containerInfo.getCraftingHeight(container)));
         List<List<EntryStack>> input = recipe.getOrganisedInputEntries(containerInfo, container);
-        if (!(context.getRecipe() instanceof ArtisDisplay) && container.getTableType().hasCatalystSlot()) {
+        if (!(context.getRecipe() instanceof ArtisRecipeDisplay) && container.getTableType().hasCatalystSlot()) {
             List<List<EntryStack>> out = Lists.newArrayListWithCapacity(input.size() + 1);
             out.add(Stream.of(ItemStack.EMPTY).map(EntryStack::create).collect(Collectors.toList()));
             out.addAll(input);
@@ -189,3 +166,4 @@ public class ArtisCategoryHandler implements AutoTransferHandler {
         return intList;
     }
 }
+*/
