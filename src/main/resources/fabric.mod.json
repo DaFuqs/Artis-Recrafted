@@ -25,9 +25,7 @@
 	  "io.github.alloffabric.artis.compat.kubejs.ArtisKubeJS"
     ]
   },
-  "mixins": [
-    "mixin.artis.compat.json"
-  ],
+  "mixins": [ ],
   "depends": {
     "fabricloader": ">=0.12.12",
     "fabric": "*",
