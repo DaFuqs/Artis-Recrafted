@@ -2,7 +2,6 @@ package io.github.alloffabric.artis.compat.rei;
 
 import dev.architectury.event.EventResult;
 import io.github.alloffabric.artis.Artis;
-import io.github.alloffabric.artis.api.ArtisCraftingRecipe;
 import io.github.alloffabric.artis.api.ArtisExistingBlockType;
 import io.github.alloffabric.artis.api.ArtisExistingItemType;
 import io.github.alloffabric.artis.api.ArtisTableType;

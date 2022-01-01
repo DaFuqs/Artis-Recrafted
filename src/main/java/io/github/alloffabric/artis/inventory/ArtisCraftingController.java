@@ -32,8 +32,6 @@ import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-import java.util.List;
-
 public class ArtisCraftingController extends SyncedGuiDescription implements RecipeProvider {
     
     private final ArtisTableType tableType;
@@ -101,21 +99,21 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
     }
 
     private static BackgroundPainter slotColor(int color) {
-        return (left, top, panel) -> {
+        return (matrices, left, top, panel) -> {
             int lo = ScreenDrawing.multiplyColor(color, 0.5F);
             int bg = 0x4C000000;
             int hi = ScreenDrawing.multiplyColor(color, 1.25F);
             if (!(panel instanceof WItemSlot)) {
-                ScreenDrawing.drawBeveledPanel(left - 1, top - 1, panel.getWidth() + 2, panel.getHeight() + 2, lo, bg, hi);
+                ScreenDrawing.drawBeveledPanel(matrices, left - 1, top - 1, panel.getWidth() + 2, panel.getHeight() + 2, lo, bg, hi);
             } else {
                 WItemSlot slot = (WItemSlot) panel;
 
                 for (int x = 0; x < slot.getWidth() / 18; ++x) {
                     for (int y = 0; y < slot.getHeight() / 18; ++y) {
                         if (slot.isBigSlot()) {
-                            ScreenDrawing.drawBeveledPanel(x * 18 + left - 3, y * 18 + top - 3, 24, 24, lo, bg, hi);
+                            ScreenDrawing.drawBeveledPanel(matrices, x * 18 + left - 3, y * 18 + top - 3, 24, 24, lo, bg, hi);
                         } else {
-                            ScreenDrawing.drawBeveledPanel(x * 18 + left, y * 18 + top, 18, 18, lo, bg, hi);
+                            ScreenDrawing.drawBeveledPanel(matrices, x * 18 + left, y * 18 + top, 18, 18, lo, bg, hi);
                         }
                     }
                 }
@@ -161,7 +159,7 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
         super.close(player);
         this.context.run((world, pos) -> {
             if (!tableType.hasBlockEntity()) {
-                dropInventory(player, world, craftInv);
+                dropInventory(player, craftInv);
             } else {
                 for (int i = 0; i < craftInv.size(); i++) {
                     blockInventory.setStack(i, craftInv.getStack(i));
@@ -197,14 +195,14 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
 
     // update crafting
     //clientside only
-    @Override
+    /*@Override
     @Environment(EnvType.CLIENT)
     public void updateSlotStacks(List<ItemStack> stacks) {
         craftInv.setCheckMatrixChanges(false);
         super.updateSlotStacks(stacks);
         craftInv.setCheckMatrixChanges(true);
         onContentChanged(null);
-    }
+    }*/
 
     //like vanilla, but not a pile of lag
     public static void updateResult(World world, PlayerEntity player, CraftingInventory inv, CraftingResultInventory result, ArtisTableType artisTableType) {
@@ -269,9 +267,9 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
                 return ItemStack.EMPTY;
             }
 
-            ItemStack takenStack = slot.onTakeItem(player, toTake);
+            slot.onTakeItem(player, toTake);
             if (slotIndex == getCraftingResultSlotIndex()) {
-                player.dropItem(takenStack, false);
+                player.dropItem(toTake, false);
             }
         }
 
@@ -279,12 +277,11 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
     }
 
     @Override
-    public ItemStack onSlotClick(int slotNumber, int button, SlotActionType action, PlayerEntity player) {
+    public void onSlotClick(int slotNumber, int button, SlotActionType action, PlayerEntity player) {
         if (slotNumber == getCraftingResultSlotIndex() && action == SlotActionType.QUICK_MOVE) {
-            return transferSlot(player, slotNumber);
+            transferSlot(player, slotNumber);
         }
-
-        return super.onSlotClick(slotNumber, button, action, player);
+        super.onSlotClick(slotNumber, button, action, player);
     }
     
     @Override
@@ -323,7 +320,7 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
                     return ItemStack.EMPTY;
                 }
 
-                resultSlot.onStackChanged(recipeOutput, outputCopy);
+                //resultSlot.onStackChanged(recipeOutput, outputCopy);
                 resultSlot.markDirty();
 
                 if (!player.world.isClient && recipeOutput.getCount() == outputCopy.getCount()) {
@@ -331,8 +328,8 @@ public class ArtisCraftingController extends SyncedGuiDescription implements Rec
                     return ItemStack.EMPTY;
                 }
 
-                ItemStack itemstack2 = resultSlot.onTakeItem(player, recipeOutput);
-                player.dropItem(itemstack2, false);
+                resultSlot.onTakeItem(player, recipeOutput);
+                player.dropItem(recipeOutput, false);
             }
             input.setCheckMatrixChanges(true);
             updateResult(player.world, player, input, craftResult, container.tableType);

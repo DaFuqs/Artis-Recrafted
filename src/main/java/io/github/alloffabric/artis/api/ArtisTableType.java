@@ -1,6 +1,5 @@
 package io.github.alloffabric.artis.api;
 
-import io.github.alloffabric.artis.Artis;
 import io.github.alloffabric.artis.compat.rei.ArtisRecipeDisplay;
 import io.github.alloffabric.artis.recipe.ShapedArtisSerializer;
 import io.github.alloffabric.artis.recipe.ShapelessArtisSerializer;

@@ -8,8 +8,8 @@ import io.github.alloffabric.artis.api.ArtisExistingBlockType;
 import io.github.alloffabric.artis.api.ArtisExistingItemType;
 import io.github.alloffabric.artis.api.ArtisTableType;
 import io.github.alloffabric.artis.inventory.ArtisCraftingController;
-import io.github.alloffabric.artis.inventory.ArtisRecipeProvider;
 import io.github.alloffabric.artis.inventory.ArtisCraftingScreen;
+import io.github.alloffabric.artis.inventory.ArtisRecipeProvider;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -60,10 +60,9 @@ public class ArtisClient implements ClientModInitializer {
     @Environment(EnvType.CLIENT)
     public void onInitializeClient() {
         for (ArtisTableType type : Artis.ARTIS_TABLE_TYPES) {
+            ScreenHandlerType<ArtisCraftingController> screenHandlerType = (ScreenHandlerType<ArtisCraftingController>) Registry.SCREEN_HANDLER.get(type.getId());
+            ScreenRegistry.register(screenHandlerType, ArtisCraftingScreen::new);
             
-            ScreenRegistry.register((ScreenHandlerType<ArtisCraftingController>) Registry.SCREEN_HANDLER.get(type.getId()), ArtisCraftingScreen::new);
-    
-    
             if (!(type instanceof ArtisExistingBlockType) && !(type instanceof ArtisExistingItemType)) {
                 if (type.shouldGenerateAssets()) {
                     BLOCKSTATES.put(type.getId(), builder -> builder.variant("", variant -> variant.model(new Identifier(Artis.MODID, "block/table" + (type.hasColor() ? "_overlay" : "")))));

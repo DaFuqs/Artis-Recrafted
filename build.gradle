@@ -16,7 +16,6 @@ version = "${project.mod_version}+${project.minecraft_version}"
 
 repositories {
 	mavenCentral()
-	jcenter()
 	maven { url "https://server.bbkr.space/artifactory/libs-release" }
 	maven { url "https://cursemaven.com" }
 	maven { url "https://jitpack.io" }
@@ -36,10 +35,11 @@ dependencies {
 	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 
 	modImplementation("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") { exclude module: "ModMenu" }
-	
+
 	modApi "io.github.cottonmc:LibGui:${project.libgui_version}"
 	//modApi "io.github.cottonmc:StaticData:${project.static_data_version}"
-	modImplementation "de.siphalor:nbtcrafting-1.17:${project.nbtcrafting_version}"
+	//modImplementation("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}") { exclude module: "ModMenu" }
+	modImplementation "de.siphalor:nbtcrafting-1.18:${project.nbtcrafting_version}"
 	modImplementation "io.github.natanfudge:artifice:${project.artifice_version}"
 	modImplementation "dev.latvian.mods:kubejs-fabric:${project.kubejs_version}"
 
@@ -62,7 +62,7 @@ processResources {
 // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
 tasks.withType(JavaCompile).configureEach {
 	it.options.encoding = "UTF-8"
-	it.options.release = 16
+	it.options.release = 17
 }
 
 java {

@@ -6,7 +6,6 @@ import io.github.alloffabric.artis.inventory.ArtisRecipeProvider;
 import io.github.alloffabric.artis.inventory.DefaultInventory;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -19,6 +18,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -26,7 +26,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 
-public class ArtisTableBlockEntity extends BlockEntity implements DefaultInventory, BlockEntityClientSerializable, ExtendedScreenHandlerFactory {
+public class ArtisTableBlockEntity extends BlockEntity implements DefaultInventory, ExtendedScreenHandlerFactory {
     private ArtisTableType tableType;
     private DefaultedList<ItemStack> stacks;
 
@@ -71,23 +71,16 @@ public class ArtisTableBlockEntity extends BlockEntity implements DefaultInvento
     }
 
     @Override
-    public void fromClientTag(NbtCompound nbt) {
-        readNbt(nbt);
-    }
-
-    @Override
-    public NbtCompound writeNbt(NbtCompound nbt) {
+    public void writeNbt(NbtCompound nbt) {
         if (tableType != null)
             nbt.putString("tableType", tableType.getId().toString());
 
         if (stacks != null)
             Inventories.writeNbt(nbt, stacks);
-        return super.writeNbt(nbt);
     }
-
-    @Override
-    public NbtCompound toClientTag(NbtCompound nbt) {
-        return writeNbt(nbt);
+    
+    public void updateInClientWorld() {
+        ((ServerWorld) world).getChunkManager().markForUpdate(pos);
     }
 
 }

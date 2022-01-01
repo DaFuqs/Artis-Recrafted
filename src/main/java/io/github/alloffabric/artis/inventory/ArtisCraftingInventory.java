@@ -13,10 +13,10 @@ import java.util.Optional;
 
 public class ArtisCraftingInventory extends CraftingInventory {
     private final DefaultedList<ItemStack> stacks;
-    private final ArtisRecipeProvider container;
+    private final ArtisCraftingController container;
     private boolean checkMatrixChanges = false;
 
-    public ArtisCraftingInventory(ArtisRecipeProvider container, int width, int height) {
+    public ArtisCraftingInventory(ArtisCraftingController container, int width, int height) {
         super(container, width, height);
         this.stacks = DefaultedList.ofSize((width * height) + 1, ItemStack.EMPTY);
         this.container = container;

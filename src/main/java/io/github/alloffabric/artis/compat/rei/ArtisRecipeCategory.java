@@ -3,8 +3,6 @@ package io.github.alloffabric.artis.compat.rei;
 import com.google.common.collect.Lists;
 import io.github.alloffabric.artis.Artis;
 import io.github.alloffabric.artis.api.ArtisTableType;
-import io.github.alloffabric.artis.api.RecipeProvider;
-import it.unimi.dsi.fastutil.ints.IntList;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
@@ -16,22 +14,16 @@ import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.recipe.Recipe;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Environment(EnvType.CLIENT)
 public class ArtisRecipeCategory<R extends Recipe> implements DisplayCategory<ArtisRecipeDisplay> {
