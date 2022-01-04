@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Environment(EnvType.CLIENT)
-public class ArtisRecipeDisplay implements SimpleGridMenuDisplay {
+public class ArtisRecipeDisplay<R extends ArtisCraftingRecipe> implements SimpleGridMenuDisplay {
     
     private final ArtisCraftingRecipe display;
     private final ArtisTableType type;
@@ -25,9 +25,9 @@ public class ArtisRecipeDisplay implements SimpleGridMenuDisplay {
     private final List<EntryIngredient> input;
     private final List<EntryIngredient> output;
 
-    public ArtisRecipeDisplay(ArtisCraftingRecipe recipe, ArtisTableType type) {
+    public ArtisRecipeDisplay(ArtisCraftingRecipe recipe) {
         this.display = recipe;
-        this.type = type;
+        this.type = (ArtisTableType) recipe.getType();
         this.input = recipe.getIngredients().stream().map(EntryIngredients::ofIngredient).collect(Collectors.toCollection(ArrayList::new));
         this.output = Collections.singletonList(EntryIngredients.of(recipe.getOutput()));
         this.catalyst = recipe.getCatalyst();

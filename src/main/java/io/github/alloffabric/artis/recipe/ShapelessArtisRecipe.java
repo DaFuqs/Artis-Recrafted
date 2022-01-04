@@ -90,4 +90,5 @@ public class ShapelessArtisRecipe extends ShapelessRecipe implements ArtisCrafti
     public int getHeight() {
         return ((ArtisTableType) type).getHeight();
     }
+
 }
