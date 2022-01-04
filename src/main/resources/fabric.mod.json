@@ -20,9 +20,6 @@
     ],
     "rei_plugins": [
       "io.github.alloffabric.artis.compat.rei.REIClientIntegration"
-    ],
-    "kubejs-init": [
-	  "io.github.alloffabric.artis.compat.kubejs.ArtisKubeJS"
     ]
   },
   "mixins": [ ],

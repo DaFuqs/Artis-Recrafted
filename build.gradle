@@ -39,7 +39,6 @@ dependencies {
 	modApi "io.github.cottonmc:LibGui:${project.libgui_version}"
 	modImplementation "de.siphalor:nbtcrafting-1.18:${project.nbtcrafting_version}"
 	//modImplementation "io.github.natanfudge:artifice:${project.artifice_version}"
-	modImplementation "dev.latvian.mods:kubejs-fabric:${project.kubejs_version}"
 
 	include "io.github.cottonmc:LibGui:${project.libgui_version}"
 	include "io.github.natanfudge:artifice:${project.artifice_version}"

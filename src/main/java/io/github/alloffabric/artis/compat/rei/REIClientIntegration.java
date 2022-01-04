@@ -2,10 +2,14 @@ package io.github.alloffabric.artis.compat.rei;
 
 import dev.architectury.event.EventResult;
 import io.github.alloffabric.artis.Artis;
+import io.github.alloffabric.artis.api.ArtisCraftingRecipe;
 import io.github.alloffabric.artis.api.ArtisExistingBlockType;
 import io.github.alloffabric.artis.api.ArtisExistingItemType;
 import io.github.alloffabric.artis.api.ArtisTableType;
 import io.github.alloffabric.artis.block.ArtisTableBlock;
+import io.github.alloffabric.artis.inventory.ArtisCraftingScreen;
+import io.github.alloffabric.artis.inventory.ArtisRecipeProvider;
+import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
@@ -59,12 +63,11 @@ public class REIClientIntegration implements REIClientPlugin {
         }
         
     }
-    
-    
+
     @Override
     public void registerDisplays(DisplayRegistry registry) {
         for (ArtisTableType type : Artis.ARTIS_TABLE_TYPES) {
-            //registry.registerRecipeFiller(ArtisCraftingRecipe.class, ArtisRecipeDisplay::new);
+            registry.registerRecipeFiller(ArtisCraftingRecipe.class, type, ArtisRecipeDisplay::new);
         }
         
         registry.registerVisibilityPredicate((category, display) -> {
@@ -77,7 +80,6 @@ public class REIClientIntegration implements REIClientPlugin {
             }
             return EventResult.pass();
         });
-        
     }
     
     /**
@@ -86,11 +88,12 @@ public class REIClientIntegration implements REIClientPlugin {
      */
     @Override
     public void registerScreens(ScreenRegistry registry) {
-        /*for (ArtisTableType type : Artis.ARTIS_TABLE_TYPES) {
-            ContainerInfoHandler.registerContainerInfo(type.getId(), RecipeProviderInfoWrapper.create(ArtisRecipeProvider.class));
+        // todo: correct position
+        for (ArtisTableType type : Artis.ARTIS_TABLE_TYPES) {
+            registry.registerContainerClickArea(new Rectangle(0, 0, 30,30), ArtisCraftingScreen.class, type.getCategoryIdentifier());
         }
 
-        ContainerInfoHandler.registerContainerInfo(BuiltinPlugin.CRAFTING, RecipeProviderInfoWrapper.create(ArtisRecipeProvider.class));*/
+        registry.registerContainerClickArea(new Rectangle(0, 0, 30,30), ArtisCraftingScreen.class, BuiltinPlugin.CRAFTING);
     }
     
 }

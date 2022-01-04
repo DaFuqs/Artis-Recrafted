@@ -4,6 +4,7 @@ import io.github.alloffabric.artis.compat.rei.ArtisRecipeDisplay;
 import io.github.alloffabric.artis.recipe.ShapedArtisSerializer;
 import io.github.alloffabric.artis.recipe.ShapelessArtisSerializer;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;

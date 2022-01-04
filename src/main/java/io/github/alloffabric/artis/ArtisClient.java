@@ -20,9 +20,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Language;
 import net.minecraft.util.registry.Registry;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class ArtisClient implements ClientModInitializer {
 
     //public static final Map<Identifier, Processor<BlockStateBuilder>> BLOCKSTATES = new HashMap<>();
