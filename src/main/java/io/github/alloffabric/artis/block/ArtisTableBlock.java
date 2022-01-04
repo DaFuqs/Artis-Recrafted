@@ -60,7 +60,7 @@ public class ArtisTableBlock extends Block implements ExtendedScreenHandlerFacto
 
     @Override
     public Text getDisplayName() {
-        return new LiteralText("");
+        return this.getName();
     }
 
     @Override

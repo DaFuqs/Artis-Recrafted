@@ -90,10 +90,11 @@ public class REIClientIntegration implements REIClientPlugin {
     public void registerScreens(ScreenRegistry registry) {
         // todo: correct position
         for (ArtisTableType type : Artis.ARTIS_TABLE_TYPES) {
-            registry.registerContainerClickArea(new Rectangle(0, 0, 30,30), ArtisCraftingScreen.class, type.getCategoryIdentifier());
+            registry.registerContainerClickArea(type.getREIClickArea(), ArtisCraftingScreen.class, type.getCategoryIdentifier());
+            registry.registerContainerClickArea(type.getREIClickArea(), ArtisCraftingScreen.class, BuiltinPlugin.CRAFTING);
         }
 
-        registry.registerContainerClickArea(new Rectangle(0, 0, 30,30), ArtisCraftingScreen.class, BuiltinPlugin.CRAFTING);
+        //registry.registerContainerClickArea(new Rectangle(0, 0, 30,30), ArtisCraftingScreen.class, BuiltinPlugin.CRAFTING);
     }
     
 }

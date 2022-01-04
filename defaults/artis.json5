@@ -1,0 +1,56 @@
+{
+  "tables": {
+    "artis:test_table": {
+      "width": 4,
+      "height": 3,
+      "block_entity": true,
+      "generate_assets": true,
+      "settings": {
+        "material": "wood",
+        "non_opaque": true
+      }
+    },
+    "artis:test_table43": {
+      "width": 4,
+      "height": 3,
+      "block_entity": true,
+      "generate_assets": true,
+      "color": "#7F76D1",
+      "settings": {
+        "material": "wood",
+        "non_opaque": true
+      },
+      "catalyst_slot": 1
+    },
+    "artis:test_table55": {
+      "width": 5,
+      "height": 5,
+      "block_entity": true,
+      "generate_assets": true,
+      "color": "#222222",
+      "settings": {
+        "material": "wood",
+        "non_opaque": true
+      }
+    },
+    "artis:test_table66": {
+      "width": 6,
+      "height": 6,
+      "block_entity": true,
+      "generate_assets": true,
+      "color": "#7F76D1",
+      "settings": {
+        "material": "wood",
+        "non_opaque": true
+      },
+      "catalyst_slot": 1
+    },
+    "minecraft:fletching_table": {
+      "type": "existing_block",
+      "width": 3,
+      "height": 3,
+      "normal_recipes": true,
+      "catalyst_slot": 1
+    }
+  }
+}

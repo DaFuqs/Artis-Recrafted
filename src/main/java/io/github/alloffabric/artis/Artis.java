@@ -81,11 +81,6 @@ public class Artis implements ModInitializer {
     @Override
     public void onInitialize() {
         if (!isLoaded) {
-            if (FabricLoader.getInstance().isModLoaded("kubejs")) {
-                // new ArtisJsonRegistryEventJS().post(ScriptType.STARTUP, "artis.registry");
-                //ArtisKubeJS.initTables();
-            }
-
             ArtisData.loadData();
             ArtisData.loadConfig();
             ArtisEvents.init();

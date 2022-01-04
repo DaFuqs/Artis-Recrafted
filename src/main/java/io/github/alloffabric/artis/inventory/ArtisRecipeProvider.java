@@ -11,6 +11,7 @@ import io.github.cottonmc.cotton.gui.client.BackgroundPainter;
 import io.github.cottonmc.cotton.gui.client.ScreenDrawing;
 import io.github.cottonmc.cotton.gui.widget.*;
 import io.github.cottonmc.cotton.gui.widget.data.HorizontalAlignment;
+import io.github.cottonmc.cotton.gui.widget.data.Vec2i;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -41,13 +42,13 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
     private final CraftingResultInventory resultInv;
     private final ScreenHandlerContext context;
 
-    private final WPlainPanel panel;
+    private final WPlainPanel mainPanel;
     private final WLabel label;
-    private final WItemSlot grid;
-    private final WArtisResultSlot result;
+    private final WItemSlot craftingGrid;
+    private final WArtisResultSlot resultSlot;
     private final WPlayerInvPanel playerInv;
     private WLabel catalystCost;
-    private WItemSlot catalyst;
+    private WItemSlot catalystSlot;
 
     public ArtisRecipeProvider(ScreenHandlerType type, ArtisTableType tableType, int syncId, PlayerEntity player, ScreenHandlerContext context) {
         super(type, syncId, player.getInventory(), getBlockInventory(context), getBlockPropertyDelegate(context));
@@ -55,6 +56,7 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
         this.tableType = tableType;
         this.player = player;
         this.context = context;
+        //this.setTitlePos(new Vec2i(14,14));
 
         this.resultInv = new CraftingResultInventory();
         this.craftInv = new ArtisCraftingInventory(this, tableType.getWidth(), tableType.getHeight());
@@ -65,33 +67,33 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
         }
         ContainerLayout layout = new ContainerLayout(tableType.getWidth(), tableType.getHeight(), tableType.hasCatalystSlot());
 
-        panel = new WPlainPanel();
-        setRootPanel(panel);
+        mainPanel = new WPlainPanel();
+        setRootPanel(mainPanel);
 
-        this.result = new WArtisResultSlot(player, craftInv, resultInv, 0, 1, 1, true, syncId);
-        panel.add(result, layout.getResultX(), layout.getResultY() + 3);
+        this.resultSlot = new WArtisResultSlot(player, craftInv, resultInv, 0, 1, 1, true, syncId);
+        mainPanel.add(resultSlot, layout.getResultX(), layout.getResultY() + 3);
 
         if (getTableType().hasCatalystSlot()) {
-            this.catalyst = WItemSlot.of(craftInv, craftInv.size() - 1);
-            panel.add(catalyst, layout.getCatalystX(), layout.getCatalystY());
+            this.catalystSlot = WItemSlot.of(craftInv, craftInv.size() - 1);
+            mainPanel.add(catalystSlot, layout.getCatalystX(), layout.getCatalystY());
 
             this.catalystCost = new WLabel("", 0xAA0000).setHorizontalAlignment(HorizontalAlignment.CENTER);
-            panel.add(catalystCost, layout.getCatalystX(), layout.getCatalystY() + 18);
+            mainPanel.add(catalystCost, layout.getCatalystX(), layout.getCatalystY() + 18);
         }
 
-        this.grid = WItemSlot.of(craftInv, 0, getTableType().getWidth(), getTableType().getHeight());
-        panel.add(grid, layout.getGridX(), layout.getGridY());
+        this.craftingGrid = WItemSlot.of(craftInv, 0, getTableType().getWidth(), getTableType().getHeight());
+        mainPanel.add(craftingGrid, layout.getGridX(), layout.getGridY());
 
         this.playerInv = this.createPlayerInventoryPanel();
-        panel.add(playerInv, layout.getPlayerX(), layout.getPlayerY());
+        mainPanel.add(playerInv, layout.getPlayerX(), layout.getPlayerY());
 
         this.label = new WLabel(ArtisClient.getName(tableType.getId()), 0x404040);
-        panel.add(label, 0, 0);
+        //mainPanel.add(label, 0, 0);
 
         WSprite arrow = new WSprite(new Identifier(Artis.MODID, "textures/gui/translucent_arrow.png"));
-        panel.add(arrow, layout.getArrowX(), layout.getArrowY() + 4, 22, 15);
+        mainPanel.add(arrow, layout.getArrowX(), layout.getArrowY() + 4, 22, 15);
 
-        panel.validate(this);
+        mainPanel.validate(this);
         craftInv.setCheckMatrixChanges(true);
         if (player.world.isClient) {
             PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
@@ -137,18 +139,18 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
     public void addPainters() {
         int color = tableType.getColor();
         if (tableType.hasColor()) {
-            panel.setBackgroundPainter(BackgroundPainter.createColorful(color));
-            grid.setBackgroundPainter(slotColor(color));
+            mainPanel.setBackgroundPainter(BackgroundPainter.createColorful(color));
+            craftingGrid.setBackgroundPainter(slotColor(color));
             if (tableType.hasCatalystSlot())
-                catalyst.setBackgroundPainter(slotColor(color));
-            result.setBackgroundPainter(slotColor(color));
+                catalystSlot.setBackgroundPainter(slotColor(color));
+            resultSlot.setBackgroundPainter(slotColor(color));
             playerInv.setBackgroundPainter(slotColor(color));
         } else {
-            panel.setBackgroundPainter(BackgroundPainter.VANILLA);
-            grid.setBackgroundPainter(BackgroundPainter.SLOT);
+            mainPanel.setBackgroundPainter(BackgroundPainter.VANILLA);
+            craftingGrid.setBackgroundPainter(BackgroundPainter.SLOT);
             if (tableType.hasCatalystSlot())
-                catalyst.setBackgroundPainter(BackgroundPainter.SLOT);
-            result.setBackgroundPainter(BackgroundPainter.SLOT);
+                catalystSlot.setBackgroundPainter(BackgroundPainter.SLOT);
+            resultSlot.setBackgroundPainter(BackgroundPainter.SLOT);
             playerInv.setBackgroundPainter(BackgroundPainter.SLOT);
         }
     }

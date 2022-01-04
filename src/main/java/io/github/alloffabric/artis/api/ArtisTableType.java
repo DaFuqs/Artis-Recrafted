@@ -3,6 +3,7 @@ package io.github.alloffabric.artis.api;
 import io.github.alloffabric.artis.compat.rei.ArtisRecipeDisplay;
 import io.github.alloffabric.artis.recipe.ShapedArtisSerializer;
 import io.github.alloffabric.artis.recipe.ShapelessArtisSerializer;
+import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
@@ -90,4 +91,9 @@ public class ArtisTableType implements RecipeType {
     public CategoryIdentifier<ArtisRecipeDisplay> getCategoryIdentifier() {
         return CategoryIdentifier.of(id);
     }
+
+    public Rectangle getREIClickArea() {
+        return new Rectangle(100+width*18, 80+height*18, 22,15);
+    }
+
 }
