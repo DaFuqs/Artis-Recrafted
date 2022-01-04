@@ -1,7 +1,6 @@
 package io.github.alloffabric.artis;
 
 import com.mojang.serialization.Lifecycle;
-import dev.latvian.mods.kubejs.script.ScriptType;
 import io.github.alloffabric.artis.api.ArtisExistingBlockType;
 import io.github.alloffabric.artis.api.ArtisExistingItemType;
 import io.github.alloffabric.artis.api.ArtisTableType;
@@ -9,8 +8,6 @@ import io.github.alloffabric.artis.block.ArtisTableBEBlock;
 import io.github.alloffabric.artis.block.ArtisTableBlock;
 import io.github.alloffabric.artis.block.ArtisTableItem;
 import io.github.alloffabric.artis.block.entity.ArtisTableBlockEntity;
-import io.github.alloffabric.artis.compat.kubejs.ArtisJsonRegistryEventJS;
-import io.github.alloffabric.artis.compat.kubejs.ArtisKubeJS;
 import io.github.alloffabric.artis.event.ArtisEvents;
 import io.github.alloffabric.artis.inventory.ArtisRecipeProvider;
 import net.fabricmc.api.ModInitializer;

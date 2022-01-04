@@ -17,6 +17,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,36 +40,37 @@ public class ArtisData {
                 return;
             }
             JsonObject json = jankson.load(file);
-            loadEntries("config", json.containsKey("tables") ? json.getObject("tables") : json);
+            loadEntries(json.containsKey("tables") ? json.getObject("tables") : json);
         } catch (IOException | SyntaxError e) {
             Artis.logger.error("[Artis] Error loading config: {}", e.getMessage());
         }
     }
 
     public static void loadData() {
-        /*Set<StaticDataItem> data = StaticData.getAll("artis.json5");
-        for (StaticDataItem item : data) {
+        File file = FabricLoader.getInstance().getConfigDir().resolve("artis.json5").toFile();
+        if (file.exists()) {
             try {
-                JsonObject json = jankson.load(item.createInputStream());
-                loadEntries(item.getIdentifier().toString(), json.containsKey("tables") ? json.getObject("tables") : json);
+                FileInputStream inputStream = new FileInputStream(file);
+                JsonObject json = jankson.load(inputStream);
+                loadEntries(json.containsKey("tables") ? json.getObject("tables") : json);
             } catch (IOException | SyntaxError e) {
-                Artis.logger.error("[Artis] Error loading static data item {}: {}", item.getIdentifier().toString(), e.getMessage());
+                    Artis.logger.error("[Artis] Error loading static data item {}: {}", "data", e.getMessage());
             }
-        }*/
+        }
     }
 
     public static void loadData(JsonObject json) {
         if (json != null) {
-            loadEntries("kubejs", json.containsKey("tables") ? json.getObject("tables") : json);
+            loadEntries(json.containsKey("tables") ? json.getObject("tables") : json);
         }
     }
 
-    private static void loadEntries(String from, JsonObject json) {
+    private static void loadEntries(JsonObject json) {
         List<String> keys = new ArrayList<>(json.keySet());
         Collections.sort(keys);
         for (String key : keys) {
             if (Artis.ARTIS_TABLE_TYPES.containsId(new Identifier(key))) {
-                Artis.logger.error("[Artis] Table type named {} already exists, skipping it in {}", key, from);
+                Artis.logger.error("[Artis] Table type named {} already exists, skipping it in {}", key);
                 continue;
             }
             JsonElement elem = json.get(key);

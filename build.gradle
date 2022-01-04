@@ -38,12 +38,11 @@ dependencies {
 
 	modApi "io.github.cottonmc:LibGui:${project.libgui_version}"
 	modImplementation "de.siphalor:nbtcrafting-1.18:${project.nbtcrafting_version}"
-	modImplementation "io.github.natanfudge:artifice:${project.artifice_version}"
+	//modImplementation "io.github.natanfudge:artifice:${project.artifice_version}"
 	modImplementation "dev.latvian.mods:kubejs-fabric:${project.kubejs_version}"
 
 	include "io.github.cottonmc:LibGui:${project.libgui_version}"
 	include "io.github.natanfudge:artifice:${project.artifice_version}"
-
 }
 
 processResources {
@@ -72,59 +71,9 @@ jar {
 
 // configure the maven publication
 publishing {
-	publications {
-		maven(MavenPublication) {
-			// add all the jars that should be included when publishing to maven
-			//artifact(jar) {
-			//	builtBy remapJar
-			//}
-			artifact ("${project.buildDir.absolutePath}/libs/${archivesBaseName}-${project.version}.jar") { //release jar - file location not provided anywhere in loom
-				classifier null
-				builtBy remapJar
-			}
-
-			artifact ("${project.buildDir.absolutePath}/libs/${archivesBaseName}-${project.version}-dev.jar") { //release jar - file location not provided anywhere in loom
-				classifier "dev"
-				builtBy remapJar
-			}
-
-			artifact(sourcesJar) {
-				builtBy remapSourcesJar
-			}
-		}
-	}
-
 	// select the repositories you want to publish to
 	repositories {
 		// uncomment to publish to the local maven
 		// mavenLocal()
 	}
 }
-
-/*
-artifactory {
-	if (project.hasProperty("artifactoryUsername")) {
-		contextUrl = "https://server.bbkr.space/artifactory/libs-release"
-		publish {
-			repository {
-				if (version.contains("SNAPSHOT")) {
-					repoKey = "libs-snapshot"
-				} else {
-					repoKey = "libs-release"
-				}
-
-				username = artifactoryUsername
-				password = artifactoryPassword
-			}
-			defaults {
-				publications("maven")
-
-				publishArtifacts = true
-				publishPom = true
-			}
-		}
-	} else {
-		println "Cannot configure artifactory; please define ext.artifactoryUsername and ext.artifactoryPassword before running artifactoryPublish"
-	}
-}
- */
