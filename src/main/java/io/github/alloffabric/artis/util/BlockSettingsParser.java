@@ -231,6 +231,7 @@ public class BlockSettingsParser {
             settings.breakByHand(json.getBoolean("break_by_hand", false));
         }
 
+        // TODO: move to tags
         if (json.containsKey("break_by_tool")) {
             JsonObject tool = json.getObject("break_by_tool");
             String tag = tool.get(String.class, "tool");

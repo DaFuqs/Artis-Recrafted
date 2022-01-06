@@ -115,7 +115,7 @@ public class ValidatedArtisResultSlot extends ValidatedSlot {
         }
     }
 
-    //note: inventory is actually CraftingResultInventory so it's a safe cast
+    //note: inventory is actually CraftingResultInventory, so it's a safe cast
     public DefaultedList<ItemStack> getRemainders() {
         Recipe<CraftingInventory> lastRecipe = (Recipe<CraftingInventory>) ((CraftingResultInventory)this.inventory).getLastRecipe();
         if (lastRecipe != null &&
