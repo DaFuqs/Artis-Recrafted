@@ -74,6 +74,7 @@ public class Artis implements ModInitializer {
             }
             ARTIS_TABLE_BLOCKS.add(block);
             Registry.register(Registry.ITEM, id, new ArtisTableItem(block, new Item.Settings().group(group)));
+            ArtisResources.registerDataFor(type, block);
         }
         return Registry.register(ARTIS_TABLE_TYPES, id, type);
     }
@@ -105,4 +106,5 @@ public class Artis implements ModInitializer {
             Artis.minecraftServer = minecraftServer;
         });
     }
+    
 }

@@ -8,11 +8,16 @@ import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Language;
 import net.minecraft.util.registry.Registry;
 
 public class ArtisTableType implements RecipeType {
     private final Identifier id;
+    private String name;
     private final int width;
     private final int height;
     private int color = 0;
@@ -24,14 +29,15 @@ public class ArtisTableType implements RecipeType {
     private final RecipeSerializer shaped;
     private final RecipeSerializer shapeless;
 
-    public ArtisTableType(Identifier id, int width, int height, boolean blockEntity, boolean catalystSlot, boolean includeNormalRecipes, boolean makeAssets, int color) {
-        this(id, width, height, blockEntity, catalystSlot, includeNormalRecipes, makeAssets);
+    public ArtisTableType(Identifier id, String name, int width, int height, boolean blockEntity, boolean catalystSlot, boolean includeNormalRecipes, boolean makeAssets, int color) {
+        this(id, name, width, height, blockEntity, catalystSlot, includeNormalRecipes, makeAssets);
         this.color = 0xFF000000 | color;
         this.hasColor = true;
     }
 
-    public ArtisTableType(Identifier id, int width, int height, boolean blockEntity, boolean catalystSlot, boolean includeNormalRecipes, boolean makeAssets) {
+    public ArtisTableType(Identifier id, String name, int width, int height, boolean blockEntity, boolean catalystSlot, boolean includeNormalRecipes, boolean makeAssets) {
         this.id = id;
+        this.name = name;
         this.width = width;
         this.height = height;
         this.blockEntity = blockEntity;
@@ -96,5 +102,26 @@ public class ArtisTableType implements RecipeType {
         ContainerLayout containerLayout = new ContainerLayout(getWidth(), getHeight(), hasCatalystSlot());
         return new Rectangle(containerLayout.getArrowX() + 8, containerLayout.getArrowY() + 2, 21,16);
     }
+    
+    public String getName() {
+        return this.name;
+    }
+    
+    /*
+    public static Text getName(Identifier id) {
+        String key = "block." + id.getNamespace() + "." + id.getPath();
+        if (Language.getInstance().hasTranslation(key)) {
+            return new TranslatableText(key);
+        } else {
+            String[] split = id.getPath().split("_");
+            StringBuilder builder = new StringBuilder();
+            for (String string : split) {
+                builder.append(string.substring(0, 1).toUpperCase());
+                builder.append(string.substring(1));
+                builder.append(" ");
+            }
+            return new LiteralText(builder.toString().trim());
+        }
+    }*/
 
 }

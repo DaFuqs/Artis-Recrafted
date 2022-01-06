@@ -16,11 +16,9 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class ArtisTableItem extends BlockItem {
-    private final Identifier tableId;
-
+    
     public ArtisTableItem(ArtisTableBlock block, Settings settings) {
         super(block, settings);
-        this.tableId = block.getType().getId();
     }
 
     @Override
@@ -30,7 +28,7 @@ public class ArtisTableItem extends BlockItem {
             tooltip.add(new TranslatableText("tooltip.artis.source").formatted(Formatting.BLUE, Formatting.ITALIC));
     }
 
-    @Override
+    /*@Override
     public Text getName(ItemStack stack) {
         return ArtisClient.getName(tableId);
     }
@@ -38,5 +36,5 @@ public class ArtisTableItem extends BlockItem {
     @Override
     public Text getName() {
         return ArtisClient.getName(tableId);
-    }
+    }*/
 }

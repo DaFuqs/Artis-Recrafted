@@ -89,7 +89,7 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
         this.playerInv = this.createPlayerInventoryPanel();
         mainPanel.add(playerInv, layout.getPlayerX() + offsetX, layout.getPlayerY());
 
-        this.label = new WLabel(ArtisClient.getName(tableType.getId()), 0x404040);
+        this.label = new WLabel(tableType.getName(), 0x404040);
         mainPanel.add(label, 8, 6);
 
         WSprite arrow = new WSprite(new Identifier(Artis.MODID, "textures/gui/translucent_arrow.png"));
