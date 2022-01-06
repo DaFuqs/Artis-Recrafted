@@ -17,6 +17,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.CraftingResultInventory;
@@ -49,6 +50,8 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
     private final WPlayerInvPanel playerInv;
     private WLabel catalystCost;
     private WItemSlot catalystSlot;
+    
+    private int offsetX = 8;
 
     public ArtisRecipeProvider(ScreenHandlerType type, ArtisTableType tableType, int syncId, PlayerEntity player, ScreenHandlerContext context) {
         super(type, syncId, player.getInventory(), getBlockInventory(context), getBlockPropertyDelegate(context));
@@ -56,7 +59,6 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
         this.tableType = tableType;
         this.player = player;
         this.context = context;
-        //this.setTitlePos(new Vec2i(14,14));
 
         this.resultInv = new CraftingResultInventory();
         this.craftInv = new ArtisCraftingInventory(this, tableType.getWidth(), tableType.getHeight());
@@ -71,27 +73,27 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
         setRootPanel(mainPanel);
 
         this.resultSlot = new WArtisResultSlot(player, craftInv, resultInv, 0, 1, 1, true, syncId);
-        mainPanel.add(resultSlot, layout.getResultX(), layout.getResultY() + 3);
+        mainPanel.add(resultSlot, layout.getResultX() + offsetX, layout.getResultY() + 4);
 
         if (getTableType().hasCatalystSlot()) {
             this.catalystSlot = WItemSlot.of(craftInv, craftInv.size() - 1);
-            mainPanel.add(catalystSlot, layout.getCatalystX(), layout.getCatalystY());
+            mainPanel.add(catalystSlot, layout.getCatalystX() + offsetX, layout.getCatalystY());
 
             this.catalystCost = new WLabel("", 0xAA0000).setHorizontalAlignment(HorizontalAlignment.CENTER);
-            mainPanel.add(catalystCost, layout.getCatalystX(), layout.getCatalystY() + 18);
+            mainPanel.add(catalystCost, layout.getCatalystX() + offsetX, layout.getCatalystY() + 19);
         }
 
         this.craftingGrid = WItemSlot.of(craftInv, 0, getTableType().getWidth(), getTableType().getHeight());
-        mainPanel.add(craftingGrid, layout.getGridX(), layout.getGridY());
+        mainPanel.add(craftingGrid, layout.getGridX() + offsetX, layout.getGridY() + 1);
 
         this.playerInv = this.createPlayerInventoryPanel();
-        mainPanel.add(playerInv, layout.getPlayerX(), layout.getPlayerY());
+        mainPanel.add(playerInv, layout.getPlayerX() + offsetX, layout.getPlayerY());
 
         this.label = new WLabel(ArtisClient.getName(tableType.getId()), 0x404040);
-        //mainPanel.add(label, 0, 0);
+        mainPanel.add(label, 8, 6);
 
         WSprite arrow = new WSprite(new Identifier(Artis.MODID, "textures/gui/translucent_arrow.png"));
-        mainPanel.add(arrow, layout.getArrowX(), layout.getArrowY() + 4, 22, 15);
+        mainPanel.add(arrow, layout.getArrowX() + offsetX, layout.getArrowY() + 4, 22, 15);
 
         mainPanel.validate(this);
         craftInv.setCheckMatrixChanges(true);
@@ -99,6 +101,9 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
             PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
             ClientSidePacketRegistry.INSTANCE.sendToServer(Artis.request_sync, buf);
         }
+        
+        int width = Math.max(176, 74 + tableType.getWidth() * 18);
+        mainPanel.setSize(width, 120 + tableType.getHeight() * 18);
     }
 
     private static BackgroundPainter slotColor(int color) {
