@@ -2,10 +2,7 @@ package io.github.alloffabric.artis.compat.rei;
 
 import dev.architectury.event.EventResult;
 import io.github.alloffabric.artis.Artis;
-import io.github.alloffabric.artis.api.ArtisCraftingRecipe;
-import io.github.alloffabric.artis.api.ArtisExistingBlockType;
-import io.github.alloffabric.artis.api.ArtisExistingItemType;
-import io.github.alloffabric.artis.api.ArtisTableType;
+import io.github.alloffabric.artis.api.*;
 import io.github.alloffabric.artis.block.ArtisTableBlock;
 import io.github.alloffabric.artis.inventory.ArtisCraftingScreen;
 import io.github.alloffabric.artis.inventory.ArtisRecipeProvider;
@@ -93,8 +90,6 @@ public class REIClientIntegration implements REIClientPlugin {
             registry.registerContainerClickArea(type.getREIClickArea(), ArtisCraftingScreen.class, type.getCategoryIdentifier());
             registry.registerContainerClickArea(type.getREIClickArea(), ArtisCraftingScreen.class, BuiltinPlugin.CRAFTING);
         }
-
-        //registry.registerContainerClickArea(new Rectangle(0, 0, 30,30), ArtisCraftingScreen.class, BuiltinPlugin.CRAFTING);
     }
     
 }

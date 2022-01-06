@@ -93,7 +93,8 @@ public class ArtisTableType implements RecipeType {
     }
 
     public Rectangle getREIClickArea() {
-        return new Rectangle(100+width*18, 80+height*18, 22,15);
+        ContainerLayout containerLayout = new ContainerLayout(getWidth(), getHeight(), hasCatalystSlot());
+        return new Rectangle(containerLayout.getArrowX() + 8, containerLayout.getArrowY() + 2, 21,16);
     }
 
 }
