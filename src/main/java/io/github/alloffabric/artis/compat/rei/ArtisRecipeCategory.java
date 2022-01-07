@@ -1,7 +1,6 @@
 package io.github.alloffabric.artis.compat.rei;
 
 import com.google.common.collect.Lists;
-import io.github.alloffabric.artis.Artis;
 import io.github.alloffabric.artis.api.ArtisTableType;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
@@ -11,7 +10,6 @@ import me.shedaniel.rei.api.client.gui.widgets.Widgets;
 import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
-import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.fabricmc.api.EnvType;
@@ -23,11 +21,8 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.registry.Registry;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Environment(EnvType.CLIENT)
 public class ArtisRecipeCategory<R extends Recipe> implements DisplayCategory<ArtisRecipeDisplay> {
@@ -79,16 +74,17 @@ public class ArtisRecipeCategory<R extends Recipe> implements DisplayCategory<Ar
 
         for (int y = 0; y < artisTableType.getHeight(); y++)
             for (int x = 0; x < artisTableType.getWidth(); x++)
+                //slots.add(ColorableEntryWidget.create(startPoint.x + 1 + x * 18, startPoint.y + 1 + y * 18, 0xFFFFFF));
                 if (artisTableType.hasColor()) {
                     slots.add(ColorableEntryWidget.create(startPoint.x + 1 + x * 18, startPoint.y + 1 + y * 18, artisTableType.getColor()));
                 } else {
                     slots.add(ColorableEntryWidget.create(startPoint.x + 1 + x * 18, startPoint.y + 1 + y * 18, 0xFFFFFF));
                 }
         for (int i = 0; i < input.size(); i++) {
-            if (!input.get(i).isEmpty())
+            if (!input.get(i).isEmpty()) {
                 slots.get(getSlotWithSize(recipeDisplay, i, artisTableType.getWidth())).entries(input.get(i));
+            }
         }
-
         widgets.addAll(slots);
     
         List<EntryIngredient> output = recipeDisplay.getOutputEntries();
@@ -96,18 +92,21 @@ public class ArtisRecipeCategory<R extends Recipe> implements DisplayCategory<Ar
         if (artisTableType.hasColor()) {
             widgets.add(TransparentArrowWidget.create(new Point(slots.get(slots.size() - 1).getX() + 24, startPoint.y + (getDisplayHeight() / 2) - 23)).disableAnimation());
             widgets.add(ColorableEntryWidget.create(slots.get(slots.size() - 1).getX() + 55, startPoint.y + (getDisplayHeight() / 2) - 22, artisTableType.getColor()).markOutput().entries(output.get(0)));
-            if (artisTableType.hasCatalystSlot())
+            if (artisTableType.hasCatalystSlot()) {
                 widgets.add(ColorableEntryWidget.create(slots.get(slots.size() - 1).getX() + 28, startPoint.y + (getDisplayHeight() / 2) - 4, artisTableType.getColor()).entries(catalyst));
+            }
         } else {
             widgets.add(Widgets.createArrow(new Point(slots.get(slots.size() - 1).getX() + 24, startPoint.y + (getDisplayHeight() / 2) - 23)).disableAnimation());
             widgets.add(Widgets.createSlot(new Point(slots.get(slots.size() - 1).getX() + 55, startPoint.y + (getDisplayHeight() / 2) - 22)).markOutput().entries(output.get(0)));
-            if (artisTableType.hasCatalystSlot())
+            if (artisTableType.hasCatalystSlot()) {
                 widgets.add(Widgets.createSlot(new Point(slots.get(slots.size() - 1).getX() + 28, startPoint.y + (getDisplayHeight() / 2) - 4)).entries(catalyst));
+            }
         }
 
-        if (artisTableType.hasCatalystSlot())
+        if (artisTableType.hasCatalystSlot()) {
             widgets.add(Widgets.createLabel(new Point(slots.get(slots.size() - 1).getX() + 35, startPoint.y + (getDisplayHeight() / 2) + 14), new LiteralText(Formatting.RED + "-" + recipeDisplay.getCatalystCost())).centered());
-
+        }
+        
         return widgets;
     }
 

@@ -1,11 +1,13 @@
 package io.github.alloffabric.artis.compat.rei;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import me.shedaniel.math.Point;
-import me.shedaniel.math.Rectangle;
+import me.shedaniel.rei.api.client.REIRuntime;
 import me.shedaniel.rei.impl.client.gui.widget.EntryWidget;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.util.math.MatrixStack;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ColorableEntryWidget extends EntryWidget {
@@ -42,23 +44,17 @@ public class ColorableEntryWidget extends EntryWidget {
     
     @Override
     public void drawBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        super.drawBackground(matrices, mouseX, mouseY, delta);
-        
-        // TODO: Colored background
-        /*int r = (color & 0xFF0000) >> 16;
+        int r = (color & 0xFF0000) >> 16;
         int g = (color & 0xFF00) >> 8;
         int b = (color & 0xFF);
-    
-        GlStateManager._clearColor((r + 30) / 255F, (g + 30) / 255F, (b + 30) / 255F, 1.0F);*/
+        
+        RenderSystem.setShaderColor((r + 30) / 255F, (g + 30) / 255F, (b + 30) / 255F, 1.0F);
+        super.drawBackground(matrices, mouseX, mouseY, delta);
     }
     
     @Override
     public List<? extends Element> children() {
-        return null;
+        return Collections.emptyList();
     }
     
-    @Override
-    public Rectangle getBounds() {
-        return new Rectangle(20, 20); // TODO: actual values
-    }
 }
