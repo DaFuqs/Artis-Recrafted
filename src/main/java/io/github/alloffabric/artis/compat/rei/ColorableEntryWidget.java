@@ -2,7 +2,6 @@ package io.github.alloffabric.artis.compat.rei;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.shedaniel.math.Point;
-import me.shedaniel.rei.api.client.REIRuntime;
 import me.shedaniel.rei.impl.client.gui.widget.EntryWidget;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.util.math.MatrixStack;

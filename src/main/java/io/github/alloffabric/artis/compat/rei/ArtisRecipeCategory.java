@@ -74,7 +74,6 @@ public class ArtisRecipeCategory<R extends Recipe> implements DisplayCategory<Ar
 
         for (int y = 0; y < artisTableType.getHeight(); y++)
             for (int x = 0; x < artisTableType.getWidth(); x++)
-                //slots.add(ColorableEntryWidget.create(startPoint.x + 1 + x * 18, startPoint.y + 1 + y * 18, 0xFFFFFF));
                 if (artisTableType.hasColor()) {
                     slots.add(ColorableEntryWidget.create(startPoint.x + 1 + x * 18, startPoint.y + 1 + y * 18, artisTableType.getColor()));
                 } else {
@@ -109,35 +108,6 @@ public class ArtisRecipeCategory<R extends Recipe> implements DisplayCategory<Ar
         
         return widgets;
     }
-
-    /*
-    @Override
-    public void renderRedSlots(MatrixStack matrices, List<Widget> widgets, Rectangle bounds, ArtisRecipeDisplay display, IntList redSlots) {
-        ScreenHelper screenHelper = ScreenHelper.getInstance();
-        ContainerInfo<ScreenHandler> info = (ContainerInfo<ScreenHandler>) ContainerInfoHandler.getContainerInfo(getIdentifier(), screenHelper.getPreviousContainerScreen().getScreenHandler().getClass());
-        if (info == null)
-            return;
-        matrices.push();
-        matrices.translate(0, 0, 400);
-        Point startPoint = new Point(bounds.getCenterX() - (getDisplayWidth(display) / 2) + 17, bounds.getCenterY() - (getDisplayHeight() / 2) + 15);
-        int width = ((RecipeProvider) screenHelper.getPreviousContainerScreen().getScreenHandler()).getCraftingWidth();
-        int catalystSlot = 0;
-        for (Integer slot : redSlots) {
-            if (artisTableType.hasCatalystSlot() && catalystSlot == slot) {
-                int y = MathHelper.floor(artisTableType.getHeight()) - 1;
-                DrawableHelper.fill(matrices, startPoint.x + 11 + width * 18, startPoint.y + 1 + y * 18, startPoint.x + 11 + width * 18 + 16, startPoint.y + 1 + y * 18 + 16, 0x60ff0000);
-            } else {
-                int i = slot;
-                if (artisTableType.hasCatalystSlot()) {
-                    i = slot - 1;
-                }
-                int x = i % width;
-                int y = MathHelper.floor(i / (float) width);
-                DrawableHelper.fill(matrices, startPoint.x + 1 + x * 18, startPoint.y + 1 + y * 18, startPoint.x + 1 + x * 18 + 16, startPoint.y + 1 + y * 18 + 16, 0x60ff0000);
-            }
-        }
-        matrices.pop();
-    }*/
 
     @Override
     public int getDisplayHeight() {
