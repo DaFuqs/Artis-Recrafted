@@ -14,9 +14,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.registry.Registry;
 
-public record ArtisScreenFactory(ArtisTableType tableType,
-                                 Block block,
-                                 BlockHitResult blockHitResult) implements ExtendedScreenHandlerFactory {
+public record ArtisScreenFactory(ArtisTableType tableType, Block block, BlockHitResult blockHitResult) implements ExtendedScreenHandlerFactory {
 
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
@@ -32,4 +30,5 @@ public record ArtisScreenFactory(ArtisTableType tableType,
     public void writeScreenOpeningData(ServerPlayerEntity serverPlayerEntity, PacketByteBuf packetByteBuf) {
         packetByteBuf.writeBlockPos(blockHitResult.getBlockPos());
     }
+    
 }

@@ -5,15 +5,12 @@ import io.github.alloffabric.artis.recipe.ShapedArtisSerializer;
 import io.github.alloffabric.artis.recipe.ShapelessArtisSerializer;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Language;
 import net.minecraft.util.registry.Registry;
+
+import java.util.List;
 
 public class ArtisTableType implements RecipeType {
     private final Identifier id;
@@ -28,14 +25,15 @@ public class ArtisTableType implements RecipeType {
     private boolean hasColor = false;
     private final RecipeSerializer shaped;
     private final RecipeSerializer shapeless;
+    private final List<Identifier> blockTags;
 
-    public ArtisTableType(Identifier id, String name, int width, int height, boolean blockEntity, boolean catalystSlot, boolean includeNormalRecipes, boolean makeAssets, int color) {
-        this(id, name, width, height, blockEntity, catalystSlot, includeNormalRecipes, makeAssets);
+    public ArtisTableType(Identifier id, String name, int width, int height, boolean blockEntity, boolean catalystSlot, boolean includeNormalRecipes, boolean makeAssets, int color, List<Identifier> blockTags) {
+        this(id, name, width, height, blockEntity, catalystSlot, includeNormalRecipes, makeAssets, blockTags);
         this.color = 0xFF000000 | color;
         this.hasColor = true;
     }
 
-    public ArtisTableType(Identifier id, String name, int width, int height, boolean blockEntity, boolean catalystSlot, boolean includeNormalRecipes, boolean makeAssets) {
+    public ArtisTableType(Identifier id, String name, int width, int height, boolean blockEntity, boolean catalystSlot, boolean includeNormalRecipes, boolean makeAssets, List<Identifier> blockTags) {
         this.id = id;
         this.name = name;
         this.width = width;
@@ -48,6 +46,7 @@ public class ArtisTableType implements RecipeType {
         Identifier shapelessId = new Identifier(id.getNamespace(), id.getPath() + "_shapeless");
         this.shaped = Registry.register(Registry.RECIPE_SERIALIZER, shapedId, new ShapedArtisSerializer(this));
         this.shapeless = Registry.register(Registry.RECIPE_SERIALIZER, shapelessId, new ShapelessArtisSerializer(this));
+        this.blockTags = blockTags;
     }
 
     public Identifier getId() {
@@ -94,6 +93,10 @@ public class ArtisTableType implements RecipeType {
         return color;
     }
     
+    public List<Identifier> getBlockTags() {
+        return this.blockTags;
+    }
+    
     public CategoryIdentifier<ArtisRecipeDisplay> getCategoryIdentifier() {
         return CategoryIdentifier.of(id);
     }
@@ -106,22 +109,5 @@ public class ArtisTableType implements RecipeType {
     public String getName() {
         return this.name;
     }
-    
-    /*
-    public static Text getName(Identifier id) {
-        String key = "block." + id.getNamespace() + "." + id.getPath();
-        if (Language.getInstance().hasTranslation(key)) {
-            return new TranslatableText(key);
-        } else {
-            String[] split = id.getPath().split("_");
-            StringBuilder builder = new StringBuilder();
-            for (String string : split) {
-                builder.append(string.substring(0, 1).toUpperCase());
-                builder.append(string.substring(1));
-                builder.append(" ");
-            }
-            return new LiteralText(builder.toString().trim());
-        }
-    }*/
 
 }

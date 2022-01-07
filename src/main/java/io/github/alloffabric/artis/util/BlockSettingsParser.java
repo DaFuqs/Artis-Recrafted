@@ -8,7 +8,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
 import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.tag.ItemTags;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -227,20 +226,10 @@ public class BlockSettingsParser {
             settings = FabricBlockSettings.copyOf(Blocks.CRAFTING_TABLE);
         }
 
-        if (json.containsKey("break_by_hand")) {
-            settings.breakByHand(json.getBoolean("break_by_hand", false));
-        }
-
-        // TODO: move to tags
-        if (json.containsKey("break_by_tool")) {
-            JsonObject tool = json.getObject("break_by_tool");
-            String tag = tool.get(String.class, "tool");
-            if (tool.containsKey("level")) {
-                int level = tool.getInt("level", 0);
-                settings.breakByTool(ItemTags.getTagGroup().getTag(new Identifier(tag)), level);
-            } else {
-                settings.breakByTool(ItemTags.getTagGroup().getTag(new Identifier(tag)));
-            }
+        if (json.containsKey("requires_tool") && json.getBoolean("requires_tool", false)) {
+            settings.requiresTool();
+        } else {
+            settings.breakByHand(true);
         }
 
         if (json.containsKey("material_color")) {

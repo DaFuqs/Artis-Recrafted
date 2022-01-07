@@ -1,8 +1,6 @@
 package io.github.alloffabric.artis;
 
-import blue.endless.jankson.Jankson;
-import blue.endless.jankson.JsonElement;
-import blue.endless.jankson.JsonObject;
+import blue.endless.jankson.*;
 import blue.endless.jankson.api.SyntaxError;
 import io.github.alloffabric.artis.api.ArtisExistingBlockType;
 import io.github.alloffabric.artis.api.ArtisExistingItemType;
@@ -25,6 +23,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class ArtisData {
+    
+    public static final Identifier artisTableBlockTagIdentifier = new Identifier(Artis.MODID, "blocks/crafting_tables");
     public static final Jankson jankson = JanksonFactory.createJankson();
 
     public static void loadConfig() {
@@ -56,12 +56,6 @@ public class ArtisData {
             } catch (IOException | SyntaxError e) {
                     Artis.logger.error("[Artis] Error loading static data item {}: {}", "data", e.getMessage());
             }
-        }
-    }
-
-    public static void loadData(JsonObject json) {
-        if (json != null) {
-            loadEntries(json.containsKey("tables") ? json.getObject("tables") : json);
         }
     }
 
@@ -114,29 +108,48 @@ public class ArtisData {
         String name = json.get(String.class, "display_name");
         boolean includeNormalRecipes = json.getBoolean("normal_recipes", false);
         boolean genAssets = json.getBoolean("generate_assets", false);
+    
+        List<Identifier> blockTags = new ArrayList<>();
+        blockTags.add(artisTableBlockTagIdentifier);
+        if(json.containsKey("tags")) {
+            JsonArray blockTagArray = (JsonArray) json.get("tags");
+            for(int i = 0; i < blockTagArray.size(); i++) {
+                JsonElement currentElement = blockTagArray.get(i);
+                String currentString = ((JsonPrimitive) currentElement).getValue().toString();
+                Identifier identifier = Identifier.tryParse(currentString);
+                
+                if(identifier == null) {
+                    Artis.logger.warn("[Artis] Tag %s could not be applied. Valid identifier?", currentElement.toString());
+                } else {
+                    blockTags.add(identifier);
+                }
+            }
+        }
+        
         if (tableType.equals("existing_block")) {
             if (Registry.BLOCK.containsId(id) || json.getBoolean("bypass_check", false)) {
                 if (json.containsKey("color")) {
-                    return new ArtisExistingBlockType(id, name, width, height, blockEntity, catalystSlot, includeNormalRecipes, genAssets, Integer.decode(json.get(String.class, "color").replace("#", "0x")));
+                    return new ArtisExistingBlockType(id, name, width, height, blockEntity, catalystSlot, includeNormalRecipes, genAssets, Integer.decode(json.get(String.class, "color").replace("#", "0x")), blockTags);
                 }
-                return new ArtisExistingBlockType(id, name, width, height, blockEntity, catalystSlot, includeNormalRecipes, genAssets);
+                return new ArtisExistingBlockType(id, name, width, height, blockEntity, catalystSlot, includeNormalRecipes, genAssets, blockTags);
             } else {
                 Artis.logger.error("[Artis] Table type named {} could not find the block specified. Are you sure it exists? If it definitely exists, try setting bypass_check to true.", key);
             }
         } else if (tableType.equals("existing_item")) {
             if (Registry.ITEM.containsId(id) || json.getBoolean("bypass_check", false)) {
                 if (json.containsKey("color")) {
-                    return new ArtisExistingItemType(id, name, width, height, catalystSlot, includeNormalRecipes, genAssets, Integer.decode(json.get(String.class, "color").replace("#", "0x")));
+                    return new ArtisExistingItemType(id, name, width, height, catalystSlot, includeNormalRecipes, genAssets, Integer.decode(json.get(String.class, "color").replace("#", "0x")), blockTags);
                 }
-                return new ArtisExistingItemType(id, name, width, height, catalystSlot, includeNormalRecipes, genAssets);
+                return new ArtisExistingItemType(id, name, width, height, catalystSlot, includeNormalRecipes, genAssets, blockTags);
             } else {
                 Artis.logger.error("[Artis] Table type named {} could not find the item specified. Are you sure it exists? If it definitely exists, try setting bypass_check to true.", key);
             }
         }
         if (json.containsKey("color")) {
-            return new ArtisTableType(id, name, width, height, blockEntity, catalystSlot, includeNormalRecipes, genAssets, Integer.decode(json.get(String.class, "color").replace("#", "0x")));
+            return new ArtisTableType(id, name, width, height, blockEntity, catalystSlot, includeNormalRecipes, genAssets, Integer.decode(json.get(String.class, "color").replace("#", "0x")), blockTags);
         }
-        return new ArtisTableType(id, name, width, height, blockEntity, catalystSlot, includeNormalRecipes, genAssets);
+        
+        return new ArtisTableType(id, name, width, height, blockEntity, catalystSlot, includeNormalRecipes, genAssets, blockTags);
     }
 
 }

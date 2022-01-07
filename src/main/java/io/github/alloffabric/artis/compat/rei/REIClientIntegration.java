@@ -2,11 +2,12 @@ package io.github.alloffabric.artis.compat.rei;
 
 import dev.architectury.event.EventResult;
 import io.github.alloffabric.artis.Artis;
-import io.github.alloffabric.artis.api.*;
+import io.github.alloffabric.artis.api.ArtisCraftingRecipe;
+import io.github.alloffabric.artis.api.ArtisExistingBlockType;
+import io.github.alloffabric.artis.api.ArtisExistingItemType;
+import io.github.alloffabric.artis.api.ArtisTableType;
 import io.github.alloffabric.artis.block.ArtisTableBlock;
 import io.github.alloffabric.artis.inventory.ArtisCraftingScreen;
-import io.github.alloffabric.artis.inventory.ArtisRecipeProvider;
-import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
@@ -85,7 +86,6 @@ public class REIClientIntegration implements REIClientPlugin {
      */
     @Override
     public void registerScreens(ScreenRegistry registry) {
-        // todo: correct position
         for (ArtisTableType type : Artis.ARTIS_TABLE_TYPES) {
             registry.registerContainerClickArea(type.getREIClickArea(), ArtisCraftingScreen.class, type.getCategoryIdentifier());
             registry.registerContainerClickArea(type.getREIClickArea(), ArtisCraftingScreen.class, BuiltinPlugin.CRAFTING);

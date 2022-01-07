@@ -1,10 +1,13 @@
 package io.github.alloffabric.artis.compat.rei;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.alloffabric.artis.Artis;
 import me.shedaniel.math.Dimension;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
+import me.shedaniel.rei.api.client.REIRuntime;
 import me.shedaniel.rei.api.client.gui.widgets.Arrow;
+import me.shedaniel.rei.impl.client.gui.widget.basewidgets.ArrowWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.util.math.MatrixStack;
@@ -17,6 +20,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class TransparentArrowWidget extends Arrow {
+    
     @NotNull
     private final Rectangle bounds;
     private double animationDuration = -1;
@@ -50,17 +54,16 @@ public class TransparentArrowWidget extends Arrow {
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        MinecraftClient.getInstance().getTextureManager().bindTexture(new Identifier(Artis.MODID, "textures/gui/arrow.png"));
+        RenderSystem.setShaderTexture(0, new Identifier(Artis.MODID, "textures/gui/arrow.png"));
         drawTexture(matrices, getX(), getY(), 24, 0, 24, 17, 48, 17);
         if (getAnimationDuration() > 0) {
-            int width = MathHelper.ceil((System.currentTimeMillis() / (animationDuration / 24) % 24d) / 1f);
+            int width = MathHelper.ceil((System.currentTimeMillis() / (animationDuration / 24) % 24d));
             drawTexture(matrices, getX(), getY(), 0, 0, width, 17, 48, 17);
         }
-        //MinecraftClient.getInstance().getTextureManager().bindTexture(BuiltinPlugin.getDisplayTexture());
     }
-
-    @Override
+    
     public List<? extends Element> children() {
         return Collections.emptyList();
     }
+
 }

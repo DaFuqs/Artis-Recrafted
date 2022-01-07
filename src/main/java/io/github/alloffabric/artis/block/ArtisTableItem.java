@@ -1,6 +1,5 @@
 package io.github.alloffabric.artis.block;
 
-import io.github.alloffabric.artis.ArtisClient;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
@@ -9,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;

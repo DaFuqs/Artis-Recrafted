@@ -4,12 +4,16 @@ import io.github.alloffabric.artis.api.ArtisTableType;
 import io.github.alloffabric.artis.block.ArtisTableBlock;
 import net.devtech.arrp.api.RRPCallback;
 import net.devtech.arrp.api.RuntimeResourcePack;
+import net.devtech.arrp.json.blockstate.JBlockModel;
 import net.devtech.arrp.json.blockstate.JState;
 import net.devtech.arrp.json.lang.JLang;
 import net.devtech.arrp.json.models.JModel;
-import net.devtech.arrp.json.models.JTextures;
+import net.devtech.arrp.json.tags.JTag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static net.devtech.arrp.json.loot.JLootTable.*;
 
@@ -17,8 +21,10 @@ public class ArtisResources {
 	
 	public static final RuntimeResourcePack RESOURCE_PACK = RuntimeResourcePack.create("artis:artis_resources");
 	public static final JLang translations = JLang.lang();
+	public static final HashMap<Identifier, JTag> blockTags = new HashMap<>();
 	
 	public static void registerDataFor(ArtisTableType artisTableType, ArtisTableBlock block) {
+		// loot table (drops)
 		RESOURCE_PACK.addLootTable(block.getLootTableId(),
 				loot("minecraft:block")
 						.pool(pool()
@@ -28,19 +34,37 @@ public class ArtisResources {
 										.name(Registry.ITEM.getId(block.asItem()).toString()))
 								.condition(condition("minecraft:survives_explosion"))));
 		
+		// localisation
 		String tableIdPath = artisTableType.getId().getPath();
 		translations.entry("block." + Artis.MODID + "." + tableIdPath, artisTableType.getName());
 		translations.entry("rei.category." + tableIdPath, artisTableType.getName() + " Crafting");
 		
-		RESOURCE_PACK.addBlockState(JState.state(JState.variant(JState.model("minecraft:block/acacia_planks"))), new Identifier(Artis.MODID, tableIdPath));
-		RESOURCE_PACK.addModel(JModel.model().textures(new JTextures().layer0("minecraft:block/dirt")), new Identifier(Artis.MODID, "block/" + tableIdPath));
-		RESOURCE_PACK.addModel(JModel.model().textures(new JTextures().layer0("minecraft:block/stone")), new Identifier(Artis.MODID, "item/" + tableIdPath));
+		// block tags (like mineable / break by tool, if set via the config)
+		for(Identifier identifier : artisTableType.getBlockTags()) {
+			if(blockTags.containsKey(identifier)) {
+				blockTags.get(identifier).add(artisTableType.getId());
+			} else {
+				blockTags.put(identifier, JTag.tag().add(artisTableType.getId()));
+			}
+		}
+		
+		// block and item models
+		// TODO: use recolored crafting table, instead of default one
+		JBlockModel blockModel = JState.model("minecraft:block/crafting_table");
+		JModel model = JModel.model("minecraft:item/crafting_table");
+		RESOURCE_PACK.addBlockState(JState.state(JState.variant(blockModel)), new Identifier(Artis.MODID, tableIdPath));
+		RESOURCE_PACK.addModel(model, new Identifier(Artis.MODID, "item/" + tableIdPath));
+		
+		//RESOURCE_PACK.addRecoloredImage();
 	}
 	
 	public static void registerPack() {
 		RESOURCE_PACK.addLang(new Identifier(Artis.MODID, "en_us"), translations);
+		for(Map.Entry<Identifier, JTag> tags : blockTags.entrySet()) {
+			RESOURCE_PACK.addTag(tags.getKey(), tags.getValue());
+		}
+		
 		RRPCallback.EVENT.register(a -> a.add(RESOURCE_PACK));
 	}
-	
 	
 }

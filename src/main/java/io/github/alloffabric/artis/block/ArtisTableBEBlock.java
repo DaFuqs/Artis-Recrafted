@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 public class ArtisTableBEBlock extends ArtisTableBlock implements BlockEntityProvider {
+    
     public ArtisTableBEBlock(ArtisTableType type, Settings settings) {
         super(type, settings);
     }

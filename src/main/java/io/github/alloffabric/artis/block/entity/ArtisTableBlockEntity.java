@@ -27,6 +27,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 
 public class ArtisTableBlockEntity extends BlockEntity implements DefaultInventory, ExtendedScreenHandlerFactory {
+    
     private ArtisTableType tableType;
     private DefaultedList<ItemStack> stacks;
 

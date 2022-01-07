@@ -1,15 +1,14 @@
 package io.github.alloffabric.artis.compat.rei;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.client.gui.widgets.WidgetWithBounds;
+import me.shedaniel.rei.impl.client.gui.widget.EntryWidget;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.util.math.MatrixStack;
 
 import java.util.List;
 
-public class ColorableEntryWidget extends WidgetWithBounds {
+public class ColorableEntryWidget extends EntryWidget {
     private final int color;
     private final int x;
     private final int y;
@@ -19,7 +18,7 @@ public class ColorableEntryWidget extends WidgetWithBounds {
     }
 
     protected ColorableEntryWidget(Point point, int color) {
-        super();
+        super(point);
         this.x = point.getX();
         this.y = point.getY();
         this.color = color;
@@ -42,12 +41,15 @@ public class ColorableEntryWidget extends WidgetWithBounds {
     }
     
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        int r = (color & 0xFF0000) >> 16;
+    public void drawBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        super.drawBackground(matrices, mouseX, mouseY, delta);
+        
+        // TODO: Colored background
+        /*int r = (color & 0xFF0000) >> 16;
         int g = (color & 0xFF00) >> 8;
         int b = (color & 0xFF);
     
-        GlStateManager._clearColor((r + 30) / 255F, (g + 30) / 255F, (b + 30) / 255F, 1.0F);
+        GlStateManager._clearColor((r + 30) / 255F, (g + 30) / 255F, (b + 30) / 255F, 1.0F);*/
     }
     
     @Override
