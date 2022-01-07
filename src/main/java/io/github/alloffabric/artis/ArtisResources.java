@@ -54,8 +54,6 @@ public class ArtisResources {
 		JModel model = JModel.model(new Identifier(Artis.MODID, "block/table" + (artisTableType.hasColor() ? "_overlay" : "")));
 		RESOURCE_PACK.addBlockState(JState.state(JState.variant(blockModel)), new Identifier(Artis.MODID, tableIdPath));
 		RESOURCE_PACK.addModel(model, new Identifier(Artis.MODID, "item/" + tableIdPath));
-		
-		//RESOURCE_PACK.addRecoloredImage();
 	}
 	
 	public static void registerPack() {
