@@ -50,8 +50,8 @@ public class ArtisResources {
 		
 		// block and item models
 		// TODO: use recolored crafting table, instead of default one
-		JBlockModel blockModel = JState.model("minecraft:block/crafting_table");
-		JModel model = JModel.model("minecraft:item/crafting_table");
+		JBlockModel blockModel = JState.model(new Identifier(Artis.MODID, "block/table" + (artisTableType.hasColor() ? "_overlay" : "")));
+		JModel model = JModel.model(new Identifier(Artis.MODID, "block/table" + (artisTableType.hasColor() ? "_overlay" : "")));
 		RESOURCE_PACK.addBlockState(JState.state(JState.variant(blockModel)), new Identifier(Artis.MODID, tableIdPath));
 		RESOURCE_PACK.addModel(model, new Identifier(Artis.MODID, "item/" + tableIdPath));
 		
