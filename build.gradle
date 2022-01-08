@@ -41,7 +41,7 @@ dependencies {
 	modImplementation("net.devtech:arrp:0.5.4")
 
 	include "io.github.cottonmc:LibGui:${project.libgui_version}"
-	include "io.github.natanfudge:artifice:${project.artifice_version}"
+	//include "io.github.natanfudge:artifice:${project.artifice_version}"
 }
 
 processResources {

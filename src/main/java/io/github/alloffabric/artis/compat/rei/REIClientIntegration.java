@@ -40,26 +40,14 @@ public class REIClientIntegration implements REIClientPlugin {
     public void registerCategories(CategoryRegistry registry) {
         for (ArtisTableType type : Artis.ARTIS_TABLE_TYPES) {
             registry.add(new ArtisRecipeCategory<>(type));
-        }
+            
+            Block block = Registry.BLOCK.get(type.getId());
+            registry.addWorkstations(type.getCategoryIdentifier(), EntryStacks.of(block));
     
-        for (ArtisTableType type : Artis.ARTIS_TABLE_TYPES) {
-            if (type instanceof ArtisExistingBlockType) {
-                Block block = Registry.BLOCK.get(type.getId());
-                registry.addWorkstations(type.getCategoryIdentifier(), EntryStacks.of(block.asItem()));
-        
-                if (type.shouldIncludeNormalRecipes()) {
-                    registry.addWorkstations(BuiltinPlugin.CRAFTING, EntryStacks.of(block));
-                }
-            } else if (type instanceof ArtisExistingItemType) {
-                Item item = Registry.ITEM.get(type.getId());
-                registry.addWorkstations(type.getCategoryIdentifier(), EntryStacks.of(item));
-        
-                if (type.shouldIncludeNormalRecipes()) {
-                    registry.addWorkstations(BuiltinPlugin.CRAFTING, EntryStacks.of(item));
-                }
+            if (type.shouldIncludeNormalRecipes()) {
+                registry.addWorkstations(BuiltinPlugin.CRAFTING, EntryStacks.of(block));
             }
         }
-        
     }
 
     @Override

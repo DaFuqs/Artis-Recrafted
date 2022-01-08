@@ -8,7 +8,7 @@
   "description": "Customizable crafting tables for modpacks",
   "license": "MIT",
   "contact": {
-    "sources": "https://github.com/AllOfFabric/Artis"
+    "sources": "https://github.com/DaFuqs/Artis"
   },
   "environment": "*",
   "entrypoints": {
@@ -25,8 +25,12 @@
   "mixins": [ ],
   "depends": {
     "fabricloader": ">=0.12.12",
-    "fabric": "*",
+    "fabric": ">=0.42.1",
     "minecraft": ">=1.18.1",
-    "java": ">=17"
+    "java": ">=17",
+    "libgui": ">=5.2.0+1.18"
+  },
+  "suggests": {
+    "nbtcrafting_testmod": ">=2.1.0"
   }
 }
