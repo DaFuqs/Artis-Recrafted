@@ -28,7 +28,8 @@
     "fabric": ">=0.42.1",
     "minecraft": ">=1.18.1",
     "java": ">=17",
-    "libgui": ">=5.2.0+1.18"
+    "libgui": ">=5.2.0+1.18",
+    "advanced_runtime_resource_pack": ">=0.5.1"
   },
   "suggests": {
     "nbtcrafting_testmod": ">=2.1.0"
