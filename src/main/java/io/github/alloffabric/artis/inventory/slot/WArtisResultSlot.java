@@ -24,6 +24,6 @@ public class WArtisResultSlot extends WItemSlot {
 
     @Override
     protected ValidatedSlot createSlotPeer(Inventory inventory, int index, int x, int y) {
-        return new ValidatedArtisResultSlot(player, craftingInventory, this.inventory, index, x, y, syncId, player.currentScreenHandler);
+        return new ValidatedArtisResultSlot(player, craftingInventory, this.inventory, index, x, y, syncId);
     }
 }

@@ -18,18 +18,16 @@ import net.minecraft.util.collection.DefaultedList;
 
 public class ValidatedArtisResultSlot extends ValidatedSlot {
 
-    private final ScreenHandler screenHandler;
     private final ArtisCraftingInventory craftingInv;
     private final PlayerEntity player;
     private int amount;
     private final int syncId;
 
-    public ValidatedArtisResultSlot(PlayerEntity player, ArtisCraftingInventory inventory, Inventory inventoryIn, int index, int xPosition, int yPosition, int syncId, ScreenHandler screenHandler) {
+    public ValidatedArtisResultSlot(PlayerEntity player, ArtisCraftingInventory inventory, Inventory inventoryIn, int index, int xPosition, int yPosition, int syncId) {
         super(inventoryIn, index, xPosition, yPosition);
         this.player = player;
         this.craftingInv = inventory;
         this.syncId = syncId;
-        this.screenHandler = screenHandler;
     }
 
     @Override
@@ -114,9 +112,6 @@ public class ValidatedArtisResultSlot extends ValidatedSlot {
                         catalyst.decrement(recipe.getCatalystCost());
                     }
                     this.craftingInv.setStack(catalystSlot, catalyst);
-                    if (!player.world.isClient) {
-                        ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, new ScreenHandlerSlotUpdateS2CPacket(syncId, screenHandler.nextRevision(), 37, catalyst));
-                    }
                 }
             }
         }
