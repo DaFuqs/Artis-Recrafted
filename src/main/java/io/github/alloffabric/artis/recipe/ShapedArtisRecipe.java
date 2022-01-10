@@ -106,17 +106,6 @@ public class ShapedArtisRecipe extends ShapedRecipe implements ArtisCraftingReci
         return serializer;
     }
     
-    /*
-    @Override
-    public int getWidth() {
-        return ((ArtisTableType) type).getWidth();
-    }
-    
-    @Override
-    public int getHeight() {
-        return ((ArtisTableType) type).getHeight();
-    }*/
-    
     @Override
     public Ingredient getCatalyst() {
         return catalyst;

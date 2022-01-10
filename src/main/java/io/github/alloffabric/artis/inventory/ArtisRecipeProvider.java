@@ -207,14 +207,12 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
     //like vanilla, but not a pile of lag
     public static void updateResult(World world, PlayerEntity player, CraftingInventory inv, CraftingResultInventory result, ArtisTableType artisTableType) {
         if (!world.isClient) {
-
             ItemStack itemstack = ItemStack.EMPTY;
 
             Recipe<CraftingInventory> recipe = (Recipe<CraftingInventory>) result.getLastRecipe();
             //find artis recipe first
             if (recipe == null || !recipe.matches(inv, world)) {
                 recipe = findArtisRecipe(artisTableType,inv, world);
-                if (recipe != null) ;
             }
             //else fall back to vanilla
             if (recipe == null && artisTableType.shouldIncludeNormalRecipes()) {
@@ -229,7 +227,9 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
             PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
             buf.writeIdentifier(recipe != null ? recipe.getId(): Artis.dummy);
             ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, Artis.recipe_sync, buf);
-            result.setLastRecipe(recipe);
+            if(recipe != null) {
+                result.setLastRecipe(recipe);
+            }
         }
     }
 

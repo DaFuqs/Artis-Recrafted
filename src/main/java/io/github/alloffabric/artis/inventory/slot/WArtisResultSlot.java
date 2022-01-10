@@ -5,6 +5,7 @@ import io.github.cottonmc.cotton.gui.ValidatedSlot;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.screen.ScreenHandler;
 
 public class WArtisResultSlot extends WItemSlot {
 
@@ -23,6 +24,6 @@ public class WArtisResultSlot extends WItemSlot {
 
     @Override
     protected ValidatedSlot createSlotPeer(Inventory inventory, int index, int x, int y) {
-        return new ValidatedArtisResultSlot(player, craftingInventory, this.inventory, index, x, y, syncId);
+        return new ValidatedArtisResultSlot(player, craftingInventory, this.inventory, index, x, y, syncId, player.currentScreenHandler);
     }
 }

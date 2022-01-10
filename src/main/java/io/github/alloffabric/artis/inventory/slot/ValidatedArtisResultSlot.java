@@ -13,20 +13,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeUnlocker;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.collection.DefaultedList;
 
 public class ValidatedArtisResultSlot extends ValidatedSlot {
 
+    private final ScreenHandler screenHandler;
     private final ArtisCraftingInventory craftingInv;
     private final PlayerEntity player;
     private int amount;
     private final int syncId;
 
-    public ValidatedArtisResultSlot(PlayerEntity player, ArtisCraftingInventory inventory, Inventory inventoryIn, int index, int xPosition, int yPosition, int syncId) {
+    public ValidatedArtisResultSlot(PlayerEntity player, ArtisCraftingInventory inventory, Inventory inventoryIn, int index, int xPosition, int yPosition, int syncId, ScreenHandler screenHandler) {
         super(inventoryIn, index, xPosition, yPosition);
         this.player = player;
         this.craftingInv = inventory;
         this.syncId = syncId;
+        this.screenHandler = screenHandler;
     }
 
     @Override
@@ -69,7 +72,7 @@ public class ValidatedArtisResultSlot extends ValidatedSlot {
     @Override
     public void onTakeItem(PlayerEntity player, ItemStack stack) {
         this.onCrafted(stack);
-        DefaultedList<ItemStack> remainders = getRemainders(); //= player.world.getRecipeManager().getRemainingStacks(craftingInv.getType(), this.craftingInv, player.world);
+        DefaultedList<ItemStack> remainders = getRemainders();
         for (int i = 0; i < remainders.size() - 1; ++i) {
             ItemStack input = this.craftingInv.getStack(i);
             ItemStack remainder = remainders.get(i);
@@ -101,15 +104,19 @@ public class ValidatedArtisResultSlot extends ValidatedSlot {
                 } else {
                     ItemStack catalyst = this.craftingInv.getCatalyst().copy();
                     if (catalyst.isDamageable()) {
-                        catalyst.damage(recipe.getCatalystCost(), craftingInv.getPlayer(), (user) -> user.sendToolBreakStatus(user.getActiveHand()));
+                        catalyst.setDamage(catalyst.getDamage()+recipe.getCatalystCost());
+                        if(catalyst.getDamage() >= catalyst.getMaxDamage()) {
+                            catalyst = ItemStack.EMPTY;
+                        }
                     } else if (catalyst.getItem() instanceof SpecialCatalyst) {
                         catalyst = ((SpecialCatalyst) catalyst.getItem()).consume(catalyst, recipe.getCatalystCost());
                     } else {
                         catalyst.decrement(recipe.getCatalystCost());
                     }
                     this.craftingInv.setStack(catalystSlot, catalyst);
-                    if (!player.world.isClient)
-                        ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, new ScreenHandlerSlotUpdateS2CPacket(syncId, 0, 37, catalyst));
+                    if (!player.world.isClient) {
+                        ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, new ScreenHandlerSlotUpdateS2CPacket(syncId, screenHandler.nextRevision(), 37, catalyst));
+                    }
                 }
             }
         }
@@ -118,9 +125,10 @@ public class ValidatedArtisResultSlot extends ValidatedSlot {
     //note: inventory is actually CraftingResultInventory, so it's a safe cast
     public DefaultedList<ItemStack> getRemainders() {
         Recipe<CraftingInventory> lastRecipe = (Recipe<CraftingInventory>) ((CraftingResultInventory)this.inventory).getLastRecipe();
-        if (lastRecipe != null &&
-                lastRecipe.matches(craftingInv, player.world))
+        if (lastRecipe != null && lastRecipe.matches(craftingInv, player.world)) {
             return lastRecipe.getRemainder(craftingInv);
-        else return craftingInv.getStacks();
+        } else {
+            return craftingInv.getStacks();
+        }
     }
 }
