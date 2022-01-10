@@ -95,6 +95,14 @@ public class ShapedArtisRecipe extends ShapedRecipe implements ArtisCraftingReci
         }
         return this.getOutput().copy();
     }
+    
+    public int getWidth() {
+        return super.getWidth();
+    }
+    
+    public int getHeight() {
+        return super.getHeight();
+    }
 
     @Override
     public RecipeType getType() {
