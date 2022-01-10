@@ -52,8 +52,6 @@ public class Artis implements ModInitializer {
     public static final ItemGroup ARTIS_GROUP = FabricItemGroupBuilder.build(new Identifier(MODID, "artis_group"), () -> new ItemStack(Items.CRAFTING_TABLE));
     public static BlockEntityType<ArtisTableBlockEntity> ARTIS_BLOCK_ENTITY;
     public static boolean isLoaded = false;
-    
-    public static MinecraftServer minecraftServer;
 
     public static <T extends ArtisTableType> T registerTable(T type, Block.Settings settings) {
         return registerTable(type, settings, ARTIS_GROUP);
@@ -82,7 +80,6 @@ public class Artis implements ModInitializer {
     @Override
     public void onInitialize() {
         if (!isLoaded) {
-            ArtisData.loadData();
             ArtisData.loadConfig();
             ArtisEvents.init();
             isLoaded = true;
@@ -101,10 +98,6 @@ public class Artis implements ModInitializer {
                         });
                     });
         }
-    
-        ServerWorldEvents.LOAD.register((minecraftServer, serverWorld) -> {
-            Artis.minecraftServer = minecraftServer;
-        });
     }
     
 }

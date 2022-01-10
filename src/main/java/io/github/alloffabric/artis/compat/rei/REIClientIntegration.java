@@ -51,17 +51,6 @@ public class REIClientIntegration implements REIClientPlugin {
         for (ArtisTableType type : Artis.ARTIS_TABLE_TYPES) {
             registry.registerRecipeFiller(ArtisCraftingRecipe.class, type, ArtisRecipeDisplay::new);
         }
-        
-        registry.registerVisibilityPredicate((category, display) -> {
-            if (display.getDisplayLocation().isPresent() && Artis.minecraftServer.getRecipeManager().get(display.getDisplayLocation().get()).isPresent()) {
-                Recipe recipe = Artis.minecraftServer.getRecipeManager().get(display.getDisplayLocation().get()).get();
-    
-                if (recipe.getType() instanceof ArtisTableType && display.getCategoryIdentifier().equals(BuiltinPlugin.CRAFTING)) {
-                    return EventResult.interruptFalse();
-                }
-            }
-            return EventResult.pass();
-        });
     }
     
     /**

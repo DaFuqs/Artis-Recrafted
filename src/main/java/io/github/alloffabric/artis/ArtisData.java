@@ -46,19 +46,6 @@ public class ArtisData {
         }
     }
 
-    public static void loadData() {
-        File file = FabricLoader.getInstance().getConfigDir().resolve("artis.json5").toFile();
-        if (file.exists()) {
-            try {
-                FileInputStream inputStream = new FileInputStream(file);
-                JsonObject json = jankson.load(inputStream);
-                loadEntries(json.containsKey("tables") ? json.getObject("tables") : json);
-            } catch (IOException | SyntaxError e) {
-                    Artis.logger.error("[Artis] Error loading static data item {}: {}", "data", e.getMessage());
-            }
-        }
-    }
-
     private static void loadEntries(JsonObject json) {
         List<String> keys = new ArrayList<>(json.keySet());
         Collections.sort(keys);
