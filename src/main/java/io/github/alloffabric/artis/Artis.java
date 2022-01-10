@@ -88,15 +88,15 @@ public class Artis implements ModInitializer {
             ARTIS_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(MODID, "artis_table"), FabricBlockEntityTypeBuilder.create(ArtisTableBlockEntity::new, artisBlocks).build());
             
             //seems to be required to not have the recipe vanish when initially opened
-            ServerSidePacketRegistry.INSTANCE.register(Artis.request_sync,
-                    (packetContext, attachedData) -> {
-                        packetContext.getTaskQueue().execute(() -> {
-                            ScreenHandler container = packetContext.getPlayer().currentScreenHandler;
-                            if (container instanceof ArtisRecipeProvider) {
-                                container.onContentChanged(null);
-                            }
-                        });
-                    });
+            ServerSidePacketRegistry.INSTANCE.register(Artis.request_sync, (packetContext, attachedData) -> {
+                packetContext.getTaskQueue().execute(() -> {
+                    ScreenHandler container = packetContext.getPlayer().currentScreenHandler;
+                    if (container instanceof ArtisRecipeProvider) {
+                        container.onContentChanged(null);
+                    }
+                });
+            });
+            
         }
     }
     
