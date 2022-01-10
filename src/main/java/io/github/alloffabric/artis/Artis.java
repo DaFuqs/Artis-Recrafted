@@ -65,11 +65,12 @@ public class Artis implements ModInitializer {
         ScreenHandlerRegistry.registerExtended(id, (syncId, playerInventory, buf) -> new ArtisRecipeProvider(screenHandlerType, type, syncId, playerInventory.player, ScreenHandlerContext.create(playerInventory.player.world, buf.readBlockPos())));
         if (!(type instanceof ArtisExistingBlockType) && !(type instanceof ArtisExistingItemType)) {
             ArtisTableBlock block;
-            if (!type.hasBlockEntity()) {
-                block = Registry.register(Registry.BLOCK, id, new ArtisTableBlock(type, settings));
-            } else {
+            if (type.hasBlockEntity()) {
                 block = Registry.register(Registry.BLOCK, id, new ArtisTableBEBlock(type, settings));
                 ARTIS_TABLE_BE_BLOCKS.add(block);
+                
+            } else {
+                block = Registry.register(Registry.BLOCK, id, new ArtisTableBlock(type, settings));
             }
             ARTIS_TABLE_BLOCKS.add(block);
             Registry.register(Registry.ITEM, id, new ArtisTableItem(block, new Item.Settings().group(group)));

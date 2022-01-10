@@ -20,9 +20,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
 public class ArtisTableBlock extends Block implements ExtendedScreenHandlerFactory {
+    
     private final ArtisTableType type;
 
     public ArtisTableBlock(ArtisTableType type, Block.Settings settings) {
@@ -44,14 +43,12 @@ public class ArtisTableBlock extends Block implements ExtendedScreenHandlerFacto
         }
         return ActionResult.PASS;
     }
-
-    @Nullable
+    
     @Override
     public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
         return this;
     }
-
-    @Nullable
+    
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
         return new ArtisRecipeProvider(Registry.SCREEN_HANDLER.get(type.getId()), type, syncId, player, ScreenHandlerContext.create(player.world, player.getBlockPos()));
@@ -66,4 +63,5 @@ public class ArtisTableBlock extends Block implements ExtendedScreenHandlerFacto
     public void writeScreenOpeningData(ServerPlayerEntity serverPlayerEntity, PacketByteBuf packetByteBuf) {
         packetByteBuf.writeBlockPos(serverPlayerEntity.getBlockPos());
     }
+    
 }

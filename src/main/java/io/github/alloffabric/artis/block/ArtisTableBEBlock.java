@@ -16,15 +16,14 @@ public class ArtisTableBEBlock extends ArtisTableBlock implements BlockEntityPro
     public ArtisTableBEBlock(ArtisTableType type, Settings settings) {
         super(type, settings);
     }
-
+    
     @Nullable
     @Override
     public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, World world, BlockPos pos) {
         BlockEntity blockEntity = world.getBlockEntity(pos);
         return blockEntity instanceof NamedScreenHandlerFactory ? (NamedScreenHandlerFactory) blockEntity : null;
     }
-
-    @Nullable
+    
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new ArtisTableBlockEntity(getType(), pos, state);
