@@ -19,7 +19,7 @@ import static net.devtech.arrp.json.loot.JLootTable.*;
 
 public class ArtisResources {
 	
-	public static final RuntimeResourcePack RESOURCE_PACK = RuntimeResourcePack.create("artis:artis_resources");
+	public static final RuntimeResourcePack RESOURCE_PACK = RuntimeResourcePack.create("artis:resources");
 	public static final JLang translations = JLang.lang();
 	public static final HashMap<Identifier, JTag> blockTags = new HashMap<>();
 	

@@ -26,13 +26,4 @@ public class ArtisTableItem extends BlockItem {
             tooltip.add(new TranslatableText("tooltip.artis.source").formatted(Formatting.BLUE, Formatting.ITALIC));
     }
 
-    /*@Override
-    public Text getName(ItemStack stack) {
-        return ArtisClient.getName(tableId);
-    }
-
-    @Override
-    public Text getName() {
-        return ArtisClient.getName(tableId);
-    }*/
 }

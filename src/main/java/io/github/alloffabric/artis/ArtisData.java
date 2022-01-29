@@ -78,7 +78,7 @@ public class ArtisData {
     }
     
     static ArtisTableType getType(String key, JsonObject json) {
-        Identifier id = new Identifier(key);
+        Identifier id = new Identifier(Artis.MODID, key);
         String tableType = json.containsKey("type") ? json.get(String.class, "type") : "normal";
         int width = json.getInt("width", 3);
         int height = json.getInt("height", 3);

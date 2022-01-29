@@ -8,7 +8,7 @@
   "description": "Customizable crafting tables for modpacks",
   "license": "MIT",
   "contact": {
-    "sources": "https://github.com/DaFuqs/Artis"
+    "sources": "https://github.com/DaFuqs/Artis-Recrafted"
   },
   "environment": "*",
   "entrypoints": {
