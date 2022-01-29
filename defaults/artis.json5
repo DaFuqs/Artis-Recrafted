@@ -1,16 +1,25 @@
 {
   "tables": {
     "artis:test_table": {
+      "display_name": "Test Table-be",
       "width": 4,
       "height": 3,
       "block_entity": true,
       "generate_assets": true,
       "settings": {
         "material": "wood",
-        "non_opaque": true
-      }
+        "non_opaque": true,
+        "hardness": 4,
+        "resistance": 3
+      },
+      "requires_tool": true,
+      "tags": [
+        "minecraft:blocks/needs_stone_tool",
+        "minecraft:blocks/mineable/pickaxe",
+      ]
     },
     "artis:test_table43": {
+      "display_name": "Test Table 43-be",
       "width": 4,
       "height": 3,
       "block_entity": true,
@@ -20,23 +29,33 @@
         "material": "wood",
         "non_opaque": true
       },
-      "catalyst_slot": 1
+      "catalyst_slot": 1,
+      "tags": [
+        "minecraft:blocks/needs_diamond_tool",
+        "minecraft:blocks/mineable/pickaxe",
+      ]
     },
     "artis:test_table55": {
+      "display_name": "Test Table 55",
       "width": 5,
       "height": 5,
-      "block_entity": true,
+      "block_entity": false,
       "generate_assets": true,
       "color": "#222222",
       "settings": {
         "material": "wood",
         "non_opaque": true
-      }
+      },
+      "tags": [
+        "minecraft:needs_diamond_tool",
+        "minecraft:mineable/hoe",
+      ]
     },
     "artis:test_table66": {
+      "display_name": "Test Table 66",
       "width": 6,
       "height": 6,
-      "block_entity": true,
+      "block_entity": false,
       "generate_assets": true,
       "color": "#7F76D1",
       "settings": {
@@ -45,11 +64,17 @@
       },
       "catalyst_slot": 1
     },
-    "minecraft:fletching_table": {
-      "type": "existing_block",
-      "width": 3,
-      "height": 3,
-      "normal_recipes": true,
+    "artis:test_table99": {
+      "display_name": "Test Table 99-be",
+      "width": 9,
+      "height": 9,
+      "block_entity": true,
+      "generate_assets": true,
+      "color": "#7F76D1",
+      "settings": {
+        "material": "wood",
+        "non_opaque": true
+      },
       "catalyst_slot": 1
     }
   }
