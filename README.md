@@ -1,7 +1,7 @@
 <img src="icon.png" align="right" width="180px"/>
 
 # Artis Recrafted
-Artis Recrafted is the continuation of Artis, originally found at https://github.com/TeamAOF/Artis/ updated for Minecraft 1.18.
+Artis Recrafted is the continuation of Artis, found at https://github.com/TeamAOF/Artis/ updated for Minecraft 1.18.
 
 Artis Recrafted is a utility mod for modpack creators. It allows pack devs to register their own custom crafting tables with configurable size and a catalyst slot.
 
