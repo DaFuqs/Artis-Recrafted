@@ -48,7 +48,6 @@ public class ArtisTableBlockEntity extends BlockEntity implements DefaultInvento
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
     public ScreenHandler createMenu(int syncId, PlayerInventory inventory, PlayerEntity player) {
         return new ArtisRecipeProvider(Registry.SCREEN_HANDLER.get(tableType.getId()), tableType, syncId, player, ScreenHandlerContext.create(world, getPos()));
     }
