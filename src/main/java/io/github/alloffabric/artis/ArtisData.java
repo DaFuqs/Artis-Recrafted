@@ -61,7 +61,12 @@ public class ArtisData {
                 ArtisTableType type = getType(key, config);
                 Block.Settings settings;
                 if (config.containsKey("settings")) {
-                    settings = BlockSettingsParser.parseSettings(config.getObject("settings"));
+                    try {
+                        settings = BlockSettingsParser.parseSettings(config.getObject("settings"));
+                    } catch (Exception e) {
+                        Artis.log(Level.ERROR, "Table type named " + key + " has invalid block settings set. Using default... " + e.getMessage());
+                        settings = FabricBlockSettings.copyOf(Blocks.CRAFTING_TABLE);
+                    }
                 } else {
                     settings = FabricBlockSettings.copyOf(Blocks.CRAFTING_TABLE);
                 }

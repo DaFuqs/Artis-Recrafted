@@ -36,7 +36,6 @@ public class BlockSettingsParser {
         MATERIALS.put("snow_layer", Material.SNOW_LAYER);
         MATERIALS.put("fire", Material.FIRE);
         MATERIALS.put("decoration", Material.DECORATION);
-//		MATERIALS.put("part", Material.);
         MATERIALS.put("cobweb", Material.COBWEB);
         MATERIALS.put("sculk", Material.SCULK);
         MATERIALS.put("redstone_lamp", Material.REDSTONE_LAMP);
@@ -218,11 +217,11 @@ public class BlockSettingsParser {
         }
         FabricBlockSettings settings;
         if (json.containsKey("copy")) {
-            String copyTarg = json.get(String.class, "copy");
-            settings = FabricBlockSettings.copyOf(Registry.BLOCK.get(new Identifier(copyTarg)));
+            String copyBlockArg = json.get(String.class, "copy");
+            settings = FabricBlockSettings.copyOf(Registry.BLOCK.get(new Identifier(copyBlockArg)));
         } else if (json.containsKey("material")) {
-            String matTarg = json.get(String.class, "material");
-            settings = FabricBlockSettings.of(MATERIALS.get(matTarg));
+            String materialArg = json.get(String.class, "material");
+            settings = FabricBlockSettings.of(MATERIALS.get(materialArg));
         } else {
             settings = FabricBlockSettings.copyOf(Blocks.CRAFTING_TABLE);
         }
@@ -251,7 +250,7 @@ public class BlockSettingsParser {
         }
 
         if (json.containsKey("light_level")) {
-            settings.lightLevel(json.getInt("light_level", 0));
+            settings.luminance(json.getInt("light_level", 0));
         }
 
         if (json.containsKey("hardness")) {
