@@ -97,7 +97,7 @@ public class ArtisData {
             }
         }
         boolean blockEntity = json.getBoolean("block_entity", false);
-        boolean catalystSlot = json.getInt("catalyst_slot", 0) != 0;
+        boolean catalystSlot = json.getBoolean("catalyst_slot", false);
         String name = json.get(String.class, "display_name");
         boolean includeNormalRecipes = json.getBoolean("normal_recipes", false);
         boolean genAssets = json.getBoolean("generate_assets", false);
@@ -106,12 +106,11 @@ public class ArtisData {
         blockTags.add(artisTableBlockTagIdentifier);
         if(json.containsKey("tags")) {
             JsonArray blockTagArray = (JsonArray) json.get("tags");
-            for(int i = 0; i < blockTagArray.size(); i++) {
-                JsonElement currentElement = blockTagArray.get(i);
+            for (JsonElement currentElement : blockTagArray) {
                 String currentString = ((JsonPrimitive) currentElement).getValue().toString();
                 Identifier identifier = Identifier.tryParse(currentString);
-                
-                if(identifier == null) {
+        
+                if (identifier == null) {
                     Artis.log(Level.WARN, "Tag " + currentElement.toString() + " could not be applied. Valid identifier?");
                 } else {
                     blockTags.add(identifier);
