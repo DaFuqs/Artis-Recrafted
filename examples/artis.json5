@@ -41,7 +41,7 @@
       "height": 7,
       "block_entity": true,
       "generate_assets": true,
-      "color": "#7F76D1",
+      "color": "#b22222",
       "settings": {
         "material": "wood",
         "non_opaque": true
