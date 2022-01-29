@@ -10,6 +10,7 @@ import net.minecraft.block.Material;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import org.apache.logging.log4j.Level;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -212,7 +213,7 @@ public class BlockSettingsParser {
 
     public static Block.Settings parseSettings(JsonObject json) {
         if (json == null) {
-            Artis.logger.error("[Artis] Cannot parse block settings that aren't a json object!");
+            Artis.log(Level.ERROR, "Cannot parse block settings that aren't a json object!");
             return FabricBlockSettings.copyOf(Blocks.CRAFTING_TABLE);
         }
         FabricBlockSettings settings;

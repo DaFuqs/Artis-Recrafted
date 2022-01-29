@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import org.apache.logging.log4j.Level;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,9 +30,9 @@ public class ArtisData {
 
     public static void loadConfig() {
         try {
-            File file = FabricLoader.getInstance().getConfigDir().resolve("artis.json5").toFile();
+            File file = FabricLoader.getInstance().getConfigDir().resolve("artis-recrafted.json5").toFile();
             if (!file.exists()) {
-                Artis.logger.warn("[Artis] No config file found! Generating an empty file.");
+                Artis.log(Level.WARN, "Config file not found! Generating an empty file.");
                 file.createNewFile();
                 FileOutputStream out = new FileOutputStream(file, false);
                 out.write("{ }".getBytes());
@@ -42,7 +43,7 @@ public class ArtisData {
             JsonObject json = jankson.load(file);
             loadEntries(json.containsKey("tables") ? json.getObject("tables") : json);
         } catch (IOException | SyntaxError e) {
-            Artis.logger.error("[Artis] Error loading config: {}", e.getMessage());
+            Artis.log(Level.ERROR, "Error loading config: " + e.getMessage());
         }
     }
 
@@ -51,7 +52,7 @@ public class ArtisData {
         Collections.sort(keys);
         for (String key : keys) {
             if (Artis.ARTIS_TABLE_TYPES.containsId(new Identifier(key))) {
-                Artis.logger.error("[Artis] Table type named {} already exists, skipping it in {}", key);
+                Artis.log(Level.ERROR, "Table type named " + key + " already exists, skipping it...");
                 continue;
             }
             JsonElement elem = json.get(key);
@@ -77,16 +78,16 @@ public class ArtisData {
         int width = json.getInt("width", 3);
         int height = json.getInt("height", 3);
         if (width > 7) {
-            Artis.logger.warn("[Artis] Only tables up to 7 columns are supported. Anything higher may, and likely will, break visually.", key);
+            Artis.log(Level.WARN, "Only tables up to 7 columns are supported. Anything higher may break visually.");
             if (width > 9) {
-                Artis.logger.error("[Artis] Table type named {} has too many columns, clamping it to 9", key);
+                Artis.log(Level.ERROR, "Table type named " + key + " has too many columns, clamping it to 9");
                 width = 9;
             }
         }
         if (height > 7) {
-            Artis.logger.warn("[Artis] Only tables up to 7 rows are supported. Anything higher may, and likely will, break visually.", key);
+            Artis.log(Level.WARN, "Only tables up to 7 rows are supported. Anything higher may, and likely will, break visually.");
             if (height > 9) {
-                Artis.logger.error("[Artis] Table type named {} has too many rows, clamping it to 9", key);
+                Artis.log(Level.ERROR, "Table type named " + key + " has too many rows, clamping it to 9");
                 height = 9;
             }
         }
@@ -106,7 +107,7 @@ public class ArtisData {
                 Identifier identifier = Identifier.tryParse(currentString);
                 
                 if(identifier == null) {
-                    Artis.logger.warn("[Artis] Tag %s could not be applied. Valid identifier?", currentElement.toString());
+                    Artis.log(Level.WARN, "Tag " + currentElement.toString() + " could not be applied. Valid identifier?");
                 } else {
                     blockTags.add(identifier);
                 }
@@ -120,7 +121,7 @@ public class ArtisData {
                 }
                 return new ArtisExistingBlockType(id, name, width, height, blockEntity, catalystSlot, includeNormalRecipes, genAssets, blockTags);
             } else {
-                Artis.logger.error("[Artis] Table type named {} could not find the block specified. Are you sure it exists? If it definitely exists, try setting bypass_check to true.", key);
+                Artis.log(Level.ERROR, "Table type named " + key + " could not find the block specified. Are you sure it exists? If it definitely exists, try setting bypass_check to true.");
             }
         } else if (tableType.equals("existing_item")) {
             if (Registry.ITEM.containsId(id) || json.getBoolean("bypass_check", false)) {
@@ -129,7 +130,7 @@ public class ArtisData {
                 }
                 return new ArtisExistingItemType(id, name, width, height, catalystSlot, includeNormalRecipes, genAssets, blockTags);
             } else {
-                Artis.logger.error("[Artis] Table type named {} could not find the item specified. Are you sure it exists? If it definitely exists, try setting bypass_check to true.", key);
+                Artis.log(Level.ERROR, "Table type named " + key + " could not find the item specified. Are you sure it exists? If it definitely exists, try setting bypass_check to true.");
             }
         }
         if (json.containsKey("color")) {

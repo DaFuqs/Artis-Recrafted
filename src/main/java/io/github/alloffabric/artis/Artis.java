@@ -30,6 +30,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.util.registry.SimpleRegistry;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,13 +38,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Artis implements ModInitializer {
-    public static final String MODID = "artis";
+    
+    public static final String MODID = "artis-recrafted";
 
     public static final Identifier recipe_sync = new Identifier(MODID,"sync_recipe");
     public static final Identifier request_sync = new Identifier(MODID,"request_sync");
     public static final Identifier dummy = new Identifier("null","null");
 
-    public static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public static final ArrayList<ArtisTableBlock> ARTIS_TABLE_BLOCKS = new ArrayList<>();
     public static final ArrayList<ArtisTableBlock> ARTIS_TABLE_BE_BLOCKS = new ArrayList<>();
@@ -52,6 +54,10 @@ public class Artis implements ModInitializer {
     public static final ItemGroup ARTIS_GROUP = FabricItemGroupBuilder.build(new Identifier(MODID, "artis_group"), () -> new ItemStack(Items.CRAFTING_TABLE));
     public static BlockEntityType<ArtisTableBlockEntity> ARTIS_BLOCK_ENTITY;
     public static boolean isLoaded = false;
+    
+    public static void log(Level logLevel, String message) {
+        LOGGER.log(logLevel, "[Artis-Recrafted] " + message);
+    }
 
     public static <T extends ArtisTableType> T registerTable(T type, Block.Settings settings) {
         return registerTable(type, settings, ARTIS_GROUP);
@@ -96,8 +102,9 @@ public class Artis implements ModInitializer {
                     }
                 });
             });
-            
         }
     }
+    
+    
     
 }

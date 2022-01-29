@@ -3,7 +3,7 @@
   "id": "artis",
   "version": "$version",
 
-  "name": "Artis",
+  "name": "Artis-Recrafted",
   "icon": "assets/artis/icon.png",
   "description": "Customizable crafting tables for modpacks",
   "license": "MIT",
