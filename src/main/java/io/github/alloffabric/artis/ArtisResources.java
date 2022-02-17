@@ -54,7 +54,7 @@ public class ArtisResources {
 		
 		// block and item models
 		JBlockModel blockModel = JState.model(new Identifier(Artis.MODID, "block/table" + (artisTableType.hasColor() ? "_overlay" : "")));
-		JModel model = JModel.model(new Identifier(Artis.MODID, "block/table" + (artisTableType.hasColor() ? "_overlay" : ""))); // TODO: tint
+		JModel model = JModel.model(new Identifier(Artis.MODID, "block/table" + (artisTableType.hasColor() ? "_overlay" : "")));
 		if(artisTableType.hasColor()) {
 			ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> artisTableType.getColor());
 			ColorProviderRegistry.ITEM.register((stack, tintIndex) -> artisTableType.getColor());

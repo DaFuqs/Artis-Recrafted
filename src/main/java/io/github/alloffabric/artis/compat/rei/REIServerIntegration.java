@@ -8,6 +8,7 @@ import me.shedaniel.rei.api.common.plugins.REIServerPlugin;
 public class REIServerIntegration implements REIServerPlugin {
 	
 	// For shift-clicking into crafting gui
+	// TODO: Does not work
 	@Override
 	public void registerDisplaySerializer(DisplaySerializerRegistry registry) {
 		for(ArtisTableType type : Artis.ARTIS_TABLE_TYPES) {
