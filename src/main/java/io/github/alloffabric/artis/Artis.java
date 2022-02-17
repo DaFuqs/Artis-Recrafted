@@ -36,6 +36,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.function.Supplier;
 
 public class Artis implements ModInitializer {
     
@@ -51,7 +52,16 @@ public class Artis implements ModInitializer {
     public static final ArrayList<ArtisTableBlock> ARTIS_TABLE_BE_BLOCKS = new ArrayList<>();
 
     public static final SimpleRegistry<ArtisTableType> ARTIS_TABLE_TYPES = new SimpleRegistry<>(RegistryKey.ofRegistry(new Identifier(MODID, "artis_table_types")), Lifecycle.stable());
-    public static final ItemGroup ARTIS_GROUP = FabricItemGroupBuilder.build(new Identifier(MODID, "group"), () -> new ItemStack(Items.CRAFTING_TABLE));
+    public static final ItemGroup ARTIS_GROUP = FabricItemGroupBuilder.build(new Identifier(MODID, "group"), new Supplier<ItemStack>() {
+        @Override
+        public ItemStack get() {
+            if(!ARTIS_TABLE_TYPES.isEmpty()) {
+                return new ItemStack(Registry.BLOCK.get(ARTIS_TABLE_TYPES.get(0).getId()).asItem());
+            } else {
+                return new ItemStack(Items.CRAFTING_TABLE);
+            }
+        }
+    });
     public static BlockEntityType<ArtisTableBlockEntity> ARTIS_BLOCK_ENTITY;
     public static boolean isLoaded = false;
     
