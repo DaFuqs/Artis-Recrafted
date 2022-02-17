@@ -218,7 +218,7 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
             if (recipe == null && artisTableType.shouldIncludeNormalRecipes()) {
                 recipe = findVanillaRecipe(inv, world);
             }
-            //there is no matching recipe
+            
             if (recipe != null) {
                 itemstack = recipe.craft(inv);
             }
@@ -235,7 +235,7 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
 
     @Override
     public void onContentChanged(Inventory inv) {
-        updateResult(world,player,craftInv,resultInv,tableType);
+        updateResult(world, player, craftInv, resultInv, tableType);
     }
 
     @Override
@@ -278,8 +278,7 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
     public void onSlotClick(int slotNumber, int button, SlotActionType action, PlayerEntity player) {
         if (slotNumber == getCraftingResultSlotIndex() && action == SlotActionType.QUICK_MOVE) {
             transferSlot(player, slotNumber);
-        }
-        else {
+        } else {
             super.onSlotClick(slotNumber, button, action, player);
         }
     }

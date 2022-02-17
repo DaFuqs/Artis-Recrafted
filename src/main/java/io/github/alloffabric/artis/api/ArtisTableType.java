@@ -51,14 +51,6 @@ public class ArtisTableType implements RecipeType {
         return id;
     }
 
-    public RecipeSerializer getShaped() {
-        return shaped;
-    }
-
-    public RecipeSerializer getShapeless() {
-        return shapeless;
-    }
-
     public int getWidth() {
         return width;
     }

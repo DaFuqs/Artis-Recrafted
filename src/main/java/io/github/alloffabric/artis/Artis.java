@@ -71,19 +71,25 @@ public class Artis implements ModInitializer {
         Identifier id = type.getId();
         ExtendedScreenHandlerType<ArtisRecipeProvider> screenHandlerType = new ExtendedScreenHandlerType<>((syncId, playerInventory, buf) -> new ArtisRecipeProvider(null, type, syncId, playerInventory.player, ScreenHandlerContext.create(playerInventory.player.world, buf.readBlockPos())));
         ScreenHandlerRegistry.registerExtended(id, (syncId, playerInventory, buf) -> new ArtisRecipeProvider(screenHandlerType, type, syncId, playerInventory.player, ScreenHandlerContext.create(playerInventory.player.world, buf.readBlockPos())));
-        if (!(type instanceof ArtisExistingBlockType) && !(type instanceof ArtisExistingItemType)) {
+        
+        if(type instanceof ArtisExistingBlockType artisExistingBlockType) {
+            ArtisResources.registerDataForExistingBlock(artisExistingBlockType);
+        } else if(type instanceof ArtisExistingItemType artisExistingItemType) {
+            ArtisResources.registerDataForExistingItem(artisExistingItemType);
+        } else {
             ArtisTableBlock block;
             if (type.hasBlockEntity()) {
                 block = Registry.register(Registry.BLOCK, id, new ArtisTableBEBlock(type, settings));
                 ARTIS_TABLE_BE_BLOCKS.add(block);
-                
+        
             } else {
                 block = Registry.register(Registry.BLOCK, id, new ArtisTableBlock(type, settings));
             }
             ARTIS_TABLE_BLOCKS.add(block);
             Registry.register(Registry.ITEM, id, new ArtisTableItem(block, new Item.Settings().group(group)));
-            ArtisResources.registerDataFor(type, block);
+            ArtisResources.registerDataForTable(type, block);
         }
+        
         return Registry.register(ARTIS_TABLE_TYPES, id, type);
     }
     

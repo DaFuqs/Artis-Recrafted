@@ -1,5 +1,7 @@
 package io.github.alloffabric.artis;
 
+import io.github.alloffabric.artis.api.ArtisExistingBlockType;
+import io.github.alloffabric.artis.api.ArtisExistingItemType;
 import io.github.alloffabric.artis.api.ArtisTableType;
 import io.github.alloffabric.artis.block.ArtisTableBlock;
 import net.devtech.arrp.api.RRPCallback;
@@ -12,6 +14,7 @@ import net.devtech.arrp.json.tags.JTag;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +27,7 @@ public class ArtisResources {
 	public static final JLang translations = JLang.lang();
 	public static final HashMap<Identifier, JTag> blockTags = new HashMap<>();
 	
-	public static void registerDataFor(ArtisTableType artisTableType, ArtisTableBlock block) {
+	public static void registerDataForTable(@NotNull ArtisTableType artisTableType, @NotNull ArtisTableBlock block) {
 		// loot table (drops)
 		RESOURCE_PACK.addLootTable(block.getLootTableId(),
 				loot("minecraft:block")
@@ -67,6 +70,16 @@ public class ArtisResources {
 		}
 		
 		RRPCallback.EVENT.register(a -> a.add(RESOURCE_PACK));
+	}
+	
+	public static void registerDataForExistingBlock(@NotNull ArtisExistingBlockType artisTableType) {
+		String tableIdPath = artisTableType.getId().getPath();
+		translations.entry("rei.category." + tableIdPath, artisTableType.getName() + " Crafting");
+	}
+	
+	public static void registerDataForExistingItem(@NotNull ArtisExistingItemType artisTableType) {
+		String tableIdPath = artisTableType.getId().getPath();
+		translations.entry("rei.category." + tableIdPath, artisTableType.getName() + " Crafting");
 	}
 	
 }
