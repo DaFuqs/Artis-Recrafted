@@ -8,11 +8,13 @@ import io.github.alloffabric.artis.inventory.ArtisScreenFactory;
 import net.fabricmc.fabric.api.container.ContainerProviderRegistry;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
+import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.registry.Registry;
 
 public class ArtisEvents {
@@ -39,8 +41,10 @@ public class ArtisEvents {
                 if (Artis.ARTIS_TABLE_TYPES.containsId(identifier)) {
                     ArtisTableType type = Artis.ARTIS_TABLE_TYPES.get(identifier);
                     if (type instanceof ArtisExistingItemType) {
-                        if (!world.isClient)
-                            ContainerProviderRegistry.INSTANCE.openContainer(identifier, playerEntity, buf -> buf.writeBlockPos(playerEntity.getBlockPos()));
+                        if (!world.isClient) {
+                            playerEntity.openHandledScreen(new ArtisScreenFactory(type, null, null));
+                            //ContainerProviderRegistry.INSTANCE.openContainer(identifier, playerEntity, buf -> buf.writeBlockPos(playerEntity.getBlockPos()));
+                        }
                         return TypedActionResult.success(playerEntity.getStackInHand(hand));
                     }
                 }

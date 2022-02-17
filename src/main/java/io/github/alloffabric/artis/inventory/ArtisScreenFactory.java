@@ -18,7 +18,11 @@ public record ArtisScreenFactory(ArtisTableType tableType, Block block, BlockHit
 
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        return new ArtisRecipeProvider(Registry.SCREEN_HANDLER.get(tableType.getId()), tableType, syncId, player, ScreenHandlerContext.create(player.world, blockHitResult.getBlockPos()));
+        if(this.block == null || this.blockHitResult == null) {
+            return new ArtisRecipeProvider(Registry.SCREEN_HANDLER.get(tableType.getId()), tableType, syncId, player, ScreenHandlerContext.create(player.world, player.getBlockPos()));
+        } else {
+            return new ArtisRecipeProvider(Registry.SCREEN_HANDLER.get(tableType.getId()), tableType, syncId, player, ScreenHandlerContext.create(player.world, blockHitResult.getBlockPos()));
+        }
     }
 
     @Override
@@ -28,7 +32,11 @@ public record ArtisScreenFactory(ArtisTableType tableType, Block block, BlockHit
 
     @Override
     public void writeScreenOpeningData(ServerPlayerEntity serverPlayerEntity, PacketByteBuf packetByteBuf) {
-        packetByteBuf.writeBlockPos(blockHitResult.getBlockPos());
+        if(blockHitResult == null) {
+            packetByteBuf.writeBlockPos(serverPlayerEntity.getBlockPos());
+        } else {
+            packetByteBuf.writeBlockPos(blockHitResult.getBlockPos());
+        }
     }
     
 }

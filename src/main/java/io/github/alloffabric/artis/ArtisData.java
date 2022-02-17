@@ -79,6 +79,7 @@ public class ArtisData {
     }
     
     static ArtisTableType getType(String key, JsonObject json) {
+        String tableType = json.containsKey("type") ? json.get(String.class, "type") : "normal";
         Identifier id;
         String name;
         boolean blockEntity;
@@ -92,12 +93,17 @@ public class ArtisData {
             if(json.containsKey("display_name")) {
                 name = json.get(String.class, "display_name");
             } else {
-                name = Language.getInstance().get(((TranslatableText) Registry.BLOCK.get(id).getName()).getKey());
+                if(tableType.equals("existing_block")) {
+                    name = Language.getInstance().get(((TranslatableText) Registry.BLOCK.get(id).getName()).getKey());
+                } else if(tableType.equals("existing_item")) {
+                    name = Language.getInstance().get(((TranslatableText) Registry.ITEM.get(id).getName()).getKey());
+                } else {
+                    name = key;
+                }
             }
     
             blockEntity = false;
         }
-        String tableType = json.containsKey("type") ? json.get(String.class, "type") : "normal";
         int width = json.getInt("width", 3);
         int height = json.getInt("height", 3);
         if (width > 7) {
