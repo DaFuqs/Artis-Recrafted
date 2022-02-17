@@ -67,11 +67,11 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
 
         this.resultSlot = new WArtisResultSlot(player, craftInv, resultInv, 0, 1, 1, true, syncId);
         int offsetX = 8;
-        mainPanel.add(resultSlot, layout.getResultX() + offsetX, layout.getResultY() + 4);
+        mainPanel.add(resultSlot, layout.getResultX() + offsetX, layout.getResultY() + 5);
 
         if (getTableType().hasCatalystSlot()) {
             this.catalystSlot = WItemSlot.of(craftInv, craftInv.size() - 1);
-            mainPanel.add(catalystSlot, layout.getCatalystX() + offsetX, layout.getCatalystY());
+            mainPanel.add(catalystSlot, layout.getCatalystX() + offsetX, layout.getCatalystY() + 1);
     
             WLabel catalystCost = new WLabel("", 0xAA0000).setHorizontalAlignment(HorizontalAlignment.CENTER);
             mainPanel.add(catalystCost, layout.getCatalystX() + offsetX, layout.getCatalystY() + 19);
@@ -87,7 +87,7 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
         mainPanel.add(label, 8, 6);
 
         WSprite arrow = new WSprite(new Identifier(Artis.MODID, "textures/gui/translucent_arrow.png"));
-        mainPanel.add(arrow, layout.getArrowX() + offsetX, layout.getArrowY() + 4, 22, 15);
+        mainPanel.add(arrow, layout.getArrowX() + offsetX, layout.getArrowY() + 5, 22, 15);
 
         mainPanel.validate(this);
         craftInv.setCheckMatrixChanges(true);
@@ -249,8 +249,8 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
         Slot slot = this.slots.get(slotIndex);
         if (slot.hasStack()) {
             if (slotIndex == getCraftingResultSlotIndex()) {
-                int slotcount = getCraftingSlotCount() + (tableType.hasCatalystSlot() ? 1 : 0);
-                return handleShiftCraft(player,this,slot,craftInv,resultInv,slotcount,slotcount + 36);
+                int slotCount = getCraftingSlotCount() + (tableType.hasCatalystSlot() ? 1 : 0);
+                return handleShiftCraft(player, this, slot, craftInv, resultInv, slotCount, slotCount + 36);
             }
             ItemStack toTake = slot.getStack();
             stack = toTake.copy();
