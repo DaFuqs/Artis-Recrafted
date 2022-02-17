@@ -9,13 +9,22 @@ import net.devtech.arrp.json.blockstate.JState;
 import net.devtech.arrp.json.lang.JLang;
 import net.devtech.arrp.json.models.JModel;
 import net.devtech.arrp.json.tags.JTag;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.color.block.BlockColorProvider;
+import net.minecraft.client.color.item.ItemColorProvider;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.BlockRenderView;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static net.devtech.arrp.json.loot.JLootTable.*;
+import static net.devtech.arrp.json.models.JModel.textures;
 
 public class ArtisResources {
 	
@@ -51,6 +60,10 @@ public class ArtisResources {
 		// block and item models
 		JBlockModel blockModel = JState.model(new Identifier(Artis.MODID, "block/table" + (artisTableType.hasColor() ? "_overlay" : "")));
 		JModel model = JModel.model(new Identifier(Artis.MODID, "block/table" + (artisTableType.hasColor() ? "_overlay" : ""))); // TODO: tint
+		if(artisTableType.hasColor()) {
+			ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> artisTableType.getColor());
+			ColorProviderRegistry.ITEM.register((stack, tintIndex) -> artisTableType.getColor());
+		}
 		RESOURCE_PACK.addBlockState(JState.state(JState.variant(blockModel)), new Identifier(Artis.MODID, tableIdPath));
 		RESOURCE_PACK.addModel(model, new Identifier(Artis.MODID, "item/" + tableIdPath));
 	}
