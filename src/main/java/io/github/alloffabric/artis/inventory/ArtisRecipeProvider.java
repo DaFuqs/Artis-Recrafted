@@ -248,27 +248,33 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
         ItemStack stack = ItemStack.EMPTY;
         Slot slot = this.slots.get(slotIndex);
         if (slot.hasStack()) {
+            int tableSlotCount = getCraftingSlotCount() + 1 + (tableType.hasCatalystSlot() ? 1 : 0);
             if (slotIndex == getCraftingResultSlotIndex()) {
-                int slotCount = getCraftingSlotCount() + (tableType.hasCatalystSlot() ? 1 : 0);
-                return handleShiftCraft(player, this, slot, craftInv, resultInv, slotCount, slotCount + 36);
+                return handleShiftCraft(player, this, slot, craftInv, resultInv, tableSlotCount, tableSlotCount + 36);
             }
             ItemStack toTake = slot.getStack();
             stack = toTake.copy();
-
-            if (toTake.isEmpty()) {
+    
+            if (slotIndex < tableSlotCount) {
+                if (!this.insertItem(stack, tableSlotCount, this.slots.size(), true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!this.insertItem(stack, 0, tableSlotCount, false)) {
+                return ItemStack.EMPTY;
+            }
+    
+            if (stack.isEmpty()) {
                 slot.setStack(ItemStack.EMPTY);
             } else {
                 slot.markDirty();
             }
-
-            if (toTake.getCount() == stack.getCount()) {
-                return ItemStack.EMPTY;
-            }
-            
-            slot.onTakeItem(player, toTake);
+    
             if (slotIndex == getCraftingResultSlotIndex()) {
                 player.dropItem(toTake, false);
             }
+            
+            slot.onTakeItem(player, toTake);
+
         }
 
         return stack;
