@@ -16,6 +16,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.registry.Registry;
 
 public class ArtisEvents {
+    
     public static void init() {
         UseBlockCallback.EVENT.register((playerEntity, world, hand, blockHitResult) -> {
             Block block = world.getBlockState(blockHitResult.getBlockPos()).getBlock();
@@ -47,4 +48,5 @@ public class ArtisEvents {
             return TypedActionResult.pass(playerEntity.getStackInHand(hand));
         });
     }
+    
 }

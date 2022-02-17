@@ -4,16 +4,13 @@ import io.github.alloffabric.artis.api.ArtisCraftingRecipe;
 import io.github.alloffabric.artis.api.SpecialCatalyst;
 import io.github.alloffabric.artis.inventory.ArtisCraftingInventory;
 import io.github.cottonmc.cotton.gui.ValidatedSlot;
-import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.s2c.play.ScreenHandlerSlotUpdateS2CPacket;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeUnlocker;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.collection.DefaultedList;
 
 public class ValidatedArtisResultSlot extends ValidatedSlot {

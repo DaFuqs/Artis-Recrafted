@@ -5,7 +5,6 @@ import io.github.cottonmc.cotton.gui.ValidatedSlot;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.screen.ScreenHandler;
 
 public class WArtisResultSlot extends WItemSlot {
 

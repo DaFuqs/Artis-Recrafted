@@ -12,7 +12,6 @@ import io.github.alloffabric.artis.event.ArtisEvents;
 import io.github.alloffabric.artis.inventory.ArtisRecipeProvider;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
@@ -25,7 +24,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
@@ -36,7 +34,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.function.Supplier;
 
 public class Artis implements ModInitializer {
     
@@ -52,14 +49,11 @@ public class Artis implements ModInitializer {
     public static final ArrayList<ArtisTableBlock> ARTIS_TABLE_BE_BLOCKS = new ArrayList<>();
 
     public static final SimpleRegistry<ArtisTableType> ARTIS_TABLE_TYPES = new SimpleRegistry<>(RegistryKey.ofRegistry(new Identifier(MODID, "artis_table_types")), Lifecycle.stable());
-    public static final ItemGroup ARTIS_GROUP = FabricItemGroupBuilder.build(new Identifier(MODID, "group"), new Supplier<ItemStack>() {
-        @Override
-        public ItemStack get() {
-            if(!ARTIS_TABLE_TYPES.isEmpty()) {
-                return new ItemStack(Registry.BLOCK.get(ARTIS_TABLE_TYPES.get(0).getId()).asItem());
-            } else {
-                return new ItemStack(Items.CRAFTING_TABLE);
-            }
+    public static final ItemGroup ARTIS_GROUP = FabricItemGroupBuilder.build(new Identifier(MODID, "group"), () -> {
+        if(!ARTIS_TABLE_TYPES.isEmpty()) {
+            return new ItemStack(Registry.BLOCK.get(ARTIS_TABLE_TYPES.get(0).getId()).asItem());
+        } else {
+            return new ItemStack(Items.CRAFTING_TABLE);
         }
     });
     public static BlockEntityType<ArtisTableBlockEntity> ARTIS_BLOCK_ENTITY;

@@ -1,6 +1,5 @@
 package io.github.alloffabric.artis.compat.rei;
 
-import dev.architectury.event.EventResult;
 import io.github.alloffabric.artis.Artis;
 import io.github.alloffabric.artis.api.ArtisCraftingRecipe;
 import io.github.alloffabric.artis.api.ArtisTableType;
@@ -15,7 +14,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemConvertible;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.util.registry.Registry;
 
 import java.util.HashMap;

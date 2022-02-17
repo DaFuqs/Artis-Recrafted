@@ -16,7 +16,6 @@ import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.Level;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;

@@ -4,8 +4,6 @@ import io.github.alloffabric.artis.Artis;
 import io.github.alloffabric.artis.api.ArtisTableType;
 import io.github.alloffabric.artis.inventory.ArtisRecipeProvider;
 import io.github.alloffabric.artis.inventory.DefaultInventory;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;

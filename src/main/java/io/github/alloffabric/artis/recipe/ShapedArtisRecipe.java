@@ -1,7 +1,6 @@
 package io.github.alloffabric.artis.recipe;
 
 import io.github.alloffabric.artis.api.ArtisCraftingRecipe;
-import io.github.alloffabric.artis.api.ArtisTableType;
 import io.github.alloffabric.artis.api.SpecialCatalyst;
 import io.github.alloffabric.artis.compat.nbtcrafting.NbtCraftingUtil;
 import io.github.alloffabric.artis.inventory.ArtisCraftingInventory;
