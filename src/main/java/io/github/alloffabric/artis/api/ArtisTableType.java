@@ -21,19 +21,18 @@ public class ArtisTableType implements RecipeType {
     private final boolean blockEntity;
     private final boolean catalystSlot;
     private final boolean includeNormalRecipes;
-    private final boolean generateAssets;
     private boolean hasColor = false;
     private final RecipeSerializer shaped;
     private final RecipeSerializer shapeless;
     private final List<Identifier> blockTags;
 
-    public ArtisTableType(Identifier id, String name, int width, int height, boolean blockEntity, boolean catalystSlot, boolean includeNormalRecipes, boolean makeAssets, int color, List<Identifier> blockTags) {
-        this(id, name, width, height, blockEntity, catalystSlot, includeNormalRecipes, makeAssets, blockTags);
+    public ArtisTableType(Identifier id, String name, int width, int height, boolean blockEntity, boolean catalystSlot, boolean includeNormalRecipes, int color, List<Identifier> blockTags) {
+        this(id, name, width, height, blockEntity, catalystSlot, includeNormalRecipes, blockTags);
         this.color = 0xFF000000 | color;
         this.hasColor = true;
     }
 
-    public ArtisTableType(Identifier id, String name, int width, int height, boolean blockEntity, boolean catalystSlot, boolean includeNormalRecipes, boolean makeAssets, List<Identifier> blockTags) {
+    public ArtisTableType(Identifier id, String name, int width, int height, boolean blockEntity, boolean catalystSlot, boolean includeNormalRecipes, List<Identifier> blockTags) {
         this.id = id;
         this.name = name;
         this.width = width;
@@ -41,7 +40,6 @@ public class ArtisTableType implements RecipeType {
         this.blockEntity = blockEntity;
         this.catalystSlot = catalystSlot;
         this.includeNormalRecipes = includeNormalRecipes;
-        this.generateAssets = makeAssets;
         Identifier shapedId = new Identifier(id.getNamespace(), id.getPath() + "_shaped");
         Identifier shapelessId = new Identifier(id.getNamespace(), id.getPath() + "_shapeless");
         this.shaped = Registry.register(Registry.RECIPE_SERIALIZER, shapedId, new ShapedArtisSerializer(this));
@@ -81,10 +79,6 @@ public class ArtisTableType implements RecipeType {
         return includeNormalRecipes;
     }
 
-    public boolean shouldGenerateAssets() {
-        return generateAssets;
-    }
-
     public boolean hasColor() {
         return hasColor;
     }
@@ -109,5 +103,10 @@ public class ArtisTableType implements RecipeType {
     public String getName() {
         return this.name;
     }
-
+    
+    @Override
+    public String toString() {
+        return this.id.toString();
+    }
+    
 }

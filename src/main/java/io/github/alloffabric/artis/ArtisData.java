@@ -11,7 +11,9 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Language;
 import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.Level;
 
@@ -77,7 +79,24 @@ public class ArtisData {
     }
     
     static ArtisTableType getType(String key, JsonObject json) {
-        Identifier id = new Identifier(Artis.MODID, key);
+        Identifier id;
+        String name;
+        boolean blockEntity;
+        if(!key.contains(":")) {
+            id = new Identifier(Artis.MODID, key);
+            name = json.get(String.class, "display_name");
+            
+            blockEntity = json.getBoolean("block_entity", false);
+        } else {
+            id = new Identifier(key);
+            if(json.containsKey("display_name")) {
+                name = json.get(String.class, "display_name");
+            } else {
+                name = Language.getInstance().get(((TranslatableText) Registry.BLOCK.get(id).getName()).getKey());
+            }
+    
+            blockEntity = false;
+        }
         String tableType = json.containsKey("type") ? json.get(String.class, "type") : "normal";
         int width = json.getInt("width", 3);
         int height = json.getInt("height", 3);
@@ -95,11 +114,8 @@ public class ArtisData {
                 height = 9;
             }
         }
-        boolean blockEntity = json.getBoolean("block_entity", false);
         boolean catalystSlot = json.getBoolean("catalyst_slot", false);
-        String name = json.get(String.class, "display_name");
         boolean includeNormalRecipes = json.getBoolean("normal_recipes", false);
-        boolean genAssets = json.getBoolean("generate_assets", false);
     
         List<Identifier> blockTags = new ArrayList<>();
         blockTags.add(artisTableBlockTagIdentifier);
@@ -110,7 +126,7 @@ public class ArtisData {
                 Identifier identifier = Identifier.tryParse(currentString);
         
                 if (identifier == null) {
-                    Artis.log(Level.WARN, "Tag " + currentElement.toString() + " could not be applied. Valid identifier?");
+                    Artis.log(Level.WARN, "Tag " + currentElement + " could not be applied. Valid identifier?");
                 } else {
                     blockTags.add(identifier);
                 }
@@ -120,27 +136,27 @@ public class ArtisData {
         if (tableType.equals("existing_block")) {
             if (Registry.BLOCK.containsId(id) || json.getBoolean("bypass_check", false)) {
                 if (json.containsKey("color")) {
-                    return new ArtisExistingBlockType(id, name, width, height, blockEntity, catalystSlot, includeNormalRecipes, genAssets, Integer.decode(json.get(String.class, "color").replace("#", "0x")), blockTags);
+                    return new ArtisExistingBlockType(id, name, width, height, blockEntity, catalystSlot, includeNormalRecipes, Integer.decode(json.get(String.class, "color").replace("#", "0x")), blockTags);
                 }
-                return new ArtisExistingBlockType(id, name, width, height, blockEntity, catalystSlot, includeNormalRecipes, genAssets, blockTags);
+                return new ArtisExistingBlockType(id, name, width, height, blockEntity, catalystSlot, includeNormalRecipes, blockTags);
             } else {
                 Artis.log(Level.ERROR, "Table type named " + key + " could not find the block specified. Are you sure it exists? If it definitely exists, try setting bypass_check to true.");
             }
         } else if (tableType.equals("existing_item")) {
             if (Registry.ITEM.containsId(id) || json.getBoolean("bypass_check", false)) {
                 if (json.containsKey("color")) {
-                    return new ArtisExistingItemType(id, name, width, height, catalystSlot, includeNormalRecipes, genAssets, Integer.decode(json.get(String.class, "color").replace("#", "0x")), blockTags);
+                    return new ArtisExistingItemType(id, name, width, height, catalystSlot, includeNormalRecipes, Integer.decode(json.get(String.class, "color").replace("#", "0x")), blockTags);
                 }
-                return new ArtisExistingItemType(id, name, width, height, catalystSlot, includeNormalRecipes, genAssets, blockTags);
+                return new ArtisExistingItemType(id, name, width, height, catalystSlot, includeNormalRecipes, blockTags);
             } else {
                 Artis.log(Level.ERROR, "Table type named " + key + " could not find the item specified. Are you sure it exists? If it definitely exists, try setting bypass_check to true.");
             }
         }
         if (json.containsKey("color")) {
-            return new ArtisTableType(id, name, width, height, blockEntity, catalystSlot, includeNormalRecipes, genAssets, Integer.decode(json.get(String.class, "color").replace("#", "0x")), blockTags);
+            return new ArtisTableType(id, name, width, height, blockEntity, catalystSlot, includeNormalRecipes, Integer.decode(json.get(String.class, "color").replace("#", "0x")), blockTags);
         }
         
-        return new ArtisTableType(id, name, width, height, blockEntity, catalystSlot, includeNormalRecipes, genAssets, blockTags);
+        return new ArtisTableType(id, name, width, height, blockEntity, catalystSlot, includeNormalRecipes, blockTags);
     }
 
 }

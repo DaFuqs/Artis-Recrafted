@@ -23,7 +23,7 @@ public record ArtisScreenFactory(ArtisTableType tableType, Block block, BlockHit
 
     @Override
     public Text getDisplayName() {
-        return new LiteralText("");
+        return new LiteralText(tableType.getName());
     }
 
     @Override

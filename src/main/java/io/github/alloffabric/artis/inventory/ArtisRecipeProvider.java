@@ -212,11 +212,11 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
             Recipe<CraftingInventory> recipe = (Recipe<CraftingInventory>) result.getLastRecipe();
             //find artis recipe first
             if (recipe == null || !recipe.matches(inv, world)) {
-                recipe = findArtisRecipe(artisTableType,inv, world);
+                recipe = findArtisRecipe(artisTableType, inv, world);
             }
             //else fall back to vanilla
             if (recipe == null && artisTableType.shouldIncludeNormalRecipes()) {
-                recipe = findVanillaRecipe(inv,world);
+                recipe = findVanillaRecipe(inv, world);
             }
             //there is no matching recipe
             if (recipe != null) {
