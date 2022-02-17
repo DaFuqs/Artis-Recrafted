@@ -69,12 +69,13 @@ public class ArtisTableBlockEntity extends BlockEntity implements DefaultInvento
     }
 
     @Override
-    public void writeNbt(NbtCompound nbt) {
+    public NbtCompound writeNbt(NbtCompound nbt) {
         if (tableType != null)
             nbt.putString("tableType", tableType.getId().toString());
 
         if (stacks != null)
             Inventories.writeNbt(nbt, stacks);
+        return nbt;
     }
     
     public void updateInClientWorld() {
