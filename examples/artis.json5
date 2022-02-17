@@ -1,11 +1,23 @@
 {
   "tables": {
+    "minecraft:fletching_table": {
+      "type": "existing_block",
+      "normal_recipes": true,
+      "width": 1,
+      "height": 3,
+      "catalyst_slot": true
+    },
+    "minecraft:stick": {
+      "type": "existing_item",
+      "width": 2,
+      "height": 3,
+      "catalyst_slot": false
+    },
     "test_table": {
       "display_name": "Test Table",
       "width": 4,
       "height": 3,
       "block_entity": true,
-      "generate_assets": true,
       "settings": {
         "material": "wood",
         "non_opaque": true,
@@ -22,8 +34,8 @@
       "display_name": "Test Table 6x6",
       "width": 6,
       "height": 6,
+      "normal_recipes": true,
       "block_entity": false,
-      "generate_assets": true,
       "color": "#7F76D1",
       "settings": {
         "material": "wood",
@@ -40,8 +52,7 @@
       "width": 7,
       "height": 7,
       "block_entity": true,
-      "generate_assets": true,
-      "color": "#b22222",
+      "color": "#7F76D1",
       "settings": {
         "material": "wood",
         "non_opaque": true
