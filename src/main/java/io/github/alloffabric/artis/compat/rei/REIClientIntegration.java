@@ -2,6 +2,7 @@ package io.github.alloffabric.artis.compat.rei;
 
 import io.github.alloffabric.artis.Artis;
 import io.github.alloffabric.artis.api.ArtisCraftingRecipe;
+import io.github.alloffabric.artis.api.ArtisExistingItemType;
 import io.github.alloffabric.artis.api.ArtisTableType;
 import io.github.alloffabric.artis.block.ArtisTableBlock;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
@@ -13,6 +14,7 @@ import me.shedaniel.rei.plugin.common.BuiltinPlugin;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.util.registry.Registry;
 
@@ -35,12 +37,20 @@ public class REIClientIntegration implements REIClientPlugin {
         for (ArtisTableType type : Artis.ARTIS_TABLE_TYPES) {
             registry.add(new ArtisRecipeCategory<>(type));
             
-            Block block = Registry.BLOCK.get(type.getId());
-            registry.addWorkstations(type.getCategoryIdentifier(), EntryStacks.of(block));
-    
-            if (type.shouldIncludeNormalRecipes()) {
-                registry.addWorkstations(BuiltinPlugin.CRAFTING, EntryStacks.of(block));
+            if(type instanceof ArtisExistingItemType) {
+                Item item = Registry.ITEM.get(type.getId());
+                registry.addWorkstations(type.getCategoryIdentifier(), EntryStacks.of(item));
+                if (type.shouldIncludeNormalRecipes()) {
+                    registry.addWorkstations(BuiltinPlugin.CRAFTING, EntryStacks.of(item));
+                }
+            } else {
+                Block block = Registry.BLOCK.get(type.getId());
+                registry.addWorkstations(type.getCategoryIdentifier(), EntryStacks.of(block));
+                if (type.shouldIncludeNormalRecipes()) {
+                    registry.addWorkstations(BuiltinPlugin.CRAFTING, EntryStacks.of(block));
+                }
             }
+            
         }
     }
 

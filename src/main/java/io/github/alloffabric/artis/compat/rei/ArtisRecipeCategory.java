@@ -1,6 +1,7 @@
 package io.github.alloffabric.artis.compat.rei;
 
 import com.google.common.collect.Lists;
+import io.github.alloffabric.artis.api.ArtisExistingItemType;
 import io.github.alloffabric.artis.api.ArtisTableType;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
@@ -46,7 +47,11 @@ public class ArtisRecipeCategory<R extends Recipe> implements DisplayCategory<Ar
     
     @Override
     public Renderer getIcon() {
-        return EntryStacks.of(Registry.BLOCK.get(artisTableType.getId()));
+        if(artisTableType instanceof ArtisExistingItemType) {
+            return EntryStacks.of(Registry.ITEM.get(artisTableType.getId()));
+        } else {
+            return EntryStacks.of(Registry.BLOCK.get(artisTableType.getId()));
+        }
     }
     
     @Override
