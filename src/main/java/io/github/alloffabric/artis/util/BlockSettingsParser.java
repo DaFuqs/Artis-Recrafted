@@ -221,7 +221,13 @@ public class BlockSettingsParser {
             settings = FabricBlockSettings.copyOf(Registry.BLOCK.get(new Identifier(copyBlockArg)));
         } else if (json.containsKey("material")) {
             String materialArg = json.get(String.class, "material");
-            settings = FabricBlockSettings.of(MATERIALS.get(materialArg));
+            
+            if(MATERIALS.containsKey(materialArg)) {
+                settings = FabricBlockSettings.of(MATERIALS.get(materialArg));
+            } else {
+                Artis.log(Level.ERROR, "Specified Material \"" + materialArg + "\" does not exist. Falling back to a copy of crafting table...");
+                settings = FabricBlockSettings.copyOf(Blocks.CRAFTING_TABLE);
+            }
         } else {
             settings = FabricBlockSettings.copyOf(Blocks.CRAFTING_TABLE);
         }
@@ -233,7 +239,13 @@ public class BlockSettingsParser {
         }
 
         if (json.containsKey("material_color")) {
-            settings.mapColor(MAP_COLORS.get(json.get(String.class, "material_color")));
+            String colorString = json.get(String.class, "material_color");
+            if(MAP_COLORS.containsKey(colorString)) {
+                settings.mapColor(MAP_COLORS.get(colorString));
+            } else {
+                Artis.log(Level.ERROR, "Specified Material Color \"" + colorString + "\" does not exist. Falling back to white_gray...");
+                settings.mapColor(MapColor.WHITE_GRAY);
+            }
         }
 
         if (json.containsKey("collidable")) {
@@ -246,7 +258,12 @@ public class BlockSettingsParser {
 
         if (json.containsKey("sounds")) {
             String sounds = json.get(String.class, "sounds");
-            settings.sounds(SOUND_GROUPS.get(sounds));
+            if(SOUND_GROUPS.containsKey(sounds)) {
+                settings.sounds(SOUND_GROUPS.get(sounds));
+            } else {
+                Artis.log(Level.ERROR, "Specified Sound Group \"" + sounds + "\" does not exist. Falling back to wood...");
+                settings.sounds(BlockSoundGroup.WOOD);
+            }
         }
 
         if (json.containsKey("light_level")) {
