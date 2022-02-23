@@ -97,7 +97,13 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
         }
         
         int width = Math.max(176, 74 + tableType.getWidth() * 18);
-        mainPanel.setSize(width, 120 + tableType.getHeight() * 18);
+        int height;
+        if(tableType.hasCatalystSlot()) {
+            height = Math.max(150, 120 + tableType.getHeight() * 18);
+        } else {
+            height = Math.max(140, 120 + tableType.getHeight() * 18);
+        }
+        mainPanel.setSize(width, height);
     }
 
     private static BackgroundPainter slotColor(int color) {
