@@ -96,7 +96,6 @@ public class ArtisRecipeCategory<R extends Recipe> implements DisplayCategory<Ar
         EntryIngredient catalyst = EntryIngredients.ofIngredient(recipeDisplay.getCatalyst());
         widgets.add(TransparentArrowWidget.create(new Point(slots.get(slots.size() - 1).getX() + 24, startPoint.y + (getDisplayHeight() / 2) - 23)).disableAnimation());
         if (artisTableType.hasColor()) {
-            
             widgets.add(ColorableEntryWidget.create(slots.get(slots.size() - 1).getX() + 55, startPoint.y + (getDisplayHeight() / 2) - 22, artisTableType.getColor()).markOutput().entries(output.get(0)));
             if (artisTableType.hasCatalystSlot()) {
                 widgets.add(ColorableEntryWidget.create(slots.get(slots.size() - 1).getX() + 28, startPoint.y + (getDisplayHeight() / 2) - 4, artisTableType.getColor()).entries(catalyst));
