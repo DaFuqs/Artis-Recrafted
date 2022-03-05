@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import io.github.alloffabric.artis.api.ArtisTableType;
+import net.minecraft.data.server.recipe.ShapedRecipeJsonFactory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
@@ -125,7 +126,7 @@ public class ShapedArtisSerializer implements RecipeSerializer<ShapedArtisRecipe
         int width = pattern[0].length();
         int height = pattern.length;
         DefaultedList<Ingredient> ingredients = getIngredients(pattern, key, width, height);
-        ItemStack output = new ItemStack(ShapedRecipe.getItem(JsonHelper.getObject(jsonObject, "result")));
+        ItemStack output = ShapedRecipe.outputFromJson(JsonHelper.getObject(jsonObject, "result"));
         Ingredient catalyst = JsonHelper.hasElement(jsonObject, "catalyst") ? Ingredient.fromJson(jsonObject.get("catalyst")) : Ingredient.ofStacks(ItemStack.EMPTY);
         int cost = JsonHelper.hasElement(jsonObject, "cost") ? JsonHelper.getInt(jsonObject, "cost") : 0;
         return new ShapedArtisRecipe(type, this, id, group, width, height, ingredients, output, catalyst, cost);

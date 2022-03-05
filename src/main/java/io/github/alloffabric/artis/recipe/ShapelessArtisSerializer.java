@@ -43,7 +43,7 @@ public class ShapelessArtisSerializer implements RecipeSerializer<ShapelessArtis
         } else if (ingredients.size() > type.getWidth() * type.getHeight()) {
             throw new JsonParseException("Too many ingredients for shapeless " + type.getId().toString() + " recipe");
         } else {
-            ItemStack output = new ItemStack(ShapedRecipe.getItem(JsonHelper.getObject(jsonObject, "result")));
+            ItemStack output = ShapedRecipe.outputFromJson(JsonHelper.getObject(jsonObject, "result"));
             Ingredient catalyst = JsonHelper.hasElement(jsonObject, "catalyst") ? Ingredient.fromJson(jsonObject.get("catalyst")) : Ingredient.ofStacks(ItemStack.EMPTY);
             int cost = JsonHelper.hasElement(jsonObject, "cost") ? JsonHelper.getInt(jsonObject, "cost") : 0;
             return new ShapelessArtisRecipe(type, this, id, group, ingredients, output, catalyst, cost);
