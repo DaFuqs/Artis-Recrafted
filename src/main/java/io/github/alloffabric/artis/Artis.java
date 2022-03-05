@@ -52,7 +52,12 @@ public class Artis implements ModInitializer {
     public static final SimpleRegistry<ArtisTableType> ARTIS_TABLE_TYPES = new SimpleRegistry<>(RegistryKey.ofRegistry(new Identifier(MODID, "artis_table_types")), Lifecycle.stable());
     public static final ItemGroup ARTIS_GROUP = FabricItemGroupBuilder.build(new Identifier(MODID, "group"), () -> {
         if(!ARTIS_TABLE_TYPES.isEmpty()) {
-            return new ItemStack(Registry.BLOCK.get(ARTIS_TABLE_TYPES.get(0).getId()).asItem());
+            ArtisTableType firstTableType = ARTIS_TABLE_TYPES.get(0);
+            if(firstTableType instanceof ArtisExistingItemType) {
+                return new ItemStack(Registry.ITEM.get(firstTableType.getId()));
+            } else {
+                return new ItemStack(Registry.BLOCK.get(firstTableType.getId()).asItem());
+            }
         } else {
             return new ItemStack(Items.CRAFTING_TABLE);
         }

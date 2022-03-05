@@ -27,7 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class ArtisRecipeCategory<R extends Recipe> implements DisplayCategory<ArtisRecipeDisplay> {
+public class ArtisRecipeCategory implements DisplayCategory<ArtisRecipeDisplay> {
     
     private final ArtisTableType artisTableType;
 

@@ -35,7 +35,7 @@ public class REIClientIntegration implements REIClientPlugin {
     @Override
     public void registerCategories(CategoryRegistry registry) {
         for (ArtisTableType type : Artis.ARTIS_TABLE_TYPES) {
-            registry.add(new ArtisRecipeCategory<>(type));
+            registry.add(new ArtisRecipeCategory(type));
             
             if(type instanceof ArtisExistingItemType) {
                 Item item = Registry.ITEM.get(type.getId());
