@@ -21,6 +21,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.registry.Registry;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class ArtisRecipeCategory<R extends Recipe> implements DisplayCategory<Ar
         this.artisTableType = artisTableType;
     }
 
-    public static int getSlotWithSize(ArtisRecipeDisplay recipeDisplay, int num, int craftingGridWidth) {
+    public static int getSlotWithSize(@NotNull ArtisRecipeDisplay recipeDisplay, int num, int craftingGridWidth) {
         int x = num % recipeDisplay.getDisplay().getWidth();
         int y = (num - x) / recipeDisplay.getDisplay().getWidth();
         return craftingGridWidth * y + x;
@@ -60,7 +61,7 @@ public class ArtisRecipeCategory<R extends Recipe> implements DisplayCategory<Ar
     }
     
     @Override
-    public List<Widget> setupDisplay(ArtisRecipeDisplay recipeDisplay, Rectangle bounds) {
+    public List<Widget> setupDisplay(ArtisRecipeDisplay recipeDisplay, @NotNull Rectangle bounds) {
         Point startPoint = new Point(bounds.getCenterX() - (getDisplayWidth(recipeDisplay) / 2) + 17, bounds.getCenterY() - (getDisplayHeight() / 2) + 15);
         
         if (artisTableType.hasCatalystSlot() && artisTableType.getHeight() == 1) {

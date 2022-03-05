@@ -5,6 +5,8 @@ import me.shedaniel.math.Point;
 import me.shedaniel.rei.impl.client.gui.widget.EntryWidget;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.util.math.MatrixStack;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,11 +27,13 @@ public class ColorableEntryWidget extends EntryWidget {
         this.color = color;
     }
 
-    public static ColorableEntryWidget create(int x, int y, int color) {
+    @Contract("_, _, _ -> new")
+    public static @NotNull ColorableEntryWidget create(int x, int y, int color) {
         return create(new Point(x, y), color);
     }
 
-    public static ColorableEntryWidget create(Point point, int color) {
+    @Contract("_, _ -> new")
+    public static @NotNull ColorableEntryWidget create(Point point, int color) {
         return new ColorableEntryWidget(point, color);
     }
 

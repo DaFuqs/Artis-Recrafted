@@ -13,11 +13,14 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.registry.Registry;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 public record ArtisScreenFactory(ArtisTableType tableType, Block block, BlockHitResult blockHitResult) implements ExtendedScreenHandlerFactory {
 
+    @Contract("_, _, _ -> new")
     @Override
-    public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
+    public @NotNull ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
         if(this.block == null || this.blockHitResult == null) {
             return new ArtisRecipeProvider(Registry.SCREEN_HANDLER.get(tableType.getId()), tableType, syncId, player, ScreenHandlerContext.create(player.world, player.getBlockPos()));
         } else {
@@ -25,8 +28,9 @@ public record ArtisScreenFactory(ArtisTableType tableType, Block block, BlockHit
         }
     }
 
+    @Contract(" -> new")
     @Override
-    public Text getDisplayName() {
+    public @NotNull Text getDisplayName() {
         return new LiteralText(tableType.getName());
     }
 

@@ -93,7 +93,7 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
         craftInv.setCheckMatrixChanges(true);
         if (player.world.isClient) {
             PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-            ClientSidePacketRegistry.INSTANCE.sendToServer(Artis.request_sync, buf);
+            ClientSidePacketRegistry.INSTANCE.sendToServer(Artis.REQUEST_SYNC_IDENTIFIER, buf);
         }
         
         int width = Math.max(176, 74 + tableType.getWidth() * 18);
@@ -231,8 +231,8 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
 
             result.setStack(0, itemstack);
             PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-            buf.writeIdentifier(recipe != null ? recipe.getId(): Artis.dummy);
-            ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, Artis.recipe_sync, buf);
+            buf.writeIdentifier(recipe != null ? recipe.getId(): Artis.NULL_IDENTIFIER);
+            ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, Artis.RECIPE_SYNC_IDENTIFIER, buf);
             if(recipe != null) {
                 result.setLastRecipe(recipe);
             }

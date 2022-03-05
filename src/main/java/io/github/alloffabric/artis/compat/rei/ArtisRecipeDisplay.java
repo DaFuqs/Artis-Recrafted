@@ -31,7 +31,7 @@ public class ArtisRecipeDisplay extends BasicDisplay implements SimpleGridMenuDi
     private final List<EntryIngredient> input;
     private final List<EntryIngredient> output;
 
-    public ArtisRecipeDisplay(ArtisCraftingRecipe recipe) {
+    public ArtisRecipeDisplay(@NotNull ArtisCraftingRecipe recipe) {
         super(recipe.getIngredients().stream().map(EntryIngredients::ofIngredient).collect(Collectors.toCollection(ArrayList::new)), Collections.singletonList(EntryIngredients.of(recipe.getOutput())));
         this.display = recipe;
         this.type = (ArtisTableType) recipe.getType();
@@ -44,7 +44,7 @@ public class ArtisRecipeDisplay extends BasicDisplay implements SimpleGridMenuDi
     /**
      * When using Shift click on the plus button in the REI gui to autofill crafting grids
      */
-    public ArtisRecipeDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, ArtisCraftingRecipe recipe) {
+    public ArtisRecipeDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, @NotNull ArtisCraftingRecipe recipe) {
         super(inputs, outputs);
         this.display = recipe;
         this.type = (ArtisTableType) recipe.getType();

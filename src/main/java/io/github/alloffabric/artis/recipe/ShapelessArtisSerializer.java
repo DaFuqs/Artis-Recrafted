@@ -12,6 +12,7 @@ import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
+import org.jetbrains.annotations.NotNull;
 
 public class ShapelessArtisSerializer implements RecipeSerializer<ShapelessArtisRecipe> {
     private final ArtisTableType type;
@@ -20,7 +21,7 @@ public class ShapelessArtisSerializer implements RecipeSerializer<ShapelessArtis
         this.type = type;
     }
 
-    private static DefaultedList<Ingredient> getIngredients(JsonArray array) {
+    private static @NotNull DefaultedList<Ingredient> getIngredients(@NotNull JsonArray array) {
         DefaultedList<Ingredient> ingredients = DefaultedList.of();
 
         for (int i = 0; i < array.size(); ++i) {
@@ -50,7 +51,7 @@ public class ShapelessArtisSerializer implements RecipeSerializer<ShapelessArtis
     }
 
     @Override
-    public ShapelessArtisRecipe read(Identifier id, PacketByteBuf buf) {
+    public ShapelessArtisRecipe read(Identifier id, @NotNull PacketByteBuf buf) {
         String group = buf.readString(32767);
         int size = buf.readVarInt();
         DefaultedList<Ingredient> ingredients = DefaultedList.ofSize(size, Ingredient.EMPTY);
@@ -68,7 +69,7 @@ public class ShapelessArtisSerializer implements RecipeSerializer<ShapelessArtis
     }
 
     @Override
-    public void write(PacketByteBuf buf, ShapelessArtisRecipe recipe) {
+    public void write(@NotNull PacketByteBuf buf, @NotNull ShapelessArtisRecipe recipe) {
         buf.writeString(recipe.getGroup());
         buf.writeVarInt(recipe.getIngredients().size());
 

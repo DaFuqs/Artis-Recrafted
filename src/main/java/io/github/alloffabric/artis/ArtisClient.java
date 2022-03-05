@@ -42,7 +42,7 @@ public class ArtisClient implements ClientModInitializer {
             }
         }
 
-        ClientSidePacketRegistry.INSTANCE.register(Artis.recipe_sync, (packetContext, attachedData) -> {
+        ClientSidePacketRegistry.INSTANCE.register(Artis.RECIPE_SYNC_IDENTIFIER, (packetContext, attachedData) -> {
             Identifier location = attachedData.readIdentifier();
             packetContext.getTaskQueue().execute(() -> {
                 ScreenHandler container = packetContext.getPlayer().currentScreenHandler;

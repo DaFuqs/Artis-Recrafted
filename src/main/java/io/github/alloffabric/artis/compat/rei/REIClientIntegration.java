@@ -85,12 +85,11 @@ public class REIClientIntegration implements REIClientPlugin {
      */
     @Override
     public void registerScreens(ScreenRegistry registry) {
-        for (ArtisTableType type : Artis.ARTIS_TABLE_TYPES) {
-            // since this one screen handles all different sizes there needs to be a better way to handle this
-            // TODO
+        // TODO: since this one screen handles all different sizes there needs to be a better way to handle this
+        //for (ArtisTableType type : Artis.ARTIS_TABLE_TYPES) {
             //registry.registerContainerClickArea(type.getREIClickArea(), ArtisCraftingScreen.class, type.getCategoryIdentifier());
             //registry.registerContainerClickArea(type.getREIClickArea(), ArtisCraftingScreen.class, BuiltinPlugin.CRAFTING);
-        }
+        //}
     }
     
 }

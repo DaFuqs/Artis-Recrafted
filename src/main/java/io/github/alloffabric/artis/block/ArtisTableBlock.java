@@ -19,6 +19,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 public class ArtisTableBlock extends Block implements ExtendedScreenHandlerFactory {
     
@@ -34,7 +35,7 @@ public class ArtisTableBlock extends Block implements ExtendedScreenHandlerFacto
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, @NotNull PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (!player.isSneaking()) {
             if (!world.isClient()) {
                 player.openHandledScreen(state.createScreenHandlerFactory(world, pos));
@@ -60,7 +61,7 @@ public class ArtisTableBlock extends Block implements ExtendedScreenHandlerFacto
     }
 
     @Override
-    public void writeScreenOpeningData(ServerPlayerEntity serverPlayerEntity, PacketByteBuf packetByteBuf) {
+    public void writeScreenOpeningData(@NotNull ServerPlayerEntity serverPlayerEntity, @NotNull PacketByteBuf packetByteBuf) {
         packetByteBuf.writeBlockPos(serverPlayerEntity.getBlockPos());
     }
     

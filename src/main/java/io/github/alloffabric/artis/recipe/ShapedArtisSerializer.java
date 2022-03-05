@@ -15,6 +15,7 @@ import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.Set;
@@ -26,7 +27,7 @@ public class ShapedArtisSerializer implements RecipeSerializer<ShapedArtisRecipe
         this.type = type;
     }
 
-    private static DefaultedList<Ingredient> getIngredients(String[] pattern, Map<String, Ingredient> key, int width, int height) {
+    private static @NotNull DefaultedList<Ingredient> getIngredients(String @NotNull [] pattern, @NotNull Map<String, Ingredient> key, int width, int height) {
         DefaultedList<Ingredient> ingredients = DefaultedList.ofSize(width * height, Ingredient.EMPTY);
         Set<String> symbols = Sets.newHashSet(key.keySet());
         symbols.remove(" ");
@@ -51,7 +52,7 @@ public class ShapedArtisSerializer implements RecipeSerializer<ShapedArtisRecipe
         }
     }
 
-    private static Map<String, Ingredient> getComponents(JsonObject json) {
+    private static @NotNull Map<String, Ingredient> getComponents(@NotNull JsonObject json) {
         Map<String, Ingredient> map_1 = Maps.newHashMap();
         for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
             if ((entry.getKey()).length() != 1) {
@@ -69,7 +70,7 @@ public class ShapedArtisSerializer implements RecipeSerializer<ShapedArtisRecipe
         return map_1;
     }
 
-    static String[] combinePattern(String... pattern) {
+    static String @NotNull [] combinePattern(String @NotNull ... pattern) {
         int startIndex = 2147483647;
         int int_2 = 0;
         int int_3 = 0;
@@ -104,13 +105,13 @@ public class ShapedArtisSerializer implements RecipeSerializer<ShapedArtisRecipe
         }
     }
 
-    private static int findNextIngredient(String ingredients) {
+    private static int findNextIngredient(@NotNull String ingredients) {
         int i;
         for (i = 0; i < ingredients.length() && ingredients.charAt(i) == ' '; ++i);
         return i;
     }
 
-    private static int findNextIngredientReverse(String ingredients) {
+    private static int findNextIngredientReverse(@NotNull String ingredients) {
         int i;
         for (i = ingredients.length() - 1; i >= 0 && ingredients.charAt(i) == ' '; --i);
         return i;
@@ -131,7 +132,7 @@ public class ShapedArtisSerializer implements RecipeSerializer<ShapedArtisRecipe
     }
 
     @Override
-    public ShapedArtisRecipe read(Identifier id, PacketByteBuf buf) {
+    public ShapedArtisRecipe read(Identifier id, @NotNull PacketByteBuf buf) {
         int width = buf.readVarInt();
         int height = buf.readVarInt();
         String group = buf.readString(32767);
@@ -151,7 +152,7 @@ public class ShapedArtisSerializer implements RecipeSerializer<ShapedArtisRecipe
     }
 
     @Override
-    public void write(PacketByteBuf buf, ShapedArtisRecipe recipe) {
+    public void write(@NotNull PacketByteBuf buf, @NotNull ShapedArtisRecipe recipe) {
         buf.writeVarInt(recipe.getWidth());
         buf.writeVarInt(recipe.getHeight());
         buf.writeString(recipe.getGroup());
@@ -166,7 +167,7 @@ public class ShapedArtisSerializer implements RecipeSerializer<ShapedArtisRecipe
         buf.writeInt(recipe.getCatalystCost());
     }
 
-    private String[] getPattern(JsonArray array) {
+    private String @NotNull [] getPattern(@NotNull JsonArray array) {
         String[] pattern = new String[array.size()];
         if (pattern.length > type.getHeight()) {
             throw new JsonSyntaxException("Invalid pattern for " + type.getId().toString() + ": too many rows, " + type.getHeight() + " is maximum");

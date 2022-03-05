@@ -16,6 +16,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Language;
 import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.Level;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,7 +50,7 @@ public class ArtisData {
         }
     }
 
-    private static void loadEntries(JsonObject json) {
+    private static void loadEntries(@NotNull JsonObject json) {
         List<String> keys = new ArrayList<>(json.keySet());
         Collections.sort(keys);
         for (String key : keys) {
@@ -78,7 +80,8 @@ public class ArtisData {
         ArtisResources.registerPack();
     }
     
-    static ArtisTableType getType(String key, JsonObject json) {
+    @Contract("_, _ -> new")
+    static @NotNull ArtisTableType getType(@NotNull String key, @NotNull JsonObject json) {
         String tableType = json.containsKey("type") ? json.get(String.class, "type") : "normal";
         Identifier id;
         String name;

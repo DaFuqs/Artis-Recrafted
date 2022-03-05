@@ -1,4 +1,4 @@
-package io.github.alloffabric.artis.block.entity;
+package io.github.alloffabric.artis.block;
 
 import io.github.alloffabric.artis.Artis;
 import io.github.alloffabric.artis.api.ArtisTableType;
@@ -23,6 +23,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
+import org.jetbrains.annotations.NotNull;
 
 public class ArtisTableBlockEntity extends BlockEntity implements DefaultInventory, ExtendedScreenHandlerFactory {
     
@@ -33,7 +34,7 @@ public class ArtisTableBlockEntity extends BlockEntity implements DefaultInvento
         super(Artis.ARTIS_BLOCK_ENTITY, pos, state);
     }
 
-    public ArtisTableBlockEntity(ArtisTableType tableType, BlockPos pos, BlockState state) {
+    public ArtisTableBlockEntity(@NotNull ArtisTableType tableType, BlockPos pos, BlockState state) {
         super(Artis.ARTIS_BLOCK_ENTITY, pos, state);
 
         this.tableType = tableType;
@@ -51,7 +52,7 @@ public class ArtisTableBlockEntity extends BlockEntity implements DefaultInvento
     }
 
     @Override
-    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
+    public void writeScreenOpeningData(ServerPlayerEntity player, @NotNull PacketByteBuf buf) {
         buf.writeBlockPos(pos);
     }
 
@@ -75,10 +76,6 @@ public class ArtisTableBlockEntity extends BlockEntity implements DefaultInvento
 
         if (stacks != null)
             Inventories.writeNbt(nbt, stacks);
-    }
-    
-    public void updateInClientWorld() {
-        ((ServerWorld) world).getChunkManager().markForUpdate(pos);
     }
 
 }
