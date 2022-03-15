@@ -33,8 +33,8 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	
 	modImplementation include("io.github.cottonmc:LibGui:${project.libgui_version}")
-	modImplementation include("de.siphalor:nbtcrafting-1.18:${project.nbtcrafting_version}")
-	modImplementation include("net.devtech:arrp:0.5.4")
+	//modImplementation include("de.siphalor:nbtcrafting-1.15:${project.nbtcrafting_version}")
+	modImplementation include("net.devtech:arrp:${project.aarp_version}")
 }
 
 processResources {

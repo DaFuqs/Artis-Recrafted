@@ -55,9 +55,9 @@ public class ShapelessArtisRecipe extends ShapelessRecipe implements ArtisCrafti
 
     @Override
     public ItemStack craft(CraftingInventory inv) {
-        if (FabricLoader.getInstance().isModLoaded("nbtcrafting")) {
+        /*if (FabricLoader.getInstance().isModLoaded("nbtcrafting")) {
             return NbtCraftingUtil.getOutputStack(getOutput(), getIngredients(), inv);
-        }
+        }*/
         return this.getOutput().copy();
     }
 

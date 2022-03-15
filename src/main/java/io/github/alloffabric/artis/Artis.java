@@ -1,17 +1,17 @@
 package io.github.alloffabric.artis;
 
-import com.mojang.serialization.Lifecycle;
 import io.github.alloffabric.artis.api.ArtisExistingBlockType;
 import io.github.alloffabric.artis.api.ArtisExistingItemType;
 import io.github.alloffabric.artis.api.ArtisTableType;
 import io.github.alloffabric.artis.block.ArtisTableBEBlock;
 import io.github.alloffabric.artis.block.ArtisTableBlock;
-import io.github.alloffabric.artis.block.ArtisTableItem;
 import io.github.alloffabric.artis.block.ArtisTableBlockEntity;
+import io.github.alloffabric.artis.block.ArtisTableItem;
 import io.github.alloffabric.artis.event.ArtisEvents;
 import io.github.alloffabric.artis.inventory.ArtisRecipeProvider;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
@@ -26,7 +26,6 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.util.registry.SimpleRegistry;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -49,7 +48,8 @@ public class Artis implements ModInitializer {
     public static final ArrayList<ArtisTableBlock> ARTIS_TABLE_BLOCKS = new ArrayList<>();
     public static final ArrayList<ArtisTableBlock> ARTIS_TABLE_BE_BLOCKS = new ArrayList<>();
 
-    public static final SimpleRegistry<ArtisTableType> ARTIS_TABLE_TYPES = new SimpleRegistry<>(RegistryKey.ofRegistry(new Identifier(MODID, "artis_table_types")), Lifecycle.stable());
+    public static final SimpleRegistry<ArtisTableType> ARTIS_TABLE_TYPES = FabricRegistryBuilder.createSimple(ArtisTableType.class, new Identifier(MODID, "artis_table_types")).buildAndRegister();
+    
     public static final ItemGroup ARTIS_GROUP = FabricItemGroupBuilder.build(new Identifier(MODID, "group"), () -> {
         if(!ARTIS_TABLE_TYPES.isEmpty()) {
             ArtisTableType firstTableType = ARTIS_TABLE_TYPES.get(0);
@@ -68,11 +68,11 @@ public class Artis implements ModInitializer {
         LOGGER.log(logLevel, "[Artis-Recrafted] " + message);
     }
 
-    public static <T extends ArtisTableType> T registerTable(T type, Block.Settings settings) {
+    public static ArtisTableType registerTable(ArtisTableType type, Block.Settings settings) {
         return registerTable(type, settings, ARTIS_GROUP);
     }
 
-    public static <T extends ArtisTableType> T registerTable(@NotNull T type, Block.Settings settings, ItemGroup group) {
+    public static ArtisTableType registerTable(@NotNull ArtisTableType type, Block.Settings settings, ItemGroup group) {
         Identifier id = type.getId();
         ExtendedScreenHandlerType<ArtisRecipeProvider> screenHandlerType = new ExtendedScreenHandlerType<>((syncId, playerInventory, buf) -> new ArtisRecipeProvider(null, type, syncId, playerInventory.player, ScreenHandlerContext.create(playerInventory.player.world, buf.readBlockPos())));
         ScreenHandlerRegistry.registerExtended(id, (syncId, playerInventory, buf) -> new ArtisRecipeProvider(screenHandlerType, type, syncId, playerInventory.player, ScreenHandlerContext.create(playerInventory.player.world, buf.readBlockPos())));

@@ -40,7 +40,6 @@ public class ArtisEvents {
                     if (type instanceof ArtisExistingItemType) {
                         if (!world.isClient) {
                             playerEntity.openHandledScreen(new ArtisScreenFactory(type, null, null));
-                            //ContainerProviderRegistry.INSTANCE.openContainer(identifier, playerEntity, buf -> buf.writeBlockPos(playerEntity.getBlockPos()));
                         }
                         return TypedActionResult.success(playerEntity.getStackInHand(hand));
                     }

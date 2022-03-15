@@ -235,8 +235,6 @@ public class BlockSettingsParser {
 
         if (json.containsKey("requires_tool") && json.getBoolean("requires_tool", false)) {
             settings.requiresTool();
-        } else {
-            settings.breakByHand(true);
         }
 
         if (json.containsKey("material_color")) {
