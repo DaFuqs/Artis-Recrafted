@@ -57,14 +57,10 @@ public class ArtisClient implements ClientModInitializer {
     public static void updateLastRecipe(ArtisRecipeProvider container, Recipe<CraftingInventory> rec) {
         CraftingInventory craftInput = container.getCraftInv();
         CraftingResultInventory craftResult = container.getResultInv();
-
-        if (craftInput == null) {
-            System.out.println("why are these null?");
-        } else {
-            craftResult.setLastRecipe(rec);
-            if (rec != null) craftResult.setStack(0, rec.craft(craftInput));
-            else craftResult.setStack(0, ItemStack.EMPTY);
-        }
+        
+        craftResult.setLastRecipe(rec);
+        if (rec != null) craftResult.setStack(0, rec.craft(craftInput));
+        else craftResult.setStack(0, ItemStack.EMPTY);
     }
 
 }
