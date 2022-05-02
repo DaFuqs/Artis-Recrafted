@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Environment(EnvType.CLIENT)
 public class ArtisRecipeDisplay extends BasicDisplay implements SimpleGridMenuDisplay {
     
     private final ArtisCraftingRecipe display;
