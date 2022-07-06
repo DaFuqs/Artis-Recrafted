@@ -16,7 +16,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
@@ -42,7 +41,7 @@ public class ArtisTableBlockEntity extends BlockEntity implements DefaultInvento
 
     @Override
     public Text getDisplayName() {
-        return new LiteralText("");
+        return Text.empty();
     }
 
     @Override

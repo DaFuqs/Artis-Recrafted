@@ -59,13 +59,13 @@ public class CondenserRecipeCategory implements DisplayCategory<CondenserRecipeD
         Text tooltipText;
         if(display.fuelPerTick == 0) {
             widgets.add(Widgets.createBurningFire(new Point(startPoint.x + 1, startPoint.y + 20)).animationDurationTicks(Double.MAX_VALUE));
-            tooltipText = new TranslatableText("artis.rei.tooltip.no_fuel", cookingTimeString);
+            tooltipText = Text.translatable("artis.rei.tooltip.no_fuel", cookingTimeString);
         } else if(display.fuelPerTick == 1) {
             widgets.add(Widgets.createBurningFire(new Point(startPoint.x + 1, startPoint.y + 20)).animationDurationMS(10000));
-            tooltipText = new TranslatableText("artis.rei.tooltip.normal_fuel", cookingTimeString);
+            tooltipText = Text.translatable("artis.rei.tooltip.normal_fuel", cookingTimeString);
         } else {
             widgets.add(Widgets.createBurningFire(new Point(startPoint.x + 1, startPoint.y + 20)).animationDurationMS(10000F / display.fuelPerTick));
-            tooltipText = new TranslatableText("artis.rei.tooltip.increased_fuel", cookingTimeString, display.fuelPerTick);
+            tooltipText = Text.translatable("artis.rei.tooltip.increased_fuel", cookingTimeString, display.fuelPerTick);
         }
         widgets.add(Widgets.createLabel(new Point(startPoint.x - 26, startPoint.y + 38), tooltipText).leftAligned().noShadow().color(0xFF404040, 0xFFBBBBBB));
 

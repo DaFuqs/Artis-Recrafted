@@ -16,9 +16,7 @@ import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.NotNull;
@@ -57,7 +55,7 @@ public class ArtisRecipeCategory implements DisplayCategory<ArtisRecipeDisplay> 
     
     @Override
     public Text getTitle() {
-        return new TranslatableText("rei.category." + artisTableType.getId().getPath());
+        return Text.translatable("rei.category." + artisTableType.getId().getPath());
     }
     
     @Override
@@ -108,7 +106,7 @@ public class ArtisRecipeCategory implements DisplayCategory<ArtisRecipeDisplay> 
         }
 
         if (artisTableType.hasCatalystSlot()) {
-            widgets.add(Widgets.createLabel(new Point(slots.get(slots.size() - 1).getX() + 35, startPoint.y + (getDisplayHeight() / 2) + 14), new LiteralText(Formatting.RED + "-" + recipeDisplay.getCatalystCost())).centered());
+            widgets.add(Widgets.createLabel(new Point(slots.get(slots.size() - 1).getX() + 35, startPoint.y + (getDisplayHeight() / 2) + 14), Text.literal(Formatting.RED + "-" + recipeDisplay.getCatalystCost())).centered());
         }
         
         return widgets;

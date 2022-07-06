@@ -11,7 +11,7 @@ import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Language;
 import net.minecraft.util.registry.Registry;
@@ -89,7 +89,7 @@ public class ArtisConfig {
         if(!key.contains(":")) {
             id = new Identifier(Artis.MODID, key);
             name = json.get(String.class, "display_name");
-            
+        
             blockEntity = json.getBoolean("block_entity", false);
         } else {
             id = new Identifier(key);
@@ -97,14 +97,14 @@ public class ArtisConfig {
                 name = json.get(String.class, "display_name");
             } else {
                 if(tableType.equals("existing_block")) {
-                    name = Language.getInstance().get(((TranslatableText) Registry.BLOCK.get(id).getName()).getKey());
+                    name = Language.getInstance().get(Registry.BLOCK.get(id).getName().getString());
                 } else if(tableType.equals("existing_item")) {
-                    name = Language.getInstance().get(((TranslatableText) Registry.ITEM.get(id).getName()).getKey());
+                    name = Language.getInstance().get(Registry.ITEM.get(id).getName().getString());
                 } else {
                     name = key;
                 }
             }
-    
+        
             blockEntity = false;
         }
         int width = json.getInt("width", 3);

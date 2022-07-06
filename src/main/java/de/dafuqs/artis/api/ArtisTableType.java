@@ -1,12 +1,13 @@
 package de.dafuqs.artis.api;
 
-import de.dafuqs.artis.compat.rei.crafting.ArtisRecipeDisplay;
-import de.dafuqs.artis.recipe.crafting.ShapedArtisSerializer;
-import de.dafuqs.artis.recipe.crafting.ShapelessArtisSerializer;
+import de.dafuqs.artis.compat.rei.crafting.*;
+import de.dafuqs.artis.recipe.crafting.*;
+import io.github.alloffabric.artis.Artis;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.NotNull;
@@ -93,10 +94,26 @@ public class ArtisTableType implements RecipeType {
         return new Rectangle(containerLayout.getArrowX() + 8, containerLayout.getArrowY() + 2, 21,16);
     }
     
-    public String getName() {
+    public String getRawName() {
         return this.name;
     }
     
+    public Text getName() {
+        return Text.translatable(getTranslationString());
+    }
+
+    public String getTableIDPath() {
+        return getId().getPath();
+    }
+
+    public String getTranslationString() {
+        return "block." + Artis.MODID + "." + getTableIDPath();
+    }
+
+    public String getREITranslationString() {
+        return "rei.category." + getTableIDPath();
+    }
+
     @Override
     public String toString() {
         return this.id.toString();

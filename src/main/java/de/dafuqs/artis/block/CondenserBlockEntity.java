@@ -269,7 +269,7 @@ public class CondenserBlockEntity extends BlockEntity implements NamedScreenHand
 
     @Override
     public Text getDisplayName() {
-        return new TranslatableText("block.artis.condenser");
+        return Text.translatable("block.artis.condenser");
     }
 
     @Nullable

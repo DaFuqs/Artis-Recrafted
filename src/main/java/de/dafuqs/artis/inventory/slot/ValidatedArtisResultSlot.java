@@ -1,8 +1,7 @@
 package de.dafuqs.artis.inventory.slot;
 
-import de.dafuqs.artis.api.ArtisCraftingRecipe;
-import de.dafuqs.artis.api.SpecialCatalyst;
-import de.dafuqs.artis.inventory.crafting.ArtisCraftingInventory;
+import de.dafuqs.artis.api.*;
+import de.dafuqs.artis.inventory.crafting.*;
 import io.github.cottonmc.cotton.gui.ValidatedSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
@@ -23,11 +22,6 @@ public class ValidatedArtisResultSlot extends ValidatedSlot {
         super(inventoryIn, index, xPosition, yPosition);
         this.player = player;
         this.craftingInv = inventory;
-    }
-
-    @Override
-    public void setStack(ItemStack stack) {
-        //super.setStack(stack);
     }
 
     @Override
@@ -86,27 +80,24 @@ public class ValidatedArtisResultSlot extends ValidatedSlot {
             }
         }
 
-        if (this.inventory instanceof RecipeUnlocker recipeUnlocker) {
-            Recipe<?> lastRecipe = recipeUnlocker.getLastRecipe();
-            if (lastRecipe instanceof ArtisCraftingRecipe recipe) {
-                int catalystSlot = remainders.size() - 1;
-                ItemStack remainder = remainders.get(catalystSlot).copy();
-                if (!remainder.isEmpty()) {
-                    this.craftingInv.setStack(catalystSlot, remainder);
-                } else {
-                    ItemStack catalyst = this.craftingInv.getCatalyst().copy();
-                    if (catalyst.isDamageable()) {
-                        catalyst.setDamage(catalyst.getDamage()+recipe.getCatalystCost());
-                        if(catalyst.getDamage() >= catalyst.getMaxDamage()) {
-                            catalyst = ItemStack.EMPTY;
-                        }
-                    } else if (catalyst.getItem() instanceof SpecialCatalyst) {
-                        catalyst = ((SpecialCatalyst) catalyst.getItem()).consume(catalyst, recipe.getCatalystCost());
-                    } else {
-                        catalyst.decrement(recipe.getCatalystCost());
+        if (this.inventory instanceof RecipeUnlocker recipeUnlocker && recipeUnlocker.getLastRecipe() instanceof ArtisCraftingRecipe artisCraftingRecipe) {
+            int catalystSlot = remainders.size() - 1;
+            ItemStack remainder = remainders.get(catalystSlot).copy();
+            if (!remainder.isEmpty()) {
+                this.craftingInv.setStack(catalystSlot, remainder);
+            } else {
+                ItemStack catalyst = this.craftingInv.getCatalyst().copy();
+                if (catalyst.isDamageable()) {
+                    catalyst.setDamage(catalyst.getDamage() + artisCraftingRecipe.getCatalystCost());
+                    if(catalyst.getDamage() >= catalyst.getMaxDamage()) {
+                        catalyst = ItemStack.EMPTY;
                     }
-                    this.craftingInv.setStack(catalystSlot, catalyst);
+                } else if (catalyst.getItem() instanceof SpecialCatalyst specialCatalyst) {
+                    catalyst = specialCatalyst.consume(catalyst, artisCraftingRecipe.getCatalystCost());
+                } else {
+                    catalyst.decrement(artisCraftingRecipe.getCatalystCost());
                 }
+                this.craftingInv.setStack(catalystSlot, catalyst);
             }
         }
     }
@@ -114,7 +105,7 @@ public class ValidatedArtisResultSlot extends ValidatedSlot {
     //note: inventory is actually CraftingResultInventory, so it's a safe cast
     public DefaultedList<ItemStack> getRemainders() {
         Recipe<CraftingInventory> lastRecipe = (Recipe<CraftingInventory>) ((CraftingResultInventory)this.inventory).getLastRecipe();
-        if (lastRecipe != null && lastRecipe.matches(craftingInv, player.world)) {
+        if (lastRecipe != null) {
             return lastRecipe.getRemainder(craftingInv);
         } else {
             return craftingInv.getStacks();
