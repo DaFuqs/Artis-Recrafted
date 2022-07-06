@@ -18,16 +18,18 @@
     "client": [
       "io.github.alloffabric.artis.ArtisClient"
     ],
-    "rei_plugins": [
-      "io.github.alloffabric.artis.compat.rei.REIClientIntegration",
+    "rei_server": [
       "io.github.alloffabric.artis.compat.rei.REIServerIntegration"
+    ],
+    "rei_client": [
+      "io.github.alloffabric.artis.compat.rei.REIClientIntegration"
     ]
   },
   "mixins": [ ],
   "depends": {
-    "fabricloader": ">=0.12.12",
-    "fabric": ">=0.51.1",
-    "minecraft": ">=1.18.2",
+    "fabricloader": ">=0.13.0",
+    "fabric": "*",
+    "minecraft": ">=1.19.0",
     "java": ">=17",
     "libgui": ">=5.2.0+1.18",
     "advanced_runtime_resource_pack": ">=0.5.1"

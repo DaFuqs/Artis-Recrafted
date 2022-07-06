@@ -38,9 +38,8 @@ public class ArtisResources {
 								.condition(condition("minecraft:survives_explosion"))));
 		
 		// localisation
-		String tableIdPath = artisTableType.getId().getPath();
-		translations.entry("block." + Artis.MODID + "." + tableIdPath, artisTableType.getName());
-		translations.entry("rei.category." + tableIdPath, artisTableType.getName() + " Crafting");
+		translations.entry(artisTableType.getTranslationString(), artisTableType.getRawName());
+		translations.entry(artisTableType.getREITranslationString(), artisTableType.getRawName() + " Crafting");
 		
 		// block tags (like mineable / break by tool, if set via the config)
 		for(Identifier identifier : artisTableType.getBlockTags()) {
@@ -54,8 +53,8 @@ public class ArtisResources {
 		// block and item models
 		JBlockModel blockModel = JState.model(new Identifier(Artis.MODID, "block/table" + (artisTableType.hasColor() ? "_overlay" : "")));
 		JModel model = JModel.model(new Identifier(Artis.MODID, "block/table" + (artisTableType.hasColor() ? "_overlay" : "")));
-		RESOURCE_PACK.addBlockState(JState.state(JState.variant(blockModel)), new Identifier(Artis.MODID, tableIdPath));
-		RESOURCE_PACK.addModel(model, new Identifier(Artis.MODID, "item/" + tableIdPath));
+		RESOURCE_PACK.addBlockState(JState.state(JState.variant(blockModel)), new Identifier(Artis.MODID, artisTableType.getTableIDPath()));
+		RESOURCE_PACK.addModel(model, new Identifier(Artis.MODID, "item/" + artisTableType.getTableIDPath()));
 	}
 	
 	public static void registerPack() {
@@ -69,12 +68,12 @@ public class ArtisResources {
 	
 	public static void registerDataForExistingBlock(@NotNull ArtisExistingBlockType artisTableType) {
 		String tableIdPath = artisTableType.getId().getPath();
-		translations.entry("rei.category." + tableIdPath, artisTableType.getName() + " Crafting");
+		translations.entry("rei.category." + tableIdPath, artisTableType.getRawName() + " Crafting");
 	}
 	
 	public static void registerDataForExistingItem(@NotNull ArtisExistingItemType artisTableType) {
 		String tableIdPath = artisTableType.getId().getPath();
-		translations.entry("rei.category." + tableIdPath, artisTableType.getName() + " Crafting");
+		translations.entry("rei.category." + tableIdPath, artisTableType.getRawName() + " Crafting");
 	}
 	
 }

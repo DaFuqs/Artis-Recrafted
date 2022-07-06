@@ -9,7 +9,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.registry.Registry;
@@ -31,7 +30,7 @@ public record ArtisScreenFactory(ArtisTableType tableType, Block block, BlockHit
     @Contract(" -> new")
     @Override
     public @NotNull Text getDisplayName() {
-        return new LiteralText(tableType.getName());
+        return tableType.getName();
     }
 
     @Override

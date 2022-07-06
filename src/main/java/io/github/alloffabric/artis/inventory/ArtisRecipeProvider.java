@@ -10,17 +10,13 @@ import io.github.cottonmc.cotton.gui.client.BackgroundPainter;
 import io.github.cottonmc.cotton.gui.client.ScreenDrawing;
 import io.github.cottonmc.cotton.gui.widget.*;
 import io.github.cottonmc.cotton.gui.widget.data.HorizontalAlignment;
-import io.netty.buffer.Unpooled;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
-import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeMatcher;
 import net.minecraft.recipe.RecipeType;
@@ -28,6 +24,7 @@ import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
@@ -73,7 +70,7 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
             this.catalystSlot = WItemSlot.of(craftInv, craftInv.size() - 1);
             mainPanel.add(catalystSlot, layout.getCatalystX() + offsetX, layout.getCatalystY() + 1);
     
-            WLabel catalystCost = new WLabel("", 0xAA0000).setHorizontalAlignment(HorizontalAlignment.CENTER);
+            WLabel catalystCost = new WLabel(Text.empty(), 0xAA0000).setHorizontalAlignment(HorizontalAlignment.CENTER);
             mainPanel.add(catalystCost, layout.getCatalystX() + offsetX, layout.getCatalystY() + 19);
         }
 
@@ -91,10 +88,6 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
 
         mainPanel.validate(this);
         craftInv.setCheckMatrixChanges(true);
-        if (player.world.isClient) {
-            PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-            ClientSidePacketRegistry.INSTANCE.sendToServer(Artis.REQUEST_SYNC_IDENTIFIER, buf);
-        }
         
         int width = Math.max(176, 74 + tableType.getWidth() * 18);
         int height;
@@ -199,23 +192,12 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
         return getTableType().getWidth() * getTableType().getHeight();
     }
 
-    // update crafting
-    //clientside only
-    @Override
-    @Environment(EnvType.CLIENT)
-    public void updateSlotStacks(int revision, List<ItemStack> stacks, ItemStack cursorStack) {
-        craftInv.setCheckMatrixChanges(false);
-        super.updateSlotStacks(revision, stacks, cursorStack);
-        craftInv.setCheckMatrixChanges(true);
-        onContentChanged(null);
-    }
-
     //like vanilla, but not a pile of lag
-    public static void updateResult(World world, PlayerEntity player, CraftingInventory inv, CraftingResultInventory result, ArtisTableType artisTableType) {
+    public static void updateResult(World world, CraftingInventory inv, CraftingResultInventory resultInv, ArtisTableType artisTableType) {
         if (!world.isClient) {
             ItemStack itemstack = ItemStack.EMPTY;
 
-            Recipe<CraftingInventory> recipe = (Recipe<CraftingInventory>) result.getLastRecipe();
+            Recipe<CraftingInventory> recipe = (Recipe<CraftingInventory>) resultInv.getLastRecipe();
             //find artis recipe first
             if (recipe == null || !recipe.matches(inv, world)) {
                 recipe = findArtisRecipe(artisTableType, inv, world);
@@ -229,19 +211,17 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
                 itemstack = recipe.craft(inv);
             }
 
-            result.setStack(0, itemstack);
-            PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-            buf.writeIdentifier(recipe != null ? recipe.getId(): Artis.NULL_IDENTIFIER);
-            ServerSidePacketRegistry.INSTANCE.sendToPlayer(player, Artis.RECIPE_SYNC_IDENTIFIER, buf);
+            resultInv.setStack(0, itemstack);
             if(recipe != null) {
-                result.setLastRecipe(recipe);
+                resultInv.setLastRecipe(recipe);
             }
         }
     }
 
     @Override
     public void onContentChanged(Inventory inv) {
-        updateResult(world, player, craftInv, resultInv, tableType);
+        updateResult(world, craftInv, resultInv, tableType);
+        super.onContentChanged(resultInv);
     }
 
     @Override
@@ -343,7 +323,7 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
                 player.dropItem(recipeOutput, false);
             }
             input.setCheckMatrixChanges(true);
-            updateResult(player.world, player, input, craftResult, container.tableType);
+            updateResult(player.world, input, craftResult, container.tableType);
         }
         input.setCheckMatrixChanges(true);
         return craftResult.getLastRecipe() == null ? ItemStack.EMPTY : outputCopy;

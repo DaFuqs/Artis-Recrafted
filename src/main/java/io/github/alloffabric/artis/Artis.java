@@ -12,7 +12,6 @@ import io.github.alloffabric.artis.inventory.ArtisRecipeProvider;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
-import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
@@ -107,14 +106,14 @@ public class Artis implements ModInitializer {
         ARTIS_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(MODID, "artis_table"), FabricBlockEntityTypeBuilder.create(ArtisTableBlockEntity::new, artisBlocks).build());
         
         //seems to be required to not have the recipe vanish when initially opened
-        ServerSidePacketRegistry.INSTANCE.register(Artis.REQUEST_SYNC_IDENTIFIER, (packetContext, attachedData) -> {
+        /*ServerSidePacketRegistry.INSTANCE.register(Artis.REQUEST_SYNC_IDENTIFIER, (packetContext, attachedData) -> {
             packetContext.getTaskQueue().execute(() -> {
                 ScreenHandler container = packetContext.getPlayer().currentScreenHandler;
                 if (container instanceof ArtisRecipeProvider) {
                     container.onContentChanged(null);
                 }
             });
-        });
+        });*/
     }
     
 }
