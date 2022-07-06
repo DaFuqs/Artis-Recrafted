@@ -190,27 +190,25 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
 
     //like vanilla, but not a pile of lag
     public static void updateResult(World world, CraftingInventory inv, CraftingResultInventory resultInv, ArtisTableType artisTableType) {
-        if (!world.isClient) {
-            ItemStack itemstack = ItemStack.EMPTY;
+        ItemStack itemstack = ItemStack.EMPTY;
 
-            Recipe<CraftingInventory> recipe = (Recipe<CraftingInventory>) resultInv.getLastRecipe();
-            //find artis recipe first
-            if (recipe == null || !recipe.matches(inv, world)) {
-                recipe = findArtisRecipe(artisTableType, inv, world);
-            }
-            //else fall back to vanilla
-            if (recipe == null && artisTableType.shouldIncludeNormalRecipes()) {
-                recipe = findVanillaRecipe(inv, world);
-            }
-            
-            if (recipe != null) {
-                itemstack = recipe.craft(inv);
-            }
+        Recipe<CraftingInventory> recipe = (Recipe<CraftingInventory>) resultInv.getLastRecipe();
+        //find artis recipe first
+        if (recipe == null || !recipe.matches(inv, world)) {
+            recipe = findArtisRecipe(artisTableType, inv, world);
+        }
+        //else fall back to vanilla
+        if (recipe == null && artisTableType.shouldIncludeNormalRecipes()) {
+            recipe = findVanillaRecipe(inv, world);
+        }
+        
+        if (recipe != null) {
+            itemstack = recipe.craft(inv);
+        }
 
-            resultInv.setStack(0, itemstack);
-            if(recipe != null) {
-                resultInv.setLastRecipe(recipe);
-            }
+        resultInv.setStack(0, itemstack);
+        if(recipe != null) {
+            resultInv.setLastRecipe(recipe);
         }
     }
 
