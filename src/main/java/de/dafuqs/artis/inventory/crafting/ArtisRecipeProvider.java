@@ -216,8 +216,8 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
 
     @Override
     public void onContentChanged(Inventory inv) {
-        updateResult(world, craftInv, resultInv, tableType);
         super.onContentChanged(resultInv);
+        updateResult(world, craftInv, resultInv, tableType);
     }
 
     @Override
