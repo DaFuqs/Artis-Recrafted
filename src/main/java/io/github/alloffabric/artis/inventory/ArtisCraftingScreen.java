@@ -9,13 +9,13 @@ import net.minecraft.text.Text;
 
 @Environment(EnvType.CLIENT)
 public class ArtisCraftingScreen extends CottonInventoryScreen<ArtisRecipeProvider> {
-    
-    public ArtisCraftingScreen(ArtisRecipeProvider gui, PlayerEntity player, Text title) {
-        super(gui, player, title);
-    }
-
-    public ArtisCraftingScreen(ArtisRecipeProvider gui, PlayerInventory inventory, Text title) {
-        super(gui, inventory.player, title);
-    }
-    
+	
+	public ArtisCraftingScreen(ArtisRecipeProvider gui, PlayerEntity player, Text title) {
+		super(gui, player, title);
+	}
+	
+	public ArtisCraftingScreen(ArtisRecipeProvider gui, PlayerInventory inventory, Text title) {
+		super(gui, inventory.player, title);
+	}
+	
 }

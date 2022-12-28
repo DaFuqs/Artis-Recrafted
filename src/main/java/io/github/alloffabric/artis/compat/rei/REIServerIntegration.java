@@ -10,7 +10,7 @@ public class REIServerIntegration implements REIServerPlugin {
 	// For shift-clicking into crafting gui
 	@Override
 	public void registerDisplaySerializer(DisplaySerializerRegistry registry) {
-		for(ArtisTableType type : Artis.ARTIS_TABLE_TYPES) {
+		for (ArtisTableType type : Artis.ARTIS_TABLE_TYPES) {
 			registry.register(type.getCategoryIdentifier(), ArtisRecipeDisplay.serializer());
 		}
 	}

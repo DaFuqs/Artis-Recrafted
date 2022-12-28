@@ -14,16 +14,16 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class ArtisTableItem extends BlockItem {
-    
-    public ArtisTableItem(ArtisTableBlock block, Settings settings) {
-        super(block, settings);
-    }
-
-    @Override
-    @Environment(EnvType.CLIENT)
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, @NotNull TooltipContext context) {
-        if (context.isAdvanced())
-            tooltip.add(Text.translatable("tooltip.artis.source").formatted(Formatting.BLUE, Formatting.ITALIC));
-    }
-
+	
+	public ArtisTableItem(ArtisTableBlock block, Settings settings) {
+		super(block, settings);
+	}
+	
+	@Override
+	@Environment(EnvType.CLIENT)
+	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, @NotNull TooltipContext context) {
+		if (context.isAdvanced())
+			tooltip.add(Text.translatable("tooltip.artis.source").formatted(Formatting.BLUE, Formatting.ITALIC));
+	}
+	
 }

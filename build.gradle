@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.12+'
+	id 'fabric-loom' version '1.0-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -33,7 +33,6 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	
 	modImplementation include("io.github.cottonmc:LibGui:${project.libgui_version}")
-	//modImplementation include("de.siphalor:nbtcrafting-1.15:${project.nbtcrafting_version}")
 	modImplementation include("net.devtech:arrp:${project.aarp_version}")
 }
 

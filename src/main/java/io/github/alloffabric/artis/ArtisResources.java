@@ -11,8 +11,8 @@ import net.devtech.arrp.json.blockstate.JState;
 import net.devtech.arrp.json.lang.JLang;
 import net.devtech.arrp.json.models.JModel;
 import net.devtech.arrp.json.tags.JTag;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -34,7 +34,7 @@ public class ArtisResources {
 								.rolls(1)
 								.entry(entry()
 										.type("minecraft:item")
-										.name(Registry.ITEM.getId(block.asItem()).toString()))
+										.name(Registries.ITEM.getId(block.asItem()).toString()))
 								.condition(condition("minecraft:survives_explosion"))));
 		
 		// localisation
@@ -42,8 +42,8 @@ public class ArtisResources {
 		translations.entry(artisTableType.getREITranslationString(), artisTableType.getRawName() + " Crafting");
 		
 		// block tags (like mineable / break by tool, if set via the config)
-		for(Identifier identifier : artisTableType.getBlockTags()) {
-			if(blockTags.containsKey(identifier)) {
+		for (Identifier identifier : artisTableType.getBlockTags()) {
+			if (blockTags.containsKey(identifier)) {
 				blockTags.get(identifier).add(artisTableType.getId());
 			} else {
 				blockTags.put(identifier, JTag.tag().add(artisTableType.getId()));
@@ -59,7 +59,7 @@ public class ArtisResources {
 	
 	public static void registerPack() {
 		RESOURCE_PACK.addLang(new Identifier(Artis.MODID, "en_us"), translations);
-		for(Map.Entry<Identifier, JTag> tags : blockTags.entrySet()) {
+		for (Map.Entry<Identifier, JTag> tags : blockTags.entrySet()) {
 			RESOURCE_PACK.addTag(tags.getKey(), tags.getValue());
 		}
 		
