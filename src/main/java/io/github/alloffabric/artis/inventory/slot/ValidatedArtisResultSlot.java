@@ -18,13 +18,11 @@ public class ValidatedArtisResultSlot extends ValidatedSlot {
     private final ArtisCraftingInventory craftingInv;
     private final PlayerEntity player;
     private int amount;
-    private final int syncId;
 
-    public ValidatedArtisResultSlot(PlayerEntity player, ArtisCraftingInventory inventory, Inventory inventoryIn, int index, int xPosition, int yPosition, int syncId) {
+    public ValidatedArtisResultSlot(PlayerEntity player, ArtisCraftingInventory inventory, Inventory inventoryIn, int index, int xPosition, int yPosition) {
         super(inventoryIn, index, xPosition, yPosition);
         this.player = player;
         this.craftingInv = inventory;
-        this.syncId = syncId;
     }
 
     @Override
@@ -88,10 +86,9 @@ public class ValidatedArtisResultSlot extends ValidatedSlot {
             }
         }
 
-        if (this.inventory instanceof RecipeUnlocker) {
-            Recipe lastRecipe = ((RecipeUnlocker) inventory).getLastRecipe();
-            if (lastRecipe instanceof ArtisCraftingRecipe) {
-                ArtisCraftingRecipe recipe = (ArtisCraftingRecipe) lastRecipe;
+        if (this.inventory instanceof RecipeUnlocker recipeUnlocker) {
+            Recipe<?> lastRecipe = recipeUnlocker.getLastRecipe();
+            if (lastRecipe instanceof ArtisCraftingRecipe recipe) {
                 int catalystSlot = remainders.size() - 1;
                 ItemStack remainder = remainders.get(catalystSlot).copy();
                 if (!remainder.isEmpty()) {

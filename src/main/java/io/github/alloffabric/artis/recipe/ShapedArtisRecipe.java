@@ -2,9 +2,7 @@ package io.github.alloffabric.artis.recipe;
 
 import io.github.alloffabric.artis.api.ArtisCraftingRecipe;
 import io.github.alloffabric.artis.api.SpecialCatalyst;
-import io.github.alloffabric.artis.compat.nbtcrafting.NbtCraftingUtil;
 import io.github.alloffabric.artis.inventory.ArtisCraftingInventory;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
@@ -89,16 +87,13 @@ public class ShapedArtisRecipe extends ShapedRecipe implements ArtisCraftingReci
 
     @Override
     public ItemStack craft(CraftingInventory inv) {
-        /*if (FabricLoader.getInstance().isModLoaded("nbtcrafting")) {
-            return NbtCraftingUtil.getOutputStack(getOutput(), getIngredients(), inv);
-        }*/
         return this.getOutput().copy();
     }
-    
+
     public int getWidth() {
         return super.getWidth();
     }
-    
+
     public int getHeight() {
         return super.getHeight();
     }
@@ -112,7 +107,7 @@ public class ShapedArtisRecipe extends ShapedRecipe implements ArtisCraftingReci
     public RecipeSerializer getSerializer() {
         return serializer;
     }
-    
+
     @Override
     public Ingredient getCatalyst() {
         return catalyst;

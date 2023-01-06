@@ -12,7 +12,7 @@ import io.github.alloffabric.artis.inventory.ArtisRecipeProvider;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
-import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
@@ -68,15 +68,15 @@ public class Artis implements ModInitializer {
         LOGGER.log(logLevel, "[Artis-Recrafted] " + message);
     }
 
-    public static ArtisTableType registerTable(ArtisTableType type, Block.Settings settings) {
-        return registerTable(type, settings, ARTIS_GROUP);
+    public static void registerTable(ArtisTableType type, Block.Settings settings) {
+        registerTable(type, settings, ARTIS_GROUP);
     }
 
-    public static ArtisTableType registerTable(@NotNull ArtisTableType type, Block.Settings settings, ItemGroup group) {
+    public static void registerTable(@NotNull ArtisTableType type, Block.Settings settings, ItemGroup group) {
         Identifier id = type.getId();
         ExtendedScreenHandlerType<ArtisRecipeProvider> screenHandlerType = new ExtendedScreenHandlerType<>((syncId, playerInventory, buf) -> new ArtisRecipeProvider(null, type, syncId, playerInventory.player, ScreenHandlerContext.create(playerInventory.player.world, buf.readBlockPos())));
         ScreenHandlerRegistry.registerExtended(id, (syncId, playerInventory, buf) -> new ArtisRecipeProvider(screenHandlerType, type, syncId, playerInventory.player, ScreenHandlerContext.create(playerInventory.player.world, buf.readBlockPos())));
-        
+
         if(type instanceof ArtisExistingBlockType artisExistingBlockType) {
             ArtisResources.registerDataForExistingBlock(artisExistingBlockType);
         } else if(type instanceof ArtisExistingItemType artisExistingItemType) {
@@ -94,8 +94,8 @@ public class Artis implements ModInitializer {
             Registry.register(Registry.ITEM, id, new ArtisTableItem(block, new Item.Settings().group(group)));
             ArtisResources.registerDataForTable(type, block);
         }
-        
-        return Registry.register(ARTIS_TABLE_TYPES, id, type);
+
+        Registry.register(ARTIS_TABLE_TYPES, id, type);
     }
     
     @Override
@@ -107,9 +107,9 @@ public class Artis implements ModInitializer {
         ARTIS_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(MODID, "artis_table"), FabricBlockEntityTypeBuilder.create(ArtisTableBlockEntity::new, artisBlocks).build());
         
         //seems to be required to not have the recipe vanish when initially opened
-        ServerSidePacketRegistry.INSTANCE.register(Artis.REQUEST_SYNC_IDENTIFIER, (packetContext, attachedData) -> {
-            packetContext.getTaskQueue().execute(() -> {
-                ScreenHandler container = packetContext.getPlayer().currentScreenHandler;
+        ServerPlayNetworking.registerGlobalReceiver(Artis.REQUEST_SYNC_IDENTIFIER, (server, player, handler, buf, responseSender)-> {
+            server.execute(() -> {
+                ScreenHandler container = player.currentScreenHandler;
                 if (container instanceof ArtisRecipeProvider) {
                     container.onContentChanged(null);
                 }

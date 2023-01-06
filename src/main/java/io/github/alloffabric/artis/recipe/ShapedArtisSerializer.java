@@ -136,12 +136,9 @@ public class ShapedArtisSerializer implements RecipeSerializer<ShapedArtisRecipe
         int width = buf.readVarInt();
         int height = buf.readVarInt();
         String group = buf.readString(32767);
-        DefaultedList<Ingredient> ingredients = DefaultedList.ofSize(width * height, Ingredient.EMPTY);
 
-        for (int i = 0; i < ingredients.size(); ++i) {
-            Ingredient ingredient = Ingredient.fromPacket(buf);
-            ingredients.set(i, ingredient);
-        }
+        DefaultedList<Ingredient> ingredients = DefaultedList.ofSize(width * height, Ingredient.EMPTY);
+        ingredients.replaceAll(ignored -> Ingredient.fromPacket(buf));
 
         ItemStack output = buf.readItemStack();
 

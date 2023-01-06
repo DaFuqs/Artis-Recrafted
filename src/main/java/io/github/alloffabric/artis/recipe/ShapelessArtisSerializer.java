@@ -54,11 +54,9 @@ public class ShapelessArtisSerializer implements RecipeSerializer<ShapelessArtis
     public ShapelessArtisRecipe read(Identifier id, @NotNull PacketByteBuf buf) {
         String group = buf.readString(32767);
         int size = buf.readVarInt();
-        DefaultedList<Ingredient> ingredients = DefaultedList.ofSize(size, Ingredient.EMPTY);
 
-        for (int i = 0; i < ingredients.size(); ++i) {
-            ingredients.set(i, Ingredient.fromPacket(buf));
-        }
+        DefaultedList<Ingredient> ingredients = DefaultedList.ofSize(size, Ingredient.EMPTY);
+        ingredients.replaceAll(ignored -> Ingredient.fromPacket(buf));
 
         ItemStack output = buf.readItemStack();
 

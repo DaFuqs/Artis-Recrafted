@@ -3,9 +3,7 @@ package io.github.alloffabric.artis.recipe;
 import io.github.alloffabric.artis.api.ArtisCraftingRecipe;
 import io.github.alloffabric.artis.api.ArtisTableType;
 import io.github.alloffabric.artis.api.SpecialCatalyst;
-import io.github.alloffabric.artis.compat.nbtcrafting.NbtCraftingUtil;
 import io.github.alloffabric.artis.inventory.ArtisCraftingInventory;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
@@ -37,10 +35,9 @@ public class ShapelessArtisRecipe extends ShapelessRecipe implements ArtisCrafti
 
     @Override
     public boolean matches(CraftingInventory inventory, World world) {
-        if (!(inventory instanceof ArtisCraftingInventory)) return false;
-        ArtisCraftingInventory artis = (ArtisCraftingInventory) inventory;
-        ItemStack toTest = artis.getCatalyst();
-        if (artis.shouldCompareCatalyst()) {
+        if (!(inventory instanceof ArtisCraftingInventory artisCraftingInventory)) return false;
+        ItemStack toTest = artisCraftingInventory.getCatalyst();
+        if (artisCraftingInventory.shouldCompareCatalyst()) {
             if (!catalyst.test(toTest)) return false;
             if (toTest.isDamageable()) {
                 if (toTest.getMaxDamage() - toTest.getDamage() < catalystCost) return false;
@@ -55,9 +52,6 @@ public class ShapelessArtisRecipe extends ShapelessRecipe implements ArtisCrafti
 
     @Override
     public ItemStack craft(CraftingInventory inv) {
-        /*if (FabricLoader.getInstance().isModLoaded("nbtcrafting")) {
-            return NbtCraftingUtil.getOutputStack(getOutput(), getIngredients(), inv);
-        }*/
         return this.getOutput().copy();
     }
 

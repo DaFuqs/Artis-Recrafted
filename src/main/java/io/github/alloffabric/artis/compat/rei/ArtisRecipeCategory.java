@@ -69,9 +69,9 @@ public class ArtisRecipeCategory implements DisplayCategory<ArtisRecipeDisplay> 
 
         List<Widget> widgets;
         if (artisTableType.hasColor()) {
-            widgets = new LinkedList(List.of(Widgets.createRecipeBase(bounds).color(artisTableType.getColor())));
+            widgets = new LinkedList<>(List.of(Widgets.createRecipeBase(bounds).color(artisTableType.getColor())));
         } else {
-            widgets = new LinkedList(List.of(Widgets.createRecipeBase(bounds)));
+            widgets = new LinkedList<>(List.of(Widgets.createRecipeBase(bounds)));
         }
 
         List<EntryIngredient> input = recipeDisplay.getInputEntries();
