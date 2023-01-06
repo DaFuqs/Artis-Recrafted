@@ -31,13 +31,13 @@ public class ArtisClient implements ClientModInitializer {
         for (ArtisTableType type : Artis.ARTIS_TABLE_TYPES) {
             ScreenHandlerType<ArtisRecipeProvider> screenHandlerType = (ScreenHandlerType<ArtisRecipeProvider>) Registry.SCREEN_HANDLER.get(type.getId());
             ScreenRegistry.<ArtisRecipeProvider, ArtisCraftingScreen>register(screenHandlerType, ArtisCraftingScreen::new);
-            
+
             if (!(type instanceof ArtisExistingBlockType) && !(type instanceof ArtisExistingItemType)) {
                 if (type.hasColor()) {
                     ColorProviderRegistry.BLOCK.register((state, world, pos, index) -> type.getColor(), Registry.BLOCK.get(type.getId()));
                     ColorProviderRegistry.ITEM.register((stack, index) -> type.getColor(), Registry.ITEM.get(type.getId()));
                 }
-                
+
                 BlockRenderLayerMap.INSTANCE.putBlock(Registry.BLOCK.get(type.getId()), RenderLayer.getCutout());
             }
         }
@@ -57,10 +57,12 @@ public class ArtisClient implements ClientModInitializer {
     public static void updateLastRecipe(ArtisRecipeProvider container, Recipe<CraftingInventory> rec) {
         CraftingInventory craftInput = container.getCraftInv();
         CraftingResultInventory craftResult = container.getResultInv();
-        
-        craftResult.setLastRecipe(rec);
-        if (rec != null) craftResult.setStack(0, rec.craft(craftInput));
-        else craftResult.setStack(0, ItemStack.EMPTY);
-    }
 
+        craftResult.setLastRecipe(rec);
+        if (rec != null) {
+            craftResult.setStack(0, rec.craft(craftInput));
+        } else {
+            craftResult.setStack(0, ItemStack.EMPTY);
+        }
+    }
 }
