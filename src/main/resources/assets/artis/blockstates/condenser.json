@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=east,lit=false": {
+      "model": "artis:block/condenser",
+      "y": 90
+    },
+    "facing=east,lit=true": {
+      "model": "artis:block/condenser_on",
+      "y": 90
+    },
+    "facing=north,lit=false": {
+      "model": "artis:block/condenser"
+    },
+    "facing=north,lit=true": {
+      "model": "artis:block/condenser_on"
+    },
+    "facing=south,lit=false": {
+      "model": "artis:block/condenser",
+      "y": 180
+    },
+    "facing=south,lit=true": {
+      "model": "artis:block/condenser_on",
+      "y": 180
+    },
+    "facing=west,lit=false": {
+      "model": "artis:block/condenser",
+      "y": 270
+    },
+    "facing=west,lit=true": {
+      "model": "artis:block/condenser_on",
+      "y": 270
+    }
+  }
+}

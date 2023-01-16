@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "artis:block/condenser_top",
+    "front": "artis:block/condenser_front_on",
+    "side": "artis:block/condenser_side"
+  }
+}

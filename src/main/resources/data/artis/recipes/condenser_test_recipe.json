@@ -1,0 +1,14 @@
+{
+  "type": "artis:condenser",
+  "input": {
+    "item": "minecraft:feather",
+    "count": 5000
+  },
+  "fuel_per_tick": 1,
+  "time": 300,
+  "result": {
+    "item": "minecraft:snowball",
+    "nbt": "{Enchantments: [{id: \"spectrum:resonance\", lvl: 1s}]}",
+    "count": 2
+  }
+}

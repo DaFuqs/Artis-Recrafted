@@ -1,4 +1,6 @@
 {
   "tooltip.artis.source": "Powered by Artis-Recrafted",
-  "itemGroup.artis.group": "Artis Tables"
+  "itemGroup.artis.group": "Artis Tables",
+
+  "block.artis.condenser": "Condenser"
 }

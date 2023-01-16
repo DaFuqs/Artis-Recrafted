@@ -5,7 +5,7 @@
 
   "name": "Artis-Recrafted",
   "icon": "assets/artis/icon.png",
-  "description": "Customizable crafting tables for modpacks",
+  "description": "Customizable Crafting Tables for modpacks",
   "license": "MIT",
   "contact": {
     "sources": "https://github.com/DaFuqs/Artis-Recrafted"
@@ -13,14 +13,16 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "io.github.alloffabric.artis.Artis"
+      "de.dafuqs.artis.Artis"
     ],
     "client": [
-      "io.github.alloffabric.artis.ArtisClient"
+      "de.dafuqs.artis.ArtisClient"
     ],
-    "rei_plugins": [
-      "io.github.alloffabric.artis.compat.rei.REIClientIntegration",
-      "io.github.alloffabric.artis.compat.rei.REIServerIntegration"
+    "rei_server": [
+      "de.dafuqs.artis.compat.rei.REIServerIntegration"
+    ],
+    "rei_client": [
+      "de.dafuqs.artis.compat.rei.REIClientIntegration"
     ]
   },
   "mixins": [ ],
@@ -32,7 +34,5 @@
     "libgui": ">=5.2.0+1.18",
     "advanced_runtime_resource_pack": ">=0.5.1"
   },
-  "suggests": {
-    "nbtcrafting_testmod": ">=2.1.0"
-  }
+  "suggests": { }
 }
