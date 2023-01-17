@@ -4,6 +4,12 @@ import net.minecraft.inventory.*;
 import net.minecraft.item.*;
 import net.minecraft.screen.slot.*;
 
+/**
+ * A slot that can be combined with a VariantBackedInventory
+ * to store an amount > 64 into the slot.
+ * This slot will display a max of 64 items to the user to extract at once
+ * You will need a different way to show that > 64 count to the user, like syncing it via PropertyDelegate
+ */
 public class OverfillSlot extends Slot {
 
     private final int index;
@@ -19,10 +25,7 @@ public class OverfillSlot extends Slot {
             ItemStack existingStack = this.getStack();
             int availableAmount = Math.min(insertCount, insertStack.getCount());
             if (existingStack.isEmpty()) {
-                long finalInsertAmount = Math.min(
-                        availableAmount, // how much the stack can hold
-                        getMaxItemCount() // how much room there is in this
-                );
+                long finalInsertAmount = Math.min(availableAmount, getMaxItemCount());
                 ItemStack setStack = insertStack.split((int) finalInsertAmount);
                 this.setStack(setStack);
             } else if (ItemStack.canCombine(existingStack, insertStack)) {
@@ -36,14 +39,6 @@ public class OverfillSlot extends Slot {
     public int getMaxItemCount() {
         if(this.inventory instanceof VariantBackedInventory variantBackedInventory) {
             return variantBackedInventory.getMaxCountPerStackForSlot(this.index);
-        } else {
-            return this.inventory.getMaxCountPerStack();
-        }
-    }
-
-    public long getRealItemCount() {
-        if(this.inventory instanceof VariantBackedInventory variantBackedInventory) {
-            return variantBackedInventory.getRealAmount(this.index);
         } else {
             return this.inventory.getMaxCountPerStack();
         }

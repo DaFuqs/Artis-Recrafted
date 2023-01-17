@@ -7,6 +7,10 @@ import net.minecraft.entity.player.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
 
+/**
+ * An inventory for SingleVariantStorages
+ * For storages with > 64 max amount use an OverfillSlot instead of a vanilla Slot on the server side
+ */
 public class VariantBackedInventory implements Inventory {
 
     private BlockEntity blockEntity;
