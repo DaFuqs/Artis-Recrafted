@@ -2,13 +2,13 @@
   "type": "artis:condenser",
   "input": {
     "item": "minecraft:feather",
-    "count": 5000
+    "count": 100
   },
-  "fuel_per_tick": 1,
+  "fuel_per_tick": 27,
   "time": 300,
   "result": {
     "item": "minecraft:snowball",
-    "nbt": "{Enchantments: [{id: \"spectrum:resonance\", lvl: 1s}]}",
+    "nbt": "{Enchantments: [{id: \"minecraft:sharpness\", lvl: 1s}]}",
     "count": 2
   }
 }

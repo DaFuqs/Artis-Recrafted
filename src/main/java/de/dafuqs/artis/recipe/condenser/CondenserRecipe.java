@@ -1,7 +1,11 @@
 package de.dafuqs.artis.recipe.condenser;
 
 import de.dafuqs.artis.*;
+import de.dafuqs.artis.block.*;
+import de.dafuqs.artis.inventory.condenser.*;
 import de.dafuqs.artis.recipe.*;
+import net.fabricmc.fabric.api.transfer.v1.item.*;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.*;
 import net.id.incubus_core.recipe.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
@@ -9,6 +13,7 @@ import net.minecraft.recipe.*;
 import net.minecraft.util.*;
 import net.minecraft.util.collection.*;
 import net.minecraft.world.*;
+import org.apache.logging.log4j.*;
 
 public class CondenserRecipe implements Recipe<Inventory> {
 
@@ -30,7 +35,16 @@ public class CondenserRecipe implements Recipe<Inventory> {
 
     @Override
     public boolean matches(Inventory inv, World world) {
-        return this.input.test(inv.getStack(0));
+        try {
+            if (inv instanceof VariantBackedInventory variantBackedInventory) {
+                SingleVariantStorage<ItemVariant> input = variantBackedInventory.getStorage(0);
+                ItemStack invStack = input.variant.toStack((int) input.amount);
+                return this.input.test(invStack);
+            }
+        } catch (Exception e) {
+            Artis.log(Level.INFO, "");
+        }
+        return false;
     }
 
     @Override
@@ -73,11 +87,25 @@ public class CondenserRecipe implements Recipe<Inventory> {
         return ArtisRecipeTypes.CONDENSER;
     }
 
+    // use getInput() where possible
+    @Deprecated
     @Override
     public DefaultedList<Ingredient> getIngredients() {
         DefaultedList<Ingredient> defaultedList = DefaultedList.of();
         defaultedList.add(this.input.getIngredient());
         return defaultedList;
+    }
+
+    public IngredientStack getInput() {
+        return input;
+    }
+
+    public int getFuelPerTick() {
+        return fuelPerTick;
+    }
+
+    public int getTime() {
+        return time;
     }
 
 }

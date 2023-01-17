@@ -35,17 +35,16 @@ public class CondenserScreen extends HandledScreen<CondenserScreenHandler> {
 		RenderSystem.setShaderTexture(0, BACKGROUND);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-		int i = this.x;
-		int j = this.y;
-		this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
-		int k;
-		if ((this.handler).isBurning()) {
-			k = (this.handler).getFuelProgress();
-			this.drawTexture(matrices, i + 56, j + 36 + 12 - k, 176, 12 - k, 14, k + 1);
+		int x = this.x;
+		int y = this.y;
+		this.drawTexture(matrices, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight);
+		if (this.handler.isBurning()) {
+			int fuelProgress = this.handler.getFuelProgress();
+			this.drawTexture(matrices, x + 56, y + 36 + 12 - fuelProgress, 176, 12 - fuelProgress, 14, fuelProgress + 1);
 		}
 
-		k = (this.handler).getCookProgress();
-		this.drawTexture(matrices, i + 79, j + 34, 176, 14, k + 1, 16);
+		int cookProgress = this.handler.getCookProgress();
+		this.drawTexture(matrices, x + 79, y + 34, 176, 14, cookProgress + 1, 16);
 	}
 	
 	@Override

@@ -13,8 +13,8 @@ import net.minecraft.item.*;
  */
 public class VariantBackedInventory implements Inventory {
 
-    private BlockEntity blockEntity;
-    private SingleVariantStorage<ItemVariant>[] storages;
+    private final BlockEntity blockEntity;
+    private final SingleVariantStorage<ItemVariant>[] storages;
 
     public VariantBackedInventory(BlockEntity blockEntity, SingleVariantStorage<ItemVariant>... slots) {
         this.blockEntity = blockEntity;
@@ -67,10 +67,10 @@ public class VariantBackedInventory implements Inventory {
 
     @Override
     public void setStack(int slot, ItemStack stack) {
-        this.markDirty();
         SingleVariantStorage<ItemVariant> storage = storages[slot];
         storage.variant = ItemVariant.of(stack);
         storage.amount = stack.getCount();
+        this.markDirty();
     }
 
     @Override
@@ -85,11 +85,11 @@ public class VariantBackedInventory implements Inventory {
 
     @Override
     public void clear() {
-        this.markDirty();
         for(SingleVariantStorage<ItemVariant> storage : storages) {
             storage.variant = ItemVariant.blank();
             storage.amount = 0;
         }
+        this.markDirty();
     }
 
     public int getMaxCountPerStackForSlot(int index) {
@@ -108,6 +108,10 @@ public class VariantBackedInventory implements Inventory {
         storages[index].amount = newAmount;
         markDirty();
         return Math.abs(newAmount - existingAmount - amount);
+    }
+
+    public SingleVariantStorage getStorage(int index) {
+        return this.storages[index];
     }
 
 }

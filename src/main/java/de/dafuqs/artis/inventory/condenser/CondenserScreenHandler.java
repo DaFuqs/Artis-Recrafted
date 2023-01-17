@@ -18,7 +18,7 @@ public class CondenserScreenHandler extends ScreenHandler {
 	private final Inventory inventory;
 	
 	public CondenserScreenHandler(int syncId, PlayerInventory playerInventory) {
-		this(ArtisScreenHandlers.CONDENSER_SCREEN_HANDLER, syncId, playerInventory, new SimpleInventory(3), new ArrayPropertyDelegate(4));
+		this(ArtisScreenHandlers.CONDENSER_SCREEN_HANDLER, syncId, playerInventory, new SimpleInventory(3), new ArrayPropertyDelegate(5));
 	}
 	
 	public CondenserScreenHandler(int syncId, PlayerInventory playerInventory, CondenserBlockEntity condenserBlockEntity) {
@@ -36,7 +36,7 @@ public class CondenserScreenHandler extends ScreenHandler {
 		// condenser inventory
 		this.addSlot(new OverfillSlot(inventory, 0, 56, 17));
 		this.addSlot(new Slot(inventory, 1, 56, 53));
-		this.addSlot(new Slot(inventory, 2, 116, 35));
+		this.addSlot(new CondenserOutputSlot(playerInventory.player, inventory, 2, 116, 35));
 
 		// player inventory
 		int i;
@@ -139,7 +139,7 @@ public class CondenserScreenHandler extends ScreenHandler {
 	}
 
 	public int getInputItemCount() {
-		return this.propertyDelegate.get(3);
+		return this.propertyDelegate.get(4);
 	}
 
 }

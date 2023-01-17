@@ -70,7 +70,9 @@ public class CondenserBlock extends BlockWithEntity {
 
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
-        scatterContents(world, pos);
+        if (!state.isOf(newState.getBlock())) {
+            scatterContents(world, pos);
+        }
         super.onStateReplaced(state, world, pos, newState, moved);
     }
 
@@ -80,7 +82,7 @@ public class CondenserBlock extends BlockWithEntity {
         if (blockEntity instanceof CondenserBlockEntity condenser) {
             Vec3d posVec = Vec3d.ofCenter(condenser.getPos());
             spawnItemStackAsEntitySplitViaMaxCount(world, posVec, condenser.input.getResource().toStack(), condenser.input.amount);
-            spawnItemStackAsEntitySplitViaMaxCount(world, posVec, condenser.fuel.getResource().toStack(), condenser.input.amount);
+            spawnItemStackAsEntitySplitViaMaxCount(world, posVec, condenser.fuel.getResource().toStack(), condenser.fuel.amount);
             spawnItemStackAsEntitySplitViaMaxCount(world, posVec, condenser.output.getResource().toStack(), condenser.output.amount);
             world.updateComparators(pos, block);
         }
