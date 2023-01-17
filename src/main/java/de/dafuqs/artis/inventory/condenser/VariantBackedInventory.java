@@ -110,8 +110,4 @@ public class VariantBackedInventory implements Inventory {
         return Math.abs(newAmount - existingAmount - amount);
     }
 
-    public long getRealAmount(int index) {
-        return storages[index].amount;
-    }
-
 }
