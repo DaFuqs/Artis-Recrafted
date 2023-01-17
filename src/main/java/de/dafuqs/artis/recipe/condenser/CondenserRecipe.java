@@ -35,16 +35,13 @@ public class CondenserRecipe implements Recipe<Inventory> {
 
     @Override
     public boolean matches(Inventory inv, World world) {
-        try {
-            if (inv instanceof VariantBackedInventory variantBackedInventory) {
-                SingleVariantStorage<ItemVariant> input = variantBackedInventory.getStorage(0);
-                ItemStack invStack = input.variant.toStack((int) input.amount);
-                return this.input.test(invStack);
-            }
-        } catch (Exception e) {
-            Artis.log(Level.INFO, "");
+        if (inv instanceof VariantBackedInventory variantBackedInventory) {
+            SingleVariantStorage<ItemVariant> input = variantBackedInventory.getStorage(0);
+            ItemStack invStack = input.variant.toStack((int) input.amount);
+            return this.input.test(invStack);
+        } else {
+            return this.input.getIngredient().test(inv.getStack(0));
         }
-        return false;
     }
 
     @Override
