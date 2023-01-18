@@ -5,7 +5,12 @@ import de.dafuqs.artis.api.ArtisCraftingRecipe;
 import de.dafuqs.artis.api.ArtisExistingItemType;
 import de.dafuqs.artis.api.ArtisTableType;
 import de.dafuqs.artis.block.ArtisTableBlock;
+import de.dafuqs.artis.compat.rei.condenser.*;
 import de.dafuqs.artis.compat.rei.crafting.*;
+import de.dafuqs.artis.inventory.condenser.*;
+import de.dafuqs.artis.recipe.*;
+import de.dafuqs.artis.recipe.condenser.*;
+import me.shedaniel.math.*;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
@@ -14,7 +19,7 @@ import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.plugin.common.BuiltinPlugin;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.Block;
+import net.minecraft.block.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.util.registry.Registry;
@@ -52,6 +57,9 @@ public class REIClientIntegration implements REIClientPlugin {
                 }
             }
         }
+
+        registry.add(new CondenserRecipeCategory());
+        registry.addWorkstations(ArtisPlugins.CONDENSER, EntryStacks.of(ArtisBlocks.CONDENSER_BLOCK));
     }
 
     @Override
@@ -59,6 +67,8 @@ public class REIClientIntegration implements REIClientPlugin {
         for (ArtisTableType type : ArtisBlocks.ARTIS_TABLE_TYPES) {
             registry.registerRecipeFiller(ArtisCraftingRecipe.class, type, ArtisRecipeDisplay::new);
         }
+
+        registry.registerRecipeFiller(CondenserRecipe.class, ArtisRecipeTypes.CONDENSER, CondenserRecipeDisplay::new);
         
         /*registry.registerVisibilityPredicate(new DisplayVisibilityPredicate() {
             @Override
@@ -88,9 +98,10 @@ public class REIClientIntegration implements REIClientPlugin {
     public void registerScreens(ScreenRegistry registry) {
         // TODO: since this one screen handles all different sizes there needs to be a better way to handle this
         //for (ArtisTableType type : Artis.ARTIS_TABLE_TYPES) {
-            //registry.registerContainerClickArea(type.getREIClickArea(), ArtisCraftingScreen.class, type.getCategoryIdentifier());
-            //registry.registerContainerClickArea(type.getREIClickArea(), ArtisCraftingScreen.class, BuiltinPlugin.CRAFTING);
+            //registry.registerContainerClickArea(type.getREIClickArea(), ArtisCraftingScreen.class, type.getCategoryIdentifier(), BuiltinPlugin.CRAFTING);
         //}
+
+        registry.registerContainerClickArea(new Rectangle(81, 34, 21, 16), CondenserScreen.class, ArtisPlugins.CONDENSER);
     }
     
 }
