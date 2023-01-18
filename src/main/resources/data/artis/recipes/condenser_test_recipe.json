@@ -5,6 +5,7 @@
     "count": 100
   },
   "fuel_per_tick": 27,
+  "preserves_input": true,
   "time": 300,
   "result": {
     "item": "minecraft:snowball",

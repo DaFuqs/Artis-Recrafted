@@ -1,7 +1,6 @@
 package de.dafuqs.artis.recipe.condenser;
 
 import de.dafuqs.artis.*;
-import de.dafuqs.artis.block.*;
 import de.dafuqs.artis.inventory.condenser.*;
 import de.dafuqs.artis.recipe.*;
 import net.fabricmc.fabric.api.transfer.v1.item.*;
@@ -13,7 +12,6 @@ import net.minecraft.recipe.*;
 import net.minecraft.util.*;
 import net.minecraft.util.collection.*;
 import net.minecraft.world.*;
-import org.apache.logging.log4j.*;
 
 public class CondenserRecipe implements Recipe<Inventory> {
 
@@ -22,14 +20,16 @@ public class CondenserRecipe implements Recipe<Inventory> {
     protected final IngredientStack input;
     protected final int fuelPerTick;
     protected final int time;
+    protected final boolean preservesInput;
     protected final ItemStack output;
 
-    public CondenserRecipe(Identifier id, String group, IngredientStack input, int fuelPerTick, int time, ItemStack output) {
+    public CondenserRecipe(Identifier id, String group, IngredientStack input, int fuelPerTick, int time, boolean preservesInput, ItemStack output) {
         this.id = id;
         this.group = group;
         this.input = input;
         this.output = output;
         this.fuelPerTick = fuelPerTick;
+        this.preservesInput = preservesInput;
         this.time = time;
     }
 
@@ -103,6 +103,10 @@ public class CondenserRecipe implements Recipe<Inventory> {
 
     public int getTime() {
         return time;
+    }
+
+    public boolean preservesInput() {
+        return preservesInput;
     }
 
 }

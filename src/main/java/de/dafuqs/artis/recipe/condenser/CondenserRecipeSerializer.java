@@ -16,7 +16,7 @@ public class CondenserRecipeSerializer implements RecipeSerializer<CondenserReci
     }
 
     public interface RecipeFactory<CondenserRecipe> {
-        CondenserRecipe create(Identifier id, String group, IngredientStack input, int fuelPerTick, int time, ItemStack output);
+        CondenserRecipe create(Identifier id, String group, IngredientStack input, int fuelPerTick, int time, boolean preservesInput, ItemStack output);
     }
 
     @Override
@@ -25,8 +25,9 @@ public class CondenserRecipeSerializer implements RecipeSerializer<CondenserReci
         IngredientStack input = RecipeParser.ingredientStackFromJson(JsonHelper.getObject(jsonObject, "input"));
         int fuelPerTick = JsonHelper.getInt(jsonObject, "fuel_per_tick", 0);
         int time = JsonHelper.getInt(jsonObject, "time", 200);
+        boolean preservesInput = JsonHelper.getBoolean(jsonObject, "preserves_input", false);
         ItemStack output = RecipeParser.getItemStackWithNbtFromJson(JsonHelper.getObject(jsonObject, "result"));
-        return this.recipeFactory.create(identifier, group, input, fuelPerTick, time, output);
+        return this.recipeFactory.create(identifier, group, input, fuelPerTick, time, preservesInput, output);
     }
 
     @Override
@@ -35,6 +36,7 @@ public class CondenserRecipeSerializer implements RecipeSerializer<CondenserReci
         recipe.input.write(packetByteBuf);
         packetByteBuf.writeInt(recipe.fuelPerTick);
         packetByteBuf.writeInt(recipe.time);
+        packetByteBuf.writeBoolean(recipe.preservesInput);
         packetByteBuf.writeItemStack(recipe.output);
     }
 
@@ -44,8 +46,9 @@ public class CondenserRecipeSerializer implements RecipeSerializer<CondenserReci
         IngredientStack input = IngredientStack.fromByteBuf(packetByteBuf);
         int fuelPerTick = packetByteBuf.readInt();
         int time = packetByteBuf.readInt();
+        boolean preservesInput = packetByteBuf.readBoolean();
         ItemStack output = packetByteBuf.readItemStack();
-        return this.recipeFactory.create(identifier, group, input, fuelPerTick, time, output);
+        return this.recipeFactory.create(identifier, group, input, fuelPerTick, time, preservesInput, output);
     }
 
 }
