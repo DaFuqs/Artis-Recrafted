@@ -252,7 +252,9 @@ public class CondenserBlockEntity extends BlockEntity implements NamedScreenHand
             } else if (output.isOf(recipeOutput.getItem())) {
                 condenser.output.amount += recipeOutput.getCount();
             }
-            condenser.input.amount -= recipe.getInput().getCount();
+            if(!recipe.preservesInput()) {
+                condenser.input.amount -= recipe.getInput().getCount();
+            }
             return true;
         } else {
             return false;
