@@ -1,11 +1,11 @@
 package de.dafuqs.artis.inventory.condenser;
 
+import de.dafuqs.artis.inventory.variantbacked.*;
 import net.minecraft.entity.player.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.screen.slot.*;
 
-public class CondenserOutputSlot extends Slot {
+public class CondenserOutputSlot extends VariantBackedSlot {
     private final PlayerEntity player;
     private int amount;
 

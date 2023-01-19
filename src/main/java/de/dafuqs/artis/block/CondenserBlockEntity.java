@@ -2,6 +2,7 @@ package de.dafuqs.artis.block;
 
 import de.dafuqs.artis.*;
 import de.dafuqs.artis.inventory.condenser.*;
+import de.dafuqs.artis.inventory.variantbacked.*;
 import de.dafuqs.artis.recipe.*;
 import de.dafuqs.artis.recipe.condenser.*;
 import net.fabricmc.fabric.api.registry.*;
@@ -22,6 +23,11 @@ import org.jetbrains.annotations.*;
 public class CondenserBlockEntity extends BlockEntity implements NamedScreenHandlerFactory  {
 
     public final SingleVariantStorage<ItemVariant> input = new SingleVariantStorage<>() {
+        @Override
+        protected boolean canInsert(ItemVariant variant) {
+            return isInput(world, variant.toStack());
+        }
+
         @Override
         protected ItemVariant getBlankVariant() {
             return ItemVariant.blank();
@@ -164,7 +170,7 @@ public class CondenserBlockEntity extends BlockEntity implements NamedScreenHand
 
             // find and use fuel
             if (!blockEntity.isBurning() && canAcceptRecipeOutput(recipe, inventory)) {
-                blockEntity.burnTime = blockEntity.burnTime + FuelRegistry.INSTANCE.get(fuelVariant.getItem());
+                blockEntity.burnTime = blockEntity.burnTime + getFuelTime(fuelVariant.getItem());
                 blockEntity.fuelTime = blockEntity.burnTime;
                 if (blockEntity.isBurning()) {
                     shouldMarkDirty = true;
@@ -210,9 +216,19 @@ public class CondenserBlockEntity extends BlockEntity implements NamedScreenHand
         }
     }
 
-    /*private static int getCookTime(World world, Inventory inventory) {
-        return world.getRecipeManager().getFirstMatch(ArtisRecipeTypes.CONDENSER, inventory, world).map(CondenserRecipe::getTime).orElse(200);
-    }*/
+    public static int getFuelTime(Item item) {
+        Integer time = FuelRegistry.INSTANCE.get(item);
+        if(time == null) {
+            return 0;
+        }
+        return time;
+    }
+
+    public static boolean isInput(World world, ItemStack stack) {
+        Inventory inv = new SimpleInventory(1);
+        inv.setStack(0, stack);
+        return world.getRecipeManager().getFirstMatch(ArtisRecipeTypes.CONDENSER, inv, world).map(condenserRecipe -> condenserRecipe.getInput().testCountless(stack)).orElse(false);
+    }
 
     private static boolean canAcceptRecipeOutput(@Nullable CondenserRecipe recipe, @NotNull Inventory inventory) {
         if (recipe != null && !(inventory.getStack(0)).isEmpty()) {

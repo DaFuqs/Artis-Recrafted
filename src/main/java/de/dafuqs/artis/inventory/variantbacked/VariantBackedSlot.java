@@ -1,4 +1,4 @@
-package de.dafuqs.artis.inventory.condenser;
+package de.dafuqs.artis.inventory.variantbacked;
 
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
@@ -10,11 +10,11 @@ import net.minecraft.screen.slot.*;
  * This slot will display a max of 64 items to the user to extract at once
  * You will need a different way to show that > 64 count to the user, like syncing it via PropertyDelegate
  */
-public class OverfillSlot extends Slot {
+public class VariantBackedSlot extends Slot {
 
     private final int index;
 
-    public OverfillSlot(Inventory inventory, int index, int x, int y) {
+    public VariantBackedSlot(Inventory inventory, int index, int x, int y) {
         super(inventory, index, x, y);
         this.index = index;
     }
@@ -23,6 +23,11 @@ public class OverfillSlot extends Slot {
     public boolean canInsert(ItemStack stack) {
         ItemStack slotStack = inventory.getStack(index);
         return slotStack.isEmpty() || ItemStack.canCombine(slotStack, stack);
+    }
+
+    @Override
+    public void setStack(ItemStack stack) {
+        super.setStack(stack);
     }
 
     @Override
@@ -39,6 +44,7 @@ public class OverfillSlot extends Slot {
                 insertStack.decrement((int) (availableAmount - leftover));
             }
         }
+        markDirty();
         return insertStack;
     }
 
@@ -50,10 +56,17 @@ public class OverfillSlot extends Slot {
         }
     }
 
+    @Override
+    public ItemStack takeStack(int amount) {
+        markDirty();
+        return super.takeStack(amount);
+    }
+
     public long addAmount(long amount) {
         if(this.inventory instanceof VariantBackedInventory variantBackedInventory) {
             return variantBackedInventory.addAmount(this.index, amount);
         }
+        markDirty();
         return 0;
     }
 

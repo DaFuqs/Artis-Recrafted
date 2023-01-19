@@ -2,8 +2,7 @@ package de.dafuqs.artis.inventory.condenser;
 
 import de.dafuqs.artis.block.*;
 import de.dafuqs.artis.inventory.*;
-import de.dafuqs.artis.recipe.*;
-import net.fabricmc.fabric.api.registry.FuelRegistry;
+import de.dafuqs.artis.inventory.variantbacked.*;
 import net.minecraft.entity.player.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
@@ -34,8 +33,8 @@ public class CondenserScreenHandler extends ScreenHandler {
 		this.addProperties(propertyDelegate);
 
 		// condenser inventory
-		this.addSlot(new OverfillSlot(inventory, 0, 56, 17));
-		this.addSlot(new Slot(inventory, 1, 56, 53));
+		this.addSlot(new CondenserInputSlot(this, inventory, 0, 56, 17));
+		this.addSlot(new CondenserFuelSlot(inventory, 1, 56, 53));
 		this.addSlot(new CondenserOutputSlot(playerInventory.player, inventory, 2, 116, 35));
 
 		// player inventory
@@ -55,34 +54,34 @@ public class CondenserScreenHandler extends ScreenHandler {
 	public boolean canUse(PlayerEntity player) {
 		return this.inventory.canPlayerUse(player);
 	}
-	
+
 	@Override
-	public ItemStack transferSlot(PlayerEntity player, int index) {
-		ItemStack returnStack = ItemStack.EMPTY;
-		Slot slot = this.slots.get(index);
+	public ItemStack transferSlot(PlayerEntity player, int slotIndex) {
+		ItemStack leftoverStack = ItemStack.EMPTY;
+		Slot slot = this.slots.get(slotIndex);
 		if (slot.hasStack()) {
 			ItemStack slotStack = slot.getStack();
-			returnStack = slotStack.copy();
-			if (index == 2) {
+			leftoverStack = slotStack.copy();
+			if (slotIndex == 2) {
 				if (!this.insertItem(slotStack, 3, 39, true)) {
 					return ItemStack.EMPTY;
 				}
 
-				slot.onQuickTransfer(slotStack, returnStack);
-			} else if (index != 1 && index != 0) {
-				if (this.isInput(slotStack)) {
-					if (!this.insertItemOverfill(slotStack, 0, 1, false)) {
+				slot.onQuickTransfer(slotStack, leftoverStack);
+			} else if (slotIndex != 1 && slotIndex != 0) {
+				if (CondenserBlockEntity.isInput(world, slotStack)) {
+					if (!ScreenHandlerTransferHelper.insertItemIntoVariantBacked(this, slotStack, 0, 1, false)) {
 						return ItemStack.EMPTY;
 					}
-				} else if (FuelRegistry.INSTANCE.get(slotStack.getItem()) > 0) {
-					if (!this.insertItem(slotStack, 1, 2, false)) {
+				} else if (CondenserBlockEntity.getFuelTime(slotStack.getItem()) > 0) {
+					if (!ScreenHandlerTransferHelper.insertItemIntoVariantBacked(this, slotStack, 1, 2, false)) {
 						return ItemStack.EMPTY;
 					}
-				} else if (index >= 3 && index < 30) {
+				} else if (slotIndex >= 3 && slotIndex < 30) {
 					if (!this.insertItem(slotStack, 30, 39, false)) {
 						return ItemStack.EMPTY;
 					}
-				} else if (index >= 30 && index < 39 && !this.insertItem(slotStack, 3, 30, false)) {
+				} else if (slotIndex >= 30 && slotIndex < 39 && !this.insertItem(slotStack, 3, 30, false)) {
 					return ItemStack.EMPTY;
 				}
 			} else if (!this.insertItem(slotStack, 3, 39, false)) {
@@ -90,124 +89,25 @@ public class CondenserScreenHandler extends ScreenHandler {
 			}
 
 			if (slotStack.isEmpty()) {
-				slot.setStack(ItemStack.EMPTY);
+				if(slot instanceof VariantBackedSlot variantBackedSlot) {
+					variantBackedSlot.addAmount(-leftoverStack.getCount());
+				} else {
+					slot.setStack(ItemStack.EMPTY);
+				}
 			} else {
 				slot.markDirty();
 			}
 
-			if (slotStack.getCount() == returnStack.getCount()) {
+			if (slotStack.getCount() == leftoverStack.getCount()) {
 				return ItemStack.EMPTY;
 			}
 
 			slot.onTakeItem(player, slotStack);
 		}
 
-		return returnStack;
+		return leftoverStack;
 	}
 
-	protected boolean insertItemOverfill(ItemStack stack, int startIndex, int endIndex, boolean fromLast) {
-		boolean bl = false;
-		int i = startIndex;
-		if (fromLast) {
-			i = endIndex - 1;
-		}
-
-		Slot slot;
-		ItemStack slotStack;
-		if (stack.isStackable()) {
-			while(!stack.isEmpty()) {
-				if (fromLast) {
-					if (i < startIndex) {
-						break;
-					}
-				} else if (i >= endIndex) {
-					break;
-				}
-
-				slot = this.slots.get(i);
-				slotStack = slot.getStack();
-				if (!slotStack.isEmpty() && ItemStack.canCombine(stack, slotStack)) {
-					int j = slotStack.getCount() + stack.getCount();
-					if(slot instanceof OverfillSlot overfillSlot) {
-						int maxCount = overfillSlot.getMaxItemCount();
-						if (j <= maxCount) {
-							overfillSlot.addAmount(stack.getCount());
-							stack.setCount(0);
-							slot.markDirty();
-							bl = true;
-						} else if (slotStack.getCount() < maxCount) {
-							stack.decrement(maxCount - slotStack.getCount());
-							overfillSlot.addAmount(maxCount - slotStack.getCount());
-							slot.markDirty();
-							bl = true;
-						}
-					} else {
-						if (j <= stack.getMaxCount()) {
-							stack.setCount(0);
-							slotStack.setCount(j);
-							slot.markDirty();
-							bl = true;
-						} else if (slotStack.getCount() < stack.getMaxCount()) {
-							stack.decrement(stack.getMaxCount() - slotStack.getCount());
-							slotStack.setCount(stack.getMaxCount());
-							slot.markDirty();
-							bl = true;
-						}
-					}
-				}
-
-				if (fromLast) {
-					--i;
-				} else {
-					++i;
-				}
-			}
-		}
-
-		if (!stack.isEmpty()) {
-			if (fromLast) {
-				i = endIndex - 1;
-			} else {
-				i = startIndex;
-			}
-
-			while(true) {
-				if (fromLast) {
-					if (i < startIndex) {
-						break;
-					}
-				} else if (i >= endIndex) {
-					break;
-				}
-
-				slot = this.slots.get(i);
-				slotStack = slot.getStack();
-				if (slotStack.isEmpty() && slot.canInsert(stack)) {
-					if (stack.getCount() > slot.getMaxItemCount()) {
-						slot.setStack(stack.split(slot.getMaxItemCount()));
-					} else {
-						slot.setStack(stack.split(stack.getCount()));
-					}
-
-					slot.markDirty();
-					bl = true;
-					break;
-				}
-
-				if (fromLast) {
-					--i;
-				} else {
-					++i;
-				}
-			}
-		}
-
-		return bl;
-	}
-
-	protected boolean isInput(ItemStack itemStack) {
-		return this.world.getRecipeManager().getFirstMatch(ArtisRecipeTypes.CONDENSER, new SimpleInventory(itemStack), this.world).isPresent();
-	}
 	
 	public Inventory getInventory() {
 		return this.inventory;

@@ -67,7 +67,7 @@ public class CondenserRecipeCategory implements DisplayCategory<CondenserRecipeD
             widgets.add(Widgets.createBurningFire(new Point(startPoint.x + 1, startPoint.y + 20)).animationDurationMS(10000F / display.fuelPerTick));
             tooltipText = new TranslatableText("artis.rei.tooltip.increased_fuel", cookingTimeString, display.fuelPerTick);
         }
-        widgets.add(Widgets.createLabel(new Point(startPoint.x + 28, startPoint.y + 38), tooltipText).noShadow().color(0xFF404040, 0xFFBBBBBB));
+        widgets.add(Widgets.createLabel(new Point(startPoint.x + 8, startPoint.y + 38), tooltipText).leftAligned().noShadow().color(0xFF404040, 0xFFBBBBBB));
 
         widgets.add(Widgets.createArrow(new Point(startPoint.x + 24, startPoint.y + 8)).animationDurationTicks(display.time));
         widgets.add(Widgets.createSlot(new Point(startPoint.x + 61, startPoint.y + 9)).entries(display.getOutputEntries().get(0)).disableBackground().markOutput());

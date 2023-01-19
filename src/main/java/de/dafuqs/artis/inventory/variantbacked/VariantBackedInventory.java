@@ -1,4 +1,4 @@
-package de.dafuqs.artis.inventory.condenser;
+package de.dafuqs.artis.inventory.variantbacked;
 
 import net.fabricmc.fabric.api.transfer.v1.item.*;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.*;

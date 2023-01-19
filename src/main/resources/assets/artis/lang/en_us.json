@@ -2,6 +2,6 @@
   "itemGroup.artis.group": "Artis Tables",
   "block.artis.condenser": "Matter Compressor",
   "artis.rei.tooltip.normal_fuel": "%d seconds",
-  "artis.rei.tooltip.no_fuel": "%d seconds - consumes no fuel",
+  "artis.rei.tooltip.no_fuel": "%d sec - consumes no fuel",
   "artis.rei.tooltip.increased_fuel": "%d seconds - x%d fuel"
 }

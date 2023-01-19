@@ -8,8 +8,8 @@
   "preserves_input": true,
   "time": 100,
   "result": {
-    "item": "minecraft:leather_boots",
+    "item": "minecraft:dirt",
     "nbt": "{Enchantments: [{id: \"minecraft:smite\", lvl: 1s}]}",
-    "count": 1
+    "count": 5
   }
 }

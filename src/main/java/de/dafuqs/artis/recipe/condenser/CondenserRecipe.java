@@ -1,7 +1,7 @@
 package de.dafuqs.artis.recipe.condenser;
 
 import de.dafuqs.artis.*;
-import de.dafuqs.artis.inventory.condenser.*;
+import de.dafuqs.artis.inventory.variantbacked.*;
 import de.dafuqs.artis.recipe.*;
 import net.fabricmc.fabric.api.transfer.v1.item.*;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.*;
