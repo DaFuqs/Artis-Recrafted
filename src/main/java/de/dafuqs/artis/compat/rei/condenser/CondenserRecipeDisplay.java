@@ -21,23 +21,6 @@ public class CondenserRecipeDisplay extends BasicDisplay {
         this.preservesInput = recipe.preservesInput();
     }
 
-    /**
-     * When using Shift click on the plus button in the REI gui to autofill crafting grids
-     */
-    /*public CondenserRecipeDisplay(List<EntryIngredient> inputs, List<EntryIngredient> outputs, @NotNull CondenserRecipe recipe) {
-        super(inputs, outputs);
-        this.display = recipe;
-    }
-
-    public static Serializer<CondenserRecipeDisplay> serializer() {
-        return Serializer.ofSimple(CondenserRecipeDisplay::simple).inputProvider(CondenserRecipeDisplay::getInputEntries);
-    }
-
-    private static @NotNull CondenserRecipeDisplay simple(List<EntryIngredient> inputs, List<EntryIngredient> outputs, @NotNull Optional<Identifier> identifier) {
-        Recipe<?> optionalRecipe = identifier.flatMap(resourceLocation -> RecipeManagerContext.getInstance().getRecipeManager().get(resourceLocation)).orElse(null);
-        return new CondenserRecipeDisplay(inputs, outputs, (CondenserRecipe) optionalRecipe);
-    }*/
-
     @Override
     public CategoryIdentifier<?> getCategoryIdentifier() {
         return ArtisPlugins.CONDENSER;

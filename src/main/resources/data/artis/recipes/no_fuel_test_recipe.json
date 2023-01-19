@@ -1,0 +1,15 @@
+{
+  "type": "artis:condenser",
+  "input": {
+    "item": "minecraft:iron_shovel",
+    "count": 2
+  },
+  "fuel_per_tick": 0,
+  "preserves_input": true,
+  "time": 100,
+  "result": {
+    "item": "minecraft:leather_boots",
+    "nbt": "{Enchantments: [{id: \"minecraft:smite\", lvl: 1s}]}",
+    "count": 1
+  }
+}

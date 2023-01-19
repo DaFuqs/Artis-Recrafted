@@ -4,29 +4,19 @@ import de.dafuqs.artis.*;
 import de.dafuqs.artis.inventory.condenser.*;
 import de.dafuqs.artis.recipe.*;
 import de.dafuqs.artis.recipe.condenser.*;
-import dev.architectury.registry.fuel.*;
-import net.fabricmc.fabric.api.networking.v1.*;
-import net.fabricmc.fabric.api.screenhandler.v1.*;
+import net.fabricmc.fabric.api.registry.*;
 import net.fabricmc.fabric.api.transfer.v1.item.*;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.*;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.*;
-import net.minecraft.datafixer.fix.*;
 import net.minecraft.entity.player.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
 import net.minecraft.nbt.*;
-import net.minecraft.network.*;
-import net.minecraft.recipe.*;
 import net.minecraft.screen.*;
-import net.minecraft.server.network.*;
 import net.minecraft.text.*;
-import net.minecraft.util.*;
-import net.minecraft.util.collection.*;
 import net.minecraft.util.math.*;
-import net.minecraft.util.registry.*;
 import net.minecraft.world.*;
-import org.apache.logging.log4j.*;
 import org.jetbrains.annotations.*;
 
 public class CondenserBlockEntity extends BlockEntity implements NamedScreenHandlerFactory  {
@@ -174,7 +164,7 @@ public class CondenserBlockEntity extends BlockEntity implements NamedScreenHand
 
             // find and use fuel
             if (!blockEntity.isBurning() && canAcceptRecipeOutput(recipe, inventory)) {
-                blockEntity.burnTime = blockEntity.burnTime + FuelRegistry.get(fuelVariant.toStack());
+                blockEntity.burnTime = blockEntity.burnTime + FuelRegistry.INSTANCE.get(fuelVariant.getItem());
                 blockEntity.fuelTime = blockEntity.burnTime;
                 if (blockEntity.isBurning()) {
                     shouldMarkDirty = true;

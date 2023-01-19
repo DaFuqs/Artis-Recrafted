@@ -55,9 +55,10 @@ public class CondenserRecipeCategory implements DisplayCategory<CondenserRecipeD
             widgets.add(Widgets.createTexturedWidget(CondenserScreen.BACKGROUND, startPoint.x + 21, startPoint.y, 176, 31, 9, 7));
         }
 
-        String cookingTimeString = format.format(display.time / 20d);
+        String cookingTimeString = format.format(display.time / 20D);
         Text tooltipText;
         if(display.fuelPerTick == 0) {
+            widgets.add(Widgets.createBurningFire(new Point(startPoint.x + 1, startPoint.y + 20)).animationDurationTicks(Double.MAX_VALUE));
             tooltipText = new TranslatableText("artis.rei.tooltip.no_fuel", cookingTimeString);
         } else if(display.fuelPerTick == 1) {
             widgets.add(Widgets.createBurningFire(new Point(startPoint.x + 1, startPoint.y + 20)).animationDurationMS(10000));

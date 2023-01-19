@@ -1,0 +1,13 @@
+{
+  "type": "artis:condenser",
+  "input": {
+    "item": "minecraft:leather_boots",
+    "count": 3
+  },
+  "time": 10,
+  "result": {
+    "item": "minecraft:leather_boots",
+    "nbt": "{Enchantments: [{id: \"minecraft:thorns\", lvl: 1s}]}",
+    "count": 2
+  }
+}
