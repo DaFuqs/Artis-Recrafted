@@ -23,7 +23,7 @@ public class CondenserRecipeSerializer implements RecipeSerializer<CondenserReci
     public CondenserRecipe read(Identifier identifier, JsonObject jsonObject) {
         String group = JsonHelper.getString(jsonObject, "group", "");
         IngredientStack input = RecipeParser.ingredientStackFromJson(JsonHelper.getObject(jsonObject, "input"));
-        int fuelPerTick = JsonHelper.getInt(jsonObject, "fuel_per_tick", 0);
+        int fuelPerTick = JsonHelper.getInt(jsonObject, "fuel_per_tick", 1);
         int time = JsonHelper.getInt(jsonObject, "time", 200);
         boolean preservesInput = JsonHelper.getBoolean(jsonObject, "preserves_input", false);
         ItemStack output = RecipeParser.getItemStackWithNbtFromJson(JsonHelper.getObject(jsonObject, "result"));
