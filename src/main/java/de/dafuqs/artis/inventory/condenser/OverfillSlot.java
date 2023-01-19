@@ -20,6 +20,12 @@ public class OverfillSlot extends Slot {
     }
 
     @Override
+    public boolean canInsert(ItemStack stack) {
+        ItemStack slotStack = inventory.getStack(index);
+        return slotStack.isEmpty() || ItemStack.canCombine(slotStack, stack);
+    }
+
+    @Override
     public ItemStack insertStack(ItemStack insertStack, int insertCount) {
         if (!insertStack.isEmpty() && this.canInsert(insertStack)) {
             ItemStack existingStack = this.getStack();

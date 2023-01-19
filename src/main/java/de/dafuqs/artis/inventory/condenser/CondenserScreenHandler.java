@@ -3,7 +3,7 @@ package de.dafuqs.artis.inventory.condenser;
 import de.dafuqs.artis.block.*;
 import de.dafuqs.artis.inventory.*;
 import de.dafuqs.artis.recipe.*;
-import dev.architectury.registry.fuel.*;
+import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.entity.player.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
@@ -74,7 +74,7 @@ public class CondenserScreenHandler extends ScreenHandler {
 					if (!this.insertItemOverfill(slotStack, 0, 1, false)) {
 						return ItemStack.EMPTY;
 					}
-				} else if (FuelRegistry.get(slotStack) > 0) {
+				} else if (FuelRegistry.INSTANCE.get(slotStack.getItem()) > 0) {
 					if (!this.insertItem(slotStack, 1, 2, false)) {
 						return ItemStack.EMPTY;
 					}
