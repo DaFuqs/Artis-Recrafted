@@ -282,4 +282,20 @@ public class CondenserBlockEntity extends BlockEntity implements NamedScreenHand
         return this.propertyDelegate;
     }
 
+    @Override
+    public void setStackNbt(ItemStack stack) {
+        BlockItem.setBlockEntityNbt(stack, this.getType(), this.createDropNbt());
+    }
+    
+    public final NbtCompound createDropNbt() {
+        NbtCompound nbt = new NbtCompound();
+        nbt.put("InputVariant", this.input.variant.toNbt());
+        nbt.putLong("InputCount", this.input.amount);
+        nbt.put("FuelVariant", this.fuel.variant.toNbt());
+        nbt.putLong("FuelCount", this.fuel.amount);
+        nbt.put("OutputVariant", this.output.variant.toNbt());
+        nbt.putLong("OutputCount", this.output.amount);
+        return nbt;
+    }
+
 }

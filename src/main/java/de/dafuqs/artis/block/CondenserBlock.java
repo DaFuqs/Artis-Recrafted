@@ -7,13 +7,18 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.player.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
+import net.minecraft.loot.context.*;
+import net.minecraft.nbt.*;
 import net.minecraft.state.*;
 import net.minecraft.state.property.*;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.*;
 import net.minecraft.util.math.*;
 import net.minecraft.world.*;
 import org.jetbrains.annotations.*;
+
+import java.util.*;
 
 public class CondenserBlock extends BlockWithEntity {
 
@@ -71,7 +76,7 @@ public class CondenserBlock extends BlockWithEntity {
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (!state.isOf(newState.getBlock())) {
-            scatterContents(world, pos);
+            //scatterContents(world, pos);
         }
         super.onStateReplaced(state, world, pos, newState, moved);
     }
@@ -96,6 +101,28 @@ public class CondenserBlock extends BlockWithEntity {
             ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), resultStack);
             amount -= currentAmount;
         }
+    }
+
+    public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
+        ItemStack itemStack = super.getPickStack(world, pos, state);
+        world.getBlockEntity(pos, ArtisBlocks.CONDENSER_BLOCK_ENTITY).ifPresent((blockEntity) -> {
+            blockEntity.setStackNbt(itemStack);
+        });
+        return itemStack;
+    }
+
+    public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
+        List<ItemStack> stacks = super.getDroppedStacks(state, builder);
+        BlockEntity blockEntity = builder.getNullable(LootContextParameters.BLOCK_ENTITY);
+        if (blockEntity instanceof CondenserBlockEntity condenserBlockEntity) {
+            for (ItemStack stack : stacks) {
+                if (stack.getItem() == this.asItem()) {
+                    condenserBlockEntity.setStackNbt(stack);
+                }
+            }
+        }
+
+        return stacks;
     }
 
 }
