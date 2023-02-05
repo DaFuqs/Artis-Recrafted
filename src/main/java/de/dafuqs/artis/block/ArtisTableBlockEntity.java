@@ -13,6 +13,7 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.*;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -23,7 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.NotNull;
 
-public class ArtisTableBlockEntity extends BlockEntity implements DefaultInventory, ExtendedScreenHandlerFactory {
+public class ArtisTableBlockEntity extends BlockEntity implements DefaultInventory, ExtendedScreenHandlerFactory, RecipeInputProvider {
     
     private ArtisTableType tableType;
     private DefaultedList<ItemStack> stacks;
@@ -74,6 +75,11 @@ public class ArtisTableBlockEntity extends BlockEntity implements DefaultInvento
 
         if (stacks != null)
             Inventories.writeNbt(nbt, stacks);
+    }
+
+    @Override
+    public void provideRecipeInputs(RecipeMatcher finder) {
+
     }
 
 }

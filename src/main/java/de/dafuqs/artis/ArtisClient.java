@@ -3,7 +3,7 @@ package de.dafuqs.artis;
 import de.dafuqs.artis.inventory.*;
 import de.dafuqs.artis.inventory.crafting.*;
 import net.fabricmc.api.*;
-import net.fabricmc.fabric.api.network.*;
+import net.fabricmc.fabric.api.client.networking.v1.*;
 import net.minecraft.client.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
@@ -18,13 +18,14 @@ public class ArtisClient implements ClientModInitializer {
     public void onInitializeClient() {
         ArtisScreenHandlers.registerClient();
 
-        ClientSidePacketRegistry.INSTANCE.register(Artis.RECIPE_SYNC_IDENTIFIER, (packetContext, attachedData) -> {
-            Identifier location = attachedData.readIdentifier();
-            packetContext.getTaskQueue().execute(() -> {
-                ScreenHandler container = packetContext.getPlayer().currentScreenHandler;
+        ClientPlayNetworking.registerGlobalReceiver(Artis.RECIPE_SYNC_IDENTIFIER, (client, handler, buf, responseSender) -> {
+            Identifier location = buf.readIdentifier();
+
+            client.execute(() -> {
+                ScreenHandler container = client.player.currentScreenHandler;
                 if (container instanceof ArtisRecipeProvider) {
                     Recipe<?> r = MinecraftClient.getInstance().world.getRecipeManager().get(location).orElse(null);
-                    updateLastRecipe((ArtisRecipeProvider) packetContext.getPlayer().currentScreenHandler, (Recipe<CraftingInventory>) r);
+                    updateLastRecipe((ArtisRecipeProvider) client.player.currentScreenHandler, (Recipe<CraftingInventory>) r);
                 }
             });
         });
