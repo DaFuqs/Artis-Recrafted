@@ -286,7 +286,7 @@ public class CondenserBlockEntity extends BlockEntity implements NamedScreenHand
     public void setStackNbt(ItemStack stack) {
         BlockItem.setBlockEntityNbt(stack, this.getType(), this.createDropNbt());
     }
-    
+
     public final NbtCompound createDropNbt() {
         NbtCompound nbt = new NbtCompound();
         nbt.put("InputVariant", this.input.variant.toNbt());

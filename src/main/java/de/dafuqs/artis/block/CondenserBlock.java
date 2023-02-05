@@ -3,15 +3,14 @@ package de.dafuqs.artis.block;
 import de.dafuqs.artis.*;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.*;
-import net.minecraft.entity.*;
 import net.minecraft.entity.player.*;
-import net.minecraft.inventory.*;
 import net.minecraft.item.*;
 import net.minecraft.loot.context.*;
-import net.minecraft.nbt.*;
+import net.minecraft.particle.*;
+import net.minecraft.sound.*;
 import net.minecraft.state.*;
-import net.minecraft.state.property.*;
 import net.minecraft.state.property.Properties;
+import net.minecraft.state.property.*;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.*;
 import net.minecraft.util.math.*;
@@ -73,12 +72,11 @@ public class CondenserBlock extends BlockWithEntity {
         return world.isClient ? null : checkType(type, ArtisBlocks.CONDENSER_BLOCK_ENTITY, CondenserBlockEntity::tick);
     }
 
-    @Override
+    /*@Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (!state.isOf(newState.getBlock())) {
-            //scatterContents(world, pos);
+            super.onStateReplaced(state, world, pos, newState, moved);
         }
-        super.onStateReplaced(state, world, pos, newState, moved);
     }
 
     public static void scatterContents(World world, BlockPos pos) {
@@ -91,7 +89,7 @@ public class CondenserBlock extends BlockWithEntity {
             spawnItemStackAsEntitySplitViaMaxCount(world, posVec, condenser.output.getResource().toStack(), condenser.output.amount);
             world.updateComparators(pos, block);
         }
-    }
+    }*/
 
     static void spawnItemStackAsEntitySplitViaMaxCount(World world, Vec3d pos, ItemStack itemStack, long amount) {
         while (amount > 0) {
@@ -123,6 +121,27 @@ public class CondenserBlock extends BlockWithEntity {
         }
 
         return stacks;
+    }
+
+    public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+        if (state.get(LIT)) {
+            double centerX = pos.getX() + 0.5;
+            double centerY = pos.getY() + 0.5;
+            double centerZ = pos.getZ() + 0.5;
+            if (random.nextDouble() < 0.1) {
+                world.playSound(centerX, centerY, centerZ, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+            }
+
+            Direction direction = state.get(FACING);
+            Direction.Axis axis = direction.getAxis();
+            double g = 0.52;
+            double h = random.nextDouble() * 0.6 - 0.3;
+            double xOffset = axis == Direction.Axis.X ? direction.getOffsetX() * g : h;
+            double yOffset = random.nextDouble() * 6.0 / 16.0;
+            double zOffset = axis == Direction.Axis.Z ? direction.getOffsetZ() * g : h;
+            world.addParticle(ParticleTypes.SMOKE, centerX + xOffset, centerY + yOffset, centerZ + zOffset, 0.0, 0.0, 0.0);
+            world.addParticle(ParticleTypes.FLAME, centerX + xOffset, centerY + yOffset, centerZ + zOffset, 0.0, 0.0, 0.0);
+        }
     }
 
 }
