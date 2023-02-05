@@ -2,7 +2,7 @@
   "type": "artis:condenser",
   "input": {
     "item": "minecraft:iron_shovel",
-    "count": 2
+    "count": 100
   },
   "fuel_per_tick": 0,
   "preserves_input": true,

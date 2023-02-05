@@ -6,10 +6,10 @@
   },
   "fuel_per_tick": 27,
   "preserves_input": true,
-  "time": 300,
+  "time": 360000,
   "result": {
     "item": "minecraft:snowball",
     "nbt": "{Enchantments: [{id: \"minecraft:sharpness\", lvl: 1s}]}",
-    "count": 2
+    "count": 1
   }
 }
