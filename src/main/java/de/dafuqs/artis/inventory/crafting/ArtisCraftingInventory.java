@@ -12,64 +12,85 @@ import net.minecraft.util.collection.DefaultedList;
 import java.util.Optional;
 
 public class ArtisCraftingInventory extends CraftingInventory {
-    private final DefaultedList<ItemStack> stacks;
+
+    private final CraftingInventory craftingInventory;
+    private final DefaultedList<ItemStack> catalystInventory;
     private final ArtisRecipeProvider container;
     private boolean checkMatrixChanges = false;
 
+    private final int catalystSlotID;
+
     public ArtisCraftingInventory(ArtisRecipeProvider container, int width, int height) {
         super(container, width, height);
-        this.stacks = DefaultedList.ofSize((width * height) + 1, ItemStack.EMPTY);
+        this.catalystSlotID = width * height;
+
+        this.craftingInventory = new CraftingInventory(container, width, height);
+        this.catalystInventory = DefaultedList.ofSize(1, ItemStack.EMPTY);
         this.container = container;
     }
 
     @Override
     public int size() {
-        return stacks.size();
+        return this.craftingInventory.size() + catalystInventory.size();
     }
 
     @Override
     public boolean isEmpty() {
-        for (ItemStack stack : stacks) {
-            if (!stack.isEmpty()) return false;
-        }
-        return true;
+        return this.craftingInventory.isEmpty() && catalystInventory.isEmpty();
     }
 
     @Override
     public ItemStack getStack(int slot) {
-        return stacks.get(slot);
+        if(slot == catalystSlotID) {
+            return catalystInventory.get(0);
+        } else {
+            return craftingInventory.getStack(slot);
+        }
     }
 
     @Override
     public ItemStack removeStack(int slot) {
-        return Inventories.removeStack(stacks, slot);
+        if(slot == catalystSlotID) {
+            return Inventories.removeStack(catalystInventory, 0);
+        } else {
+            return craftingInventory.removeStack(slot);
+        }
     }
 
     @Override
     public ItemStack removeStack(int slot, int amount) {
-        ItemStack stack = Inventories.splitStack(this.stacks, slot, amount);
-        if (!stack.isEmpty()) {
-            if (checkMatrixChanges)this.container.onContentChanged(this);
+        if(slot == catalystSlotID) {
+            ItemStack stack = Inventories.splitStack(this.catalystInventory, 0, amount);
+            if (!stack.isEmpty() && checkMatrixChanges) {
+                this.container.onContentChanged(this);
+            }
+            return stack;
+        } else {
+            return craftingInventory.removeStack(slot, amount);
         }
-        return stack;
     }
 
     @Override
     public void setStack(int slot, ItemStack stack) {
-        this.stacks.set(slot, stack);
-        if (checkMatrixChanges)this.container.onContentChanged(this);
+        if(slot == catalystSlotID) {
+            catalystInventory.set(0, stack);
+        } else {
+            craftingInventory.setStack(slot,stack);
+        }
+        if (checkMatrixChanges) {
+            this.container.onContentChanged(this);
+        }
     }
 
     @Override
     public void clear() {
-        this.stacks.clear();
+        this.craftingInventory.clear();
+        this.catalystInventory.clear();
     }
 
     @Override
     public void provideRecipeInputs(RecipeMatcher finder) {
-        for (ItemStack stack : stacks) {
-            finder.addInput(stack);
-        }
+        this.craftingInventory.provideRecipeInputs(finder);
     }
 
     public ItemStack getCatalyst() {
@@ -99,7 +120,12 @@ public class ArtisCraftingInventory extends CraftingInventory {
         this.checkMatrixChanges = b;
     }
 
-    public DefaultedList<ItemStack> getStacks() {
-        return stacks;
+    public CraftingInventory getCraftingInventory() {
+        return this.craftingInventory;
     }
+
+    public DefaultedList<ItemStack> getCatalystInventory() {
+        return this.catalystInventory;
+    }
+
 }

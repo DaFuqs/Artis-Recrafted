@@ -188,13 +188,12 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
         return getTableType().getWidth() * getTableType().getHeight();
     }
 
-    //like vanilla, but not a pile of lag
-    public static void updateResult(World world, CraftingInventory inv, CraftingResultInventory resultInv, ArtisTableType artisTableType) {
+    public static void updateResult(World world, ArtisCraftingInventory inv, CraftingResultInventory resultInv, ArtisTableType artisTableType) {
         ItemStack itemstack = ItemStack.EMPTY;
 
         Recipe<CraftingInventory> recipe = (Recipe<CraftingInventory>) resultInv.getLastRecipe();
         //find artis recipe first
-        if (recipe == null || !recipe.matches(inv, world)) {
+        if (recipe == null || (recipe instanceof ArtisCraftingRecipe ? !recipe.matches(inv, world) : !recipe.matches(inv.getCraftingInventory(), world))) {
             recipe = findArtisRecipe(artisTableType, inv, world);
         }
         //else fall back to vanilla
@@ -323,11 +322,12 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
         return craftResult.getLastRecipe() == null ? ItemStack.EMPTY : outputCopy;
     }
 
-    public static Recipe<CraftingInventory> findArtisRecipe(ArtisTableType tableType, CraftingInventory inv, World world) {
+    public static Recipe<CraftingInventory> findArtisRecipe(ArtisTableType tableType, ArtisCraftingInventory inv, World world) {
         return (Recipe<CraftingInventory>) world.getRecipeManager().getFirstMatch(tableType, inv, world).orElse(null);
     }
 
-    public static Recipe<CraftingInventory> findVanillaRecipe(CraftingInventory inv, World world) {
-        return world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, inv, world).orElse(null);
+    public static Recipe<CraftingInventory> findVanillaRecipe(ArtisCraftingInventory inv, World world) {
+        return world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, inv.getCraftingInventory(), world).orElse(null);
     }
+
 }
