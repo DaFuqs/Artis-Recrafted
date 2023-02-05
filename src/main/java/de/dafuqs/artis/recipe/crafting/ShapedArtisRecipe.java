@@ -1,17 +1,14 @@
 package de.dafuqs.artis.recipe.crafting;
 
-import de.dafuqs.artis.api.ArtisCraftingRecipe;
-import de.dafuqs.artis.api.SpecialCatalyst;
-import de.dafuqs.artis.inventory.crafting.ArtisCraftingInventory;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.recipe.ShapedRecipe;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.world.World;
+import de.dafuqs.artis.api.*;
+import de.dafuqs.artis.inventory.crafting.*;
+import net.minecraft.inventory.*;
+import net.minecraft.item.*;
+import net.minecraft.recipe.*;
+import net.minecraft.recipe.book.*;
+import net.minecraft.util.*;
+import net.minecraft.util.collection.*;
+import net.minecraft.world.*;
 
 public class ShapedArtisRecipe extends ShapedRecipe implements ArtisCraftingRecipe {
     private final RecipeType type;
@@ -20,7 +17,7 @@ public class ShapedArtisRecipe extends ShapedRecipe implements ArtisCraftingReci
     private final int catalystCost;
 
     public ShapedArtisRecipe(RecipeType type, RecipeSerializer serializer, Identifier id, String group, int width, int height, DefaultedList<Ingredient> ingredients, ItemStack output, Ingredient catalyst, int catalystCost) {
-        super(id, group, width, height, ingredients, output);
+        super(id, group, CraftingRecipeCategory.MISC, width, height, ingredients, output);
         this.type = type;
         this.serializer = serializer;
         this.catalyst = catalyst;

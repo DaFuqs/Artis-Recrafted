@@ -1,31 +1,28 @@
 package de.dafuqs.artis.block;
 
 import de.dafuqs.artis.*;
-import de.dafuqs.artis.api.ArtisTableType;
-import de.dafuqs.artis.inventory.crafting.ArtisRecipeProvider;
-import de.dafuqs.artis.inventory.crafting.DefaultInventory;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
+import de.dafuqs.artis.api.*;
+import de.dafuqs.artis.inventory.crafting.*;
+import net.fabricmc.fabric.api.screenhandler.v1.*;
+import net.minecraft.block.*;
+import net.minecraft.block.entity.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.inventory.*;
+import net.minecraft.item.*;
+import net.minecraft.nbt.*;
+import net.minecraft.network.*;
 import net.minecraft.recipe.*;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerContext;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.registry.*;
+import net.minecraft.screen.*;
+import net.minecraft.server.network.*;
+import net.minecraft.text.*;
+import net.minecraft.util.*;
+import net.minecraft.util.collection.*;
+import net.minecraft.util.math.*;
+import org.jetbrains.annotations.*;
 
 public class ArtisTableBlockEntity extends BlockEntity implements DefaultInventory, ExtendedScreenHandlerFactory, RecipeInputProvider {
-    
+
     private ArtisTableType tableType;
     private DefaultedList<ItemStack> stacks;
 
@@ -47,7 +44,7 @@ public class ArtisTableBlockEntity extends BlockEntity implements DefaultInvento
 
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inventory, PlayerEntity player) {
-        return new ArtisRecipeProvider(Registry.SCREEN_HANDLER.get(tableType.getId()), tableType, syncId, player, ScreenHandlerContext.create(world, getPos()));
+        return new ArtisRecipeProvider(Registries.SCREEN_HANDLER.get(tableType.getId()), tableType, syncId, player, ScreenHandlerContext.create(world, getPos()));
     }
 
     @Override

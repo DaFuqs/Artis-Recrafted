@@ -1,6 +1,6 @@
 package de.dafuqs.artis.api;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 
 /**
  * An item that has special behavior when used as a catalyst in an Artis table.

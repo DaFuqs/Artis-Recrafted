@@ -1,7 +1,6 @@
 package de.dafuqs.artis.api;
 
-import net.minecraft.recipe.CraftingRecipe;
-import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.*;
 
 public interface ArtisCraftingRecipe extends CraftingRecipe {
     Ingredient getCatalyst();

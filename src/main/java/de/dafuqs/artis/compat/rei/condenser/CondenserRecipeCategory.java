@@ -12,7 +12,6 @@ import me.shedaniel.rei.api.common.category.*;
 import me.shedaniel.rei.api.common.util.*;
 import net.fabricmc.api.*;
 import net.minecraft.text.*;
-import net.minecraft.util.*;
 import org.jetbrains.annotations.*;
 
 import java.text.*;
@@ -51,16 +50,16 @@ public class CondenserRecipeCategory implements DisplayCategory<CondenserRecipeD
         widgets.add(Widgets.createRecipeBase(bounds));
         widgets.add(Widgets.createResultSlotBackground(new Point(startPoint.x + 61, startPoint.y + 9)));
 
-        if(display.preservesInput) {
+        if (display.preservesInput) {
             widgets.add(Widgets.createTexturedWidget(CondenserScreen.BACKGROUND, startPoint.x + 21, startPoint.y, 176, 31, 9, 7));
         }
 
         String cookingTimeString = format.format(display.time / 20D);
         Text tooltipText;
-        if(display.fuelPerTick == 0) {
+        if (display.fuelPerTick == 0) {
             widgets.add(Widgets.createBurningFire(new Point(startPoint.x + 1, startPoint.y + 20)).animationDurationTicks(Double.MAX_VALUE));
             tooltipText = Text.translatable("artis.rei.tooltip.no_fuel", cookingTimeString);
-        } else if(display.fuelPerTick == 1) {
+        } else if (display.fuelPerTick == 1) {
             widgets.add(Widgets.createBurningFire(new Point(startPoint.x + 1, startPoint.y + 20)).animationDurationMS(10000));
             tooltipText = Text.translatable("artis.rei.tooltip.normal_fuel", cookingTimeString);
         } else {

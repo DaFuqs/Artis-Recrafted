@@ -1,10 +1,10 @@
 package de.dafuqs.artis.inventory.slot;
 
-import de.dafuqs.artis.inventory.crafting.ArtisCraftingInventory;
-import io.github.cottonmc.cotton.gui.ValidatedSlot;
-import io.github.cottonmc.cotton.gui.widget.WItemSlot;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventory;
+import de.dafuqs.artis.inventory.crafting.*;
+import io.github.cottonmc.cotton.gui.*;
+import io.github.cottonmc.cotton.gui.widget.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.inventory.*;
 
 public class WArtisResultSlot extends WItemSlot {
 

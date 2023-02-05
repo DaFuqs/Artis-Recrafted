@@ -49,7 +49,7 @@ public class VariantBackedSlot extends Slot {
     }
 
     public int getMaxItemCount() {
-        if(this.inventory instanceof VariantBackedInventory variantBackedInventory) {
+        if (this.inventory instanceof VariantBackedInventory variantBackedInventory) {
             return variantBackedInventory.getMaxCountPerStackForSlot(this.index);
         } else {
             return this.inventory.getMaxCountPerStack();
@@ -63,7 +63,7 @@ public class VariantBackedSlot extends Slot {
     }
 
     public long addAmount(long amount) {
-        if(this.inventory instanceof VariantBackedInventory variantBackedInventory) {
+        if (this.inventory instanceof VariantBackedInventory variantBackedInventory) {
             return variantBackedInventory.addAmount(this.index, amount);
         }
         markDirty();

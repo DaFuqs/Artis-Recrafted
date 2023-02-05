@@ -2,29 +2,21 @@ package de.dafuqs.artis.inventory.crafting;
 
 import de.dafuqs.artis.api.*;
 import de.dafuqs.artis.inventory.slot.*;
-import io.github.alloffabric.artis.Artis;
-import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
-import io.github.cottonmc.cotton.gui.client.BackgroundPainter;
-import io.github.cottonmc.cotton.gui.client.ScreenDrawing;
+import io.github.alloffabric.artis.*;
+import io.github.cottonmc.cotton.gui.*;
+import io.github.cottonmc.cotton.gui.client.*;
 import io.github.cottonmc.cotton.gui.widget.*;
-import io.github.cottonmc.cotton.gui.widget.data.HorizontalAlignment;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.inventory.CraftingResultInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeMatcher;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.screen.ScreenHandlerContext;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
+import io.github.cottonmc.cotton.gui.widget.data.*;
+import net.fabricmc.api.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.inventory.*;
+import net.minecraft.item.*;
+import net.minecraft.recipe.*;
+import net.minecraft.screen.*;
+import net.minecraft.screen.slot.*;
+import net.minecraft.text.*;
+import net.minecraft.util.*;
+import net.minecraft.world.*;
 
 public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeProvider {
     private final ArtisTableType tableType;
@@ -38,7 +30,7 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
     private final WArtisResultSlot resultSlot;
     private final WPlayerInvPanel playerInv;
     private WItemSlot catalystSlot;
-    
+
     public ArtisRecipeProvider(ScreenHandlerType type, ArtisTableType tableType, int syncId, PlayerEntity player, ScreenHandlerContext context) {
         super(type, syncId, player.getInventory(), getBlockInventory(context), getBlockPropertyDelegate(context));
 
@@ -65,7 +57,7 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
         if (getTableType().hasCatalystSlot()) {
             this.catalystSlot = WItemSlot.of(craftInv, craftInv.size() - 1);
             mainPanel.add(catalystSlot, layout.getCatalystX() + offsetX, layout.getCatalystY() + 1);
-    
+
             WLabel catalystCost = new WLabel(Text.empty(), 0xAA0000).setHorizontalAlignment(HorizontalAlignment.CENTER);
             mainPanel.add(catalystCost, layout.getCatalystX() + offsetX, layout.getCatalystY() + 19);
         }
@@ -75,7 +67,7 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
 
         this.playerInv = this.createPlayerInventoryPanel();
         mainPanel.add(playerInv, layout.getPlayerX() + offsetX, layout.getPlayerY());
-    
+
         WLabel label = new WLabel(tableType.getName(), 0x404040);
         mainPanel.add(label, 8, 6);
 
@@ -84,10 +76,10 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
 
         mainPanel.validate(this);
         craftInv.setCheckMatrixChanges(true);
-        
+
         int width = Math.max(176, 74 + tableType.getWidth() * 18);
         int height;
-        if(tableType.hasCatalystSlot()) {
+        if (tableType.hasCatalystSlot()) {
             height = Math.max(150, 120 + tableType.getHeight() * 18);
         } else {
             height = Math.max(140, 120 + tableType.getHeight() * 18);
@@ -200,13 +192,13 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
         if (recipe == null && artisTableType.shouldIncludeNormalRecipes()) {
             recipe = findVanillaRecipe(inv, world);
         }
-        
+
         if (recipe != null) {
             itemstack = recipe.craft(inv);
         }
 
         resultInv.setStack(0, itemstack);
-        if(recipe != null) {
+        if (recipe != null) {
             resultInv.setLastRecipe(recipe);
         }
     }
@@ -223,7 +215,7 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
     }
 
     @Override
-    public ItemStack transferSlot(PlayerEntity player, int slotIndex) {
+    public ItemStack quickMove(PlayerEntity player, int slotIndex) {
         ItemStack stack = ItemStack.EMPTY;
         Slot slot = this.slots.get(slotIndex);
         if (slot.hasStack()) {
@@ -233,7 +225,7 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
             }
             ItemStack toTake = slot.getStack();
             stack = toTake.copy();
-    
+
             if (slotIndex < tableSlotCount) {
                 if (!this.insertItem(stack, tableSlotCount, this.slots.size(), true)) {
                     return ItemStack.EMPTY;
@@ -241,17 +233,17 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
             } else if (!this.insertItem(stack, 0, tableSlotCount, false)) {
                 return ItemStack.EMPTY;
             }
-    
+
             if (stack.isEmpty()) {
                 slot.setStack(ItemStack.EMPTY);
             } else {
                 slot.markDirty();
             }
-    
+
             if (slotIndex == getCraftingResultSlotIndex()) {
                 player.dropItem(toTake, false);
             }
-            
+
             slot.onTakeItem(player, toTake);
 
         }
@@ -262,7 +254,7 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
     @Override
     public void onSlotClick(int slotNumber, int button, SlotActionType action, PlayerEntity player) {
         if (slotNumber == getCraftingResultSlotIndex() && action == SlotActionType.QUICK_MOVE) {
-            transferSlot(player, slotNumber);
+            quickMove(player, slotNumber);
         } else {
             super.onSlotClick(slotNumber, button, action, player);
         }
@@ -291,7 +283,7 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
 
             Recipe<CraftingInventory> recipe = (Recipe<CraftingInventory>) craftResult.getLastRecipe();
             if (recipe == null && container.tableType.shouldIncludeNormalRecipes()) {
-                recipe = findVanillaRecipe(input,player.world);
+                recipe = findVanillaRecipe(input, player.world);
             }
             while (recipe != null && recipe.matches(input, player.world)) {
                 ItemStack recipeOutput = resultSlot.getStack().copy();
@@ -299,7 +291,7 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
 
                 recipeOutput.getItem().onCraft(recipeOutput, player.world, player);
 
-                if (!player.world.isClient && !container.insertItem(recipeOutput, outStart, outEnd,true)) {
+                if (!player.world.isClient && !container.insertItem(recipeOutput, outStart, outEnd, true)) {
                     input.setCheckMatrixChanges(true);
                     return ItemStack.EMPTY;
                 }
@@ -311,7 +303,7 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
                     input.setCheckMatrixChanges(true);
                     return ItemStack.EMPTY;
                 }
-                
+
                 resultSlot.onTakeItem(player, recipeOutput);
                 player.dropItem(recipeOutput, false);
             }

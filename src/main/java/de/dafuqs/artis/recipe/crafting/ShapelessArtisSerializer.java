@@ -1,18 +1,13 @@
 package de.dafuqs.artis.recipe.crafting;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import de.dafuqs.artis.api.ArtisTableType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.ShapedRecipe;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
-import net.minecraft.util.collection.DefaultedList;
-import org.jetbrains.annotations.NotNull;
+import com.google.gson.*;
+import de.dafuqs.artis.api.*;
+import net.minecraft.item.*;
+import net.minecraft.network.*;
+import net.minecraft.recipe.*;
+import net.minecraft.util.*;
+import net.minecraft.util.collection.*;
+import org.jetbrains.annotations.*;
 
 public class ShapelessArtisSerializer implements RecipeSerializer<ShapelessArtisRecipe> {
     private final ArtisTableType type;

@@ -8,18 +8,15 @@ import net.fabricmc.fabric.api.object.builder.v1.block.*;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.*;
 import net.fabricmc.fabric.api.screenhandler.v1.*;
 import net.fabricmc.fabric.api.transfer.v1.item.*;
-import net.fabricmc.fabric.api.transfer.v1.storage.*;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.*;
 import net.minecraft.item.*;
+import net.minecraft.registry.*;
 import net.minecraft.screen.*;
 import net.minecraft.util.*;
-import net.minecraft.util.math.*;
-import net.minecraft.util.registry.*;
 import org.jetbrains.annotations.*;
 
 import java.util.*;
-import java.util.function.*;
 
 public class ArtisBlocks {
 
@@ -41,21 +38,21 @@ public class ArtisBlocks {
         ExtendedScreenHandlerType<ArtisRecipeProvider> screenHandlerType = new ExtendedScreenHandlerType<>((syncId, playerInventory, buf) -> new ArtisRecipeProvider(null, type, syncId, playerInventory.player, ScreenHandlerContext.create(playerInventory.player.world, buf.readBlockPos())));
         ScreenHandlerRegistry.registerExtended(id, (syncId, playerInventory, buf) -> new ArtisRecipeProvider(screenHandlerType, type, syncId, playerInventory.player, ScreenHandlerContext.create(playerInventory.player.world, buf.readBlockPos())));
 
-        if(type instanceof ArtisExistingBlockType artisExistingBlockType) {
+        if (type instanceof ArtisExistingBlockType artisExistingBlockType) {
             ArtisResources.registerDataForExistingBlock(artisExistingBlockType);
-        } else if(type instanceof ArtisExistingItemType artisExistingItemType) {
+        } else if (type instanceof ArtisExistingItemType artisExistingItemType) {
             ArtisResources.registerDataForExistingItem(artisExistingItemType);
         } else {
             ArtisTableBlock block;
             if (type.hasBlockEntity()) {
-                block = Registry.register(Registry.BLOCK, id, new ArtisTableBEBlock(type, settings));
+                block = Registry.register(Registries.BLOCK, id, new ArtisTableBEBlock(type, settings));
                 ARTIS_TABLE_BE_BLOCKS.add(block);
 
             } else {
-                block = Registry.register(Registry.BLOCK, id, new ArtisTableBlock(type, settings));
+                block = Registry.register(Registries.BLOCK, id, new ArtisTableBlock(type, settings));
             }
             ARTIS_TABLE_BLOCKS.add(block);
-            Registry.register(Registry.ITEM, id, new ArtisTableItem(block, new Item.Settings().group(group)));
+            Registry.register(Registries.ITEM, id, new ArtisTableItem(block, new Item.Settings()));
             ArtisResources.registerDataForTable(type, block);
         }
 
@@ -63,20 +60,20 @@ public class ArtisBlocks {
     }
 
     public static void registerBlockWithItem(String name, Block block, Item.Settings itemSettings) {
-        Registry.register(Registry.BLOCK, new Identifier(Artis.MODID, name), block);
+        Registry.register(Registries.BLOCK, new Identifier(Artis.MODID, name), block);
         BlockItem blockItem = new BlockItem(block, itemSettings);
-        Registry.register(Registry.ITEM, new Identifier(Artis.MODID, name), blockItem);
+        Registry.register(Registries.ITEM, new Identifier(Artis.MODID, name), blockItem);
     }
 
     public static <T extends BlockEntity> BlockEntityType<T> registerBlockEntity(String name, FabricBlockEntityTypeBuilder.Factory<T> factory, Block... blocks) {
-        return Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Artis.MODID, name), FabricBlockEntityTypeBuilder.create(factory, blocks).build());
+        return Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(Artis.MODID, name), FabricBlockEntityTypeBuilder.create(factory, blocks).build());
     }
 
     public static void register() {
         Block[] artisBlocks = Arrays.copyOf(ARTIS_TABLE_BLOCKS.toArray(), ARTIS_TABLE_BLOCKS.size(), ArtisTableBlock[].class);
-        ARTIS_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Artis.MODID, "artis_table"), FabricBlockEntityTypeBuilder.create(ArtisTableBlockEntity::new, artisBlocks).build());
+        ARTIS_BLOCK_ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(Artis.MODID, "artis_table"), FabricBlockEntityTypeBuilder.create(ArtisTableBlockEntity::new, artisBlocks).build());
 
-        registerBlockWithItem("condenser", CONDENSER_BLOCK, new Item.Settings().group(ArtisItemGroups.ARTIS_GROUP));
+        registerBlockWithItem("condenser", CONDENSER_BLOCK, new Item.Settings());
         CONDENSER_BLOCK_ENTITY = registerBlockEntity("condenser", CondenserBlockEntity::new, CONDENSER_BLOCK);
 
         ItemStorage.SIDED.registerForBlockEntity((condenserBlockEntity, direction) -> {

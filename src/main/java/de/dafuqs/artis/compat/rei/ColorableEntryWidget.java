@@ -1,15 +1,13 @@
 package de.dafuqs.artis.compat.rei;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import me.shedaniel.math.Point;
-import me.shedaniel.rei.impl.client.gui.widget.EntryWidget;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.util.math.MatrixStack;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
+import com.mojang.blaze3d.systems.*;
+import me.shedaniel.math.*;
+import me.shedaniel.rei.impl.client.gui.widget.*;
+import net.minecraft.client.gui.*;
+import net.minecraft.client.util.math.*;
+import org.jetbrains.annotations.*;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class ColorableEntryWidget extends EntryWidget {
     private final int color;
@@ -44,20 +42,20 @@ public class ColorableEntryWidget extends EntryWidget {
     public int getY() {
         return y;
     }
-    
+
     @Override
     public void drawBackground(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         int r = (color & 0xFF0000) >> 16;
         int g = (color & 0xFF00) >> 8;
         int b = (color & 0xFF);
-        
+
         RenderSystem.setShaderColor((r + 30) / 255F, (g + 30) / 255F, (b + 30) / 255F, 1.0F);
         super.drawBackground(matrices, mouseX, mouseY, delta);
     }
-    
+
     @Override
     public List<? extends Element> children() {
         return Collections.emptyList();
     }
-    
+
 }

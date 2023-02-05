@@ -6,7 +6,6 @@ import io.github.cottonmc.cotton.gui.*;
 import net.minecraft.entity.player.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
-import net.minecraft.recipe.*;
 
 import java.util.*;
 
