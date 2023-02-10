@@ -1,49 +1,44 @@
 package de.dafuqs.artis.compat.rei;
 
 import de.dafuqs.artis.*;
-import de.dafuqs.artis.api.ArtisCraftingRecipe;
-import de.dafuqs.artis.api.ArtisExistingItemType;
-import de.dafuqs.artis.api.ArtisTableType;
-import de.dafuqs.artis.block.ArtisTableBlock;
+import de.dafuqs.artis.api.*;
+import de.dafuqs.artis.block.*;
 import de.dafuqs.artis.compat.rei.condenser.*;
 import de.dafuqs.artis.compat.rei.crafting.*;
 import de.dafuqs.artis.inventory.condenser.*;
 import de.dafuqs.artis.recipe.*;
 import de.dafuqs.artis.recipe.condenser.*;
 import me.shedaniel.math.*;
-import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
-import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
-import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
-import me.shedaniel.rei.api.client.registry.screen.ScreenRegistry;
-import me.shedaniel.rei.api.common.util.EntryStacks;
-import me.shedaniel.rei.plugin.common.BuiltinPlugin;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import me.shedaniel.rei.api.client.plugins.*;
+import me.shedaniel.rei.api.client.registry.category.*;
+import me.shedaniel.rei.api.client.registry.display.*;
+import me.shedaniel.rei.api.client.registry.screen.*;
+import me.shedaniel.rei.api.common.util.*;
+import me.shedaniel.rei.plugin.common.*;
+import net.fabricmc.api.*;
 import net.minecraft.block.*;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.item.*;
+import net.minecraft.util.registry.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Environment(EnvType.CLIENT)
 public class REIClientIntegration implements REIClientPlugin {
-    
+
     public static final Map<ArtisTableType, ItemConvertible> iconMap = new HashMap<>();
-    
+
     public REIClientIntegration() {
         for (ArtisTableBlock block : ArtisBlocks.ARTIS_TABLE_BLOCKS) {
             iconMap.put(block.getType(), block);
         }
     }
-    
+
     @Override
     public void registerCategories(CategoryRegistry registry) {
         for (ArtisTableType type : ArtisBlocks.ARTIS_TABLE_TYPES) {
             registry.add(new ArtisRecipeCategory(type));
-            
-            if(type instanceof ArtisExistingItemType) {
+
+            if (type instanceof ArtisExistingItemType) {
                 Item item = Registry.ITEM.get(type.getId());
                 registry.addWorkstations(type.getCategoryIdentifier(), EntryStacks.of(item));
                 if (type.shouldIncludeNormalRecipes()) {
@@ -89,7 +84,7 @@ public class REIClientIntegration implements REIClientPlugin {
             }
         });*/
     }
-    
+
     /**
      * Where in the screens gui the player has to click
      * to get to the recipe overview
@@ -98,10 +93,10 @@ public class REIClientIntegration implements REIClientPlugin {
     public void registerScreens(ScreenRegistry registry) {
         // TODO: since this one screen handles all different sizes there needs to be a better way to handle this
         //for (ArtisTableType type : Artis.ARTIS_TABLE_TYPES) {
-            //registry.registerContainerClickArea(type.getREIClickArea(), ArtisCraftingScreen.class, type.getCategoryIdentifier(), BuiltinPlugin.CRAFTING);
+        //registry.registerContainerClickArea(type.getREIClickArea(), ArtisCraftingScreen.class, type.getCategoryIdentifier(), BuiltinPlugin.CRAFTING);
         //}
 
         registry.registerContainerClickArea(new Rectangle(81, 34, 21, 16), CondenserScreen.class, ArtisPlugins.CONDENSER);
     }
-    
+
 }

@@ -21,7 +21,7 @@ public class ScreenHandlerTransferHelper {
                 i = endIndex - 1;
             }
 
-            while(true) {
+            while (true) {
                 if (fromLast) {
                     if (i < startIndex) {
                         break;
@@ -32,7 +32,7 @@ public class ScreenHandlerTransferHelper {
 
                 slot = screenHandler.slots.get(i);
                 slotStack = slot.getStack();
-                if(slot instanceof VariantBackedSlot variantBackedSlot) {
+                if (slot instanceof VariantBackedSlot variantBackedSlot) {
                     if (slot.canInsert(stack)) {
                         if (slotStack.isEmpty()) {
                             variantBackedSlot.setStack(stack);

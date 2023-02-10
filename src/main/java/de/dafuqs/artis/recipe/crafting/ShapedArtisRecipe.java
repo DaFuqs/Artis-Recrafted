@@ -1,17 +1,13 @@
 package de.dafuqs.artis.recipe.crafting;
 
-import de.dafuqs.artis.api.ArtisCraftingRecipe;
-import de.dafuqs.artis.api.SpecialCatalyst;
-import de.dafuqs.artis.inventory.crafting.ArtisCraftingInventory;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.recipe.ShapedRecipe;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.world.World;
+import de.dafuqs.artis.api.*;
+import de.dafuqs.artis.inventory.crafting.*;
+import net.minecraft.inventory.*;
+import net.minecraft.item.*;
+import net.minecraft.recipe.*;
+import net.minecraft.util.*;
+import net.minecraft.util.collection.*;
+import net.minecraft.world.*;
 
 public class ShapedArtisRecipe extends ShapedRecipe implements ArtisCraftingRecipe {
     private final RecipeType type;

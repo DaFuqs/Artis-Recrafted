@@ -28,8 +28,8 @@ public class VariantBackedInventory implements Inventory {
 
     @Override
     public boolean isEmpty() {
-        for(SingleVariantStorage storage : storages) {
-            if(storage.getAmount() > 0) {
+        for (SingleVariantStorage storage : storages) {
+            if (storage.getAmount() > 0) {
                 return false;
             }
         }
@@ -39,7 +39,7 @@ public class VariantBackedInventory implements Inventory {
     @Override
     public ItemStack getStack(int slot) {
         SingleVariantStorage<ItemVariant> storage = storages[slot];
-        if(storage.amount == 0) {
+        if (storage.amount == 0) {
             return ItemStack.EMPTY;
         } else {
             int slotAmount = (int) Math.min(storage.variant.getItem().getMaxCount(), storage.amount);
@@ -85,7 +85,7 @@ public class VariantBackedInventory implements Inventory {
 
     @Override
     public void clear() {
-        for(SingleVariantStorage<ItemVariant> storage : storages) {
+        for (SingleVariantStorage<ItemVariant> storage : storages) {
             storage.variant = ItemVariant.blank();
             storage.amount = 0;
         }
@@ -98,7 +98,8 @@ public class VariantBackedInventory implements Inventory {
 
     /**
      * Adds a number of items to the slot
-     * @param index The slot to add to
+     *
+     * @param index  The slot to add to
      * @param amount The amount to add
      * @return The amount that could not get added
      */

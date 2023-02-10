@@ -1,23 +1,19 @@
 package de.dafuqs.artis.compat.rei;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import de.dafuqs.artis.Artis;
-import me.shedaniel.math.Dimension;
-import me.shedaniel.math.Point;
-import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.client.gui.widgets.Arrow;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.NotNull;
+import com.mojang.blaze3d.systems.*;
+import de.dafuqs.artis.*;
+import me.shedaniel.math.*;
+import me.shedaniel.rei.api.client.gui.widgets.*;
+import net.minecraft.client.gui.*;
+import net.minecraft.client.util.math.*;
+import net.minecraft.util.*;
+import net.minecraft.util.math.*;
+import org.jetbrains.annotations.*;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class TransparentArrowWidget extends Arrow {
-    
+
     @NotNull
     private final Rectangle bounds;
     private double animationDuration = -1;
@@ -58,7 +54,7 @@ public class TransparentArrowWidget extends Arrow {
             drawTexture(matrices, getX(), getY(), 0, 0, width, 17, 48, 17);
         }
     }
-    
+
     public List<? extends Element> children() {
         return Collections.emptyList();
     }

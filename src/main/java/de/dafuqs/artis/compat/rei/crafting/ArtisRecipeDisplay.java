@@ -1,26 +1,21 @@
 package de.dafuqs.artis.compat.rei.crafting;
 
-import de.dafuqs.artis.api.ArtisCraftingRecipe;
-import de.dafuqs.artis.api.ArtisTableType;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.display.SimpleGridMenuDisplay;
-import me.shedaniel.rei.api.common.display.basic.BasicDisplay;
-import me.shedaniel.rei.api.common.entry.EntryIngredient;
-import me.shedaniel.rei.api.common.registry.RecipeManagerContext;
-import me.shedaniel.rei.api.common.util.EntryIngredients;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.NotNull;
+import de.dafuqs.artis.api.*;
+import me.shedaniel.rei.api.common.category.*;
+import me.shedaniel.rei.api.common.display.*;
+import me.shedaniel.rei.api.common.display.basic.*;
+import me.shedaniel.rei.api.common.entry.*;
+import me.shedaniel.rei.api.common.registry.*;
+import me.shedaniel.rei.api.common.util.*;
+import net.minecraft.recipe.*;
+import net.minecraft.util.*;
+import org.jetbrains.annotations.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
+import java.util.stream.*;
 
 public class ArtisRecipeDisplay extends BasicDisplay implements SimpleGridMenuDisplay {
-    
+
     private final ArtisCraftingRecipe display;
     private final ArtisTableType type;
     private final Ingredient catalyst;
@@ -37,7 +32,7 @@ public class ArtisRecipeDisplay extends BasicDisplay implements SimpleGridMenuDi
         this.catalyst = recipe.getCatalyst();
         this.catalystCost = recipe.getCatalystCost();
     }
-    
+
     /**
      * When using Shift click on the plus button in the REI gui to autofill crafting grids
      */
@@ -50,17 +45,17 @@ public class ArtisRecipeDisplay extends BasicDisplay implements SimpleGridMenuDi
         this.catalyst = recipe.getCatalyst();
         this.catalystCost = recipe.getCatalystCost();
     }
-	
-	public static BasicDisplay.Serializer<ArtisRecipeDisplay> serializer() {
+
+    public static BasicDisplay.Serializer<ArtisRecipeDisplay> serializer() {
         return ArtisRecipeDisplay.Serializer.ofSimple(ArtisRecipeDisplay::simple).inputProvider(ArtisRecipeDisplay::getInputEntries);
-	}
-    
+    }
+
     private static @NotNull ArtisRecipeDisplay simple(List<EntryIngredient> inputs, List<EntryIngredient> outputs, @NotNull Optional<Identifier> identifier) {
         Recipe<?> optionalRecipe = identifier.flatMap(resourceLocation -> RecipeManagerContext.getInstance().getRecipeManager().get(resourceLocation)).orElse(null);
         return new ArtisRecipeDisplay(inputs, outputs, (ArtisCraftingRecipe) optionalRecipe);
     }
-    
-	public ArtisCraftingRecipe getDisplay() {
+
+    public ArtisCraftingRecipe getDisplay() {
         return display;
     }
 
@@ -73,12 +68,12 @@ public class ArtisRecipeDisplay extends BasicDisplay implements SimpleGridMenuDi
     public List<EntryIngredient> getOutputEntries() {
         return this.output;
     }
-    
+
     @Override
     public CategoryIdentifier<?> getCategoryIdentifier() {
         return type.getCategoryIdentifier();
     }
-    
+
     @Override
     public int getWidth() {
         return display.getWidth();
@@ -96,5 +91,5 @@ public class ArtisRecipeDisplay extends BasicDisplay implements SimpleGridMenuDi
     public int getCatalystCost() {
         return catalystCost;
     }
-    
+
 }

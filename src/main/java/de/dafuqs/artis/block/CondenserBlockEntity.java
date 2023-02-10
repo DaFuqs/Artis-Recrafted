@@ -20,7 +20,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.*;
 import org.jetbrains.annotations.*;
 
-public class CondenserBlockEntity extends BlockEntity implements NamedScreenHandlerFactory  {
+public class CondenserBlockEntity extends BlockEntity implements NamedScreenHandlerFactory {
 
     public final SingleVariantStorage<ItemVariant> input = new SingleVariantStorage<>() {
         @Override
@@ -109,10 +109,10 @@ public class CondenserBlockEntity extends BlockEntity implements NamedScreenHand
         nbt.put("OutputVariant", this.output.variant.toNbt());
         nbt.putLong("OutputCount", this.output.amount);
 
-        nbt.putShort("BurnTime", (short)this.burnTime);
-        nbt.putShort("FuelTime", (short)this.fuelTime);
-        nbt.putShort("CookTime", (short)this.cookTime);
-        nbt.putShort("CookTimeTotal", (short)this.cookTimeTotal);
+        nbt.putShort("BurnTime", (short) this.burnTime);
+        nbt.putShort("FuelTime", (short) this.fuelTime);
+        nbt.putShort("CookTime", (short) this.cookTime);
+        nbt.putShort("CookTimeTotal", (short) this.cookTimeTotal);
     }
 
     @Override
@@ -139,7 +139,7 @@ public class CondenserBlockEntity extends BlockEntity implements NamedScreenHand
         boolean wasBurning = blockEntity.isBurning();
         boolean shouldMarkDirty = false;
         if (blockEntity.isBurning()) {
-            if(blockEntity.cachedRecipe == null) {
+            if (blockEntity.cachedRecipe == null) {
                 blockEntity.burnTime--;
             } else {
                 blockEntity.burnTime -= blockEntity.cachedRecipe.getFuelPerTick();
@@ -155,12 +155,12 @@ public class CondenserBlockEntity extends BlockEntity implements NamedScreenHand
         } else {
             Inventory inventory = new VariantBackedInventory(blockEntity, blockEntity.input, blockEntity.fuel, blockEntity.output);
             CondenserRecipe recipe;
-            if(blockEntity.cachedRecipe != null && blockEntity.cachedRecipe.matches(inventory, world)) {
+            if (blockEntity.cachedRecipe != null && blockEntity.cachedRecipe.matches(inventory, world)) {
                 recipe = blockEntity.cachedRecipe;
             } else {
                 recipe = world.getRecipeManager().getFirstMatch(ArtisRecipeTypes.CONDENSER, inventory, world).orElse(null);
                 blockEntity.cachedRecipe = recipe;
-                if(recipe == null) {
+                if (recipe == null) {
                     blockEntity.cookTimeTotal = 0;
                 } else {
                     blockEntity.cookTimeTotal = recipe.getTime();
@@ -179,7 +179,7 @@ public class CondenserBlockEntity extends BlockEntity implements NamedScreenHand
                         blockEntity.fuel.amount -= 1;
                         if (blockEntity.fuel.amount == 0) {
                             Item fuelRemainder = item.getRecipeRemainder();
-                            if(fuelRemainder != null) {
+                            if (fuelRemainder != null) {
                                 blockEntity.fuel.variant = ItemVariant.of(fuelRemainder);
                                 blockEntity.fuel.amount = 1;
                             }
@@ -198,7 +198,7 @@ public class CondenserBlockEntity extends BlockEntity implements NamedScreenHand
                 }
             } else {
                 blockEntity.cookTime = 0;
-                if(blockEntity.burnTime < 0) {
+                if (blockEntity.burnTime < 0) {
                     blockEntity.burnTime = 0;
                 }
             }
@@ -218,7 +218,7 @@ public class CondenserBlockEntity extends BlockEntity implements NamedScreenHand
 
     public static int getFuelTime(Item item) {
         Integer time = FuelRegistry.INSTANCE.get(item);
-        if(time == null) {
+        if (time == null) {
             return 0;
         }
         return time;
@@ -258,7 +258,7 @@ public class CondenserBlockEntity extends BlockEntity implements NamedScreenHand
             } else if (output.isOf(recipeOutput.getItem())) {
                 condenser.output.amount += recipeOutput.getCount();
             }
-            if(!recipe.preservesInput()) {
+            if (!recipe.preservesInput()) {
                 condenser.input.amount -= recipe.getInput().getCount();
             }
             return true;

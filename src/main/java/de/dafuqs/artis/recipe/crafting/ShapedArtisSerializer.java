@@ -1,24 +1,16 @@
 package de.dafuqs.artis.recipe.crafting;
 
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import de.dafuqs.artis.api.ArtisTableType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.ShapedRecipe;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonHelper;
-import net.minecraft.util.collection.DefaultedList;
-import org.jetbrains.annotations.NotNull;
+import com.google.common.collect.*;
+import com.google.gson.*;
+import de.dafuqs.artis.api.*;
+import net.minecraft.item.*;
+import net.minecraft.network.*;
+import net.minecraft.recipe.*;
+import net.minecraft.util.*;
+import net.minecraft.util.collection.*;
+import org.jetbrains.annotations.*;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ShapedArtisSerializer implements RecipeSerializer<ShapedArtisRecipe> {
     private final ArtisTableType type;
@@ -107,13 +99,13 @@ public class ShapedArtisSerializer implements RecipeSerializer<ShapedArtisRecipe
 
     private static int findNextIngredient(@NotNull String ingredients) {
         int i;
-        for (i = 0; i < ingredients.length() && ingredients.charAt(i) == ' '; ++i);
+        for (i = 0; i < ingredients.length() && ingredients.charAt(i) == ' '; ++i) ;
         return i;
     }
 
     private static int findNextIngredientReverse(@NotNull String ingredients) {
         int i;
-        for (i = ingredients.length() - 1; i >= 0 && ingredients.charAt(i) == ' '; --i);
+        for (i = ingredients.length() - 1; i >= 0 && ingredients.charAt(i) == ' '; --i) ;
         return i;
     }
 

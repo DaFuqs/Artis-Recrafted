@@ -1,9 +1,7 @@
 package de.dafuqs.artis.api;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeMatcher;
+import net.fabricmc.api.*;
+import net.minecraft.recipe.*;
 
 public interface RecipeProvider {
     void populateRecipeMatcher(RecipeMatcher finder);

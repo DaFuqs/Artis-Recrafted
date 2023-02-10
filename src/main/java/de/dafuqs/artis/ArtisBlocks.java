@@ -8,18 +8,15 @@ import net.fabricmc.fabric.api.object.builder.v1.block.*;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.*;
 import net.fabricmc.fabric.api.screenhandler.v1.*;
 import net.fabricmc.fabric.api.transfer.v1.item.*;
-import net.fabricmc.fabric.api.transfer.v1.storage.*;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.*;
 import net.minecraft.item.*;
 import net.minecraft.screen.*;
 import net.minecraft.util.*;
-import net.minecraft.util.math.*;
 import net.minecraft.util.registry.*;
 import org.jetbrains.annotations.*;
 
 import java.util.*;
-import java.util.function.*;
 
 public class ArtisBlocks {
 
@@ -41,9 +38,9 @@ public class ArtisBlocks {
         ExtendedScreenHandlerType<ArtisRecipeProvider> screenHandlerType = new ExtendedScreenHandlerType<>((syncId, playerInventory, buf) -> new ArtisRecipeProvider(null, type, syncId, playerInventory.player, ScreenHandlerContext.create(playerInventory.player.world, buf.readBlockPos())));
         ScreenHandlerRegistry.registerExtended(id, (syncId, playerInventory, buf) -> new ArtisRecipeProvider(screenHandlerType, type, syncId, playerInventory.player, ScreenHandlerContext.create(playerInventory.player.world, buf.readBlockPos())));
 
-        if(type instanceof ArtisExistingBlockType artisExistingBlockType) {
+        if (type instanceof ArtisExistingBlockType artisExistingBlockType) {
             ArtisResources.registerDataForExistingBlock(artisExistingBlockType);
-        } else if(type instanceof ArtisExistingItemType artisExistingItemType) {
+        } else if (type instanceof ArtisExistingItemType artisExistingItemType) {
             ArtisResources.registerDataForExistingItem(artisExistingItemType);
         } else {
             ArtisTableBlock block;

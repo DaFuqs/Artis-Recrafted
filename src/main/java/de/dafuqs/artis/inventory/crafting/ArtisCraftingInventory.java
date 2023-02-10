@@ -1,15 +1,12 @@
 package de.dafuqs.artis.inventory.crafting;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.CraftingRecipe;
-import net.minecraft.recipe.RecipeMatcher;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.entity.player.*;
+import net.minecraft.inventory.*;
+import net.minecraft.item.*;
+import net.minecraft.recipe.*;
+import net.minecraft.util.collection.*;
 
-import java.util.Optional;
+import java.util.*;
 
 public class ArtisCraftingInventory extends CraftingInventory {
 
@@ -41,7 +38,7 @@ public class ArtisCraftingInventory extends CraftingInventory {
 
     @Override
     public ItemStack getStack(int slot) {
-        if(slot == catalystSlotID) {
+        if (slot == catalystSlotID) {
             return catalystInventory.get(0);
         } else {
             return craftingInventory.getStack(slot);
@@ -50,7 +47,7 @@ public class ArtisCraftingInventory extends CraftingInventory {
 
     @Override
     public ItemStack removeStack(int slot) {
-        if(slot == catalystSlotID) {
+        if (slot == catalystSlotID) {
             return Inventories.removeStack(catalystInventory, 0);
         } else {
             return craftingInventory.removeStack(slot);
@@ -59,7 +56,7 @@ public class ArtisCraftingInventory extends CraftingInventory {
 
     @Override
     public ItemStack removeStack(int slot, int amount) {
-        if(slot == catalystSlotID) {
+        if (slot == catalystSlotID) {
             ItemStack stack = Inventories.splitStack(this.catalystInventory, 0, amount);
             if (!stack.isEmpty() && checkMatrixChanges) {
                 this.container.onContentChanged(this);
@@ -72,10 +69,10 @@ public class ArtisCraftingInventory extends CraftingInventory {
 
     @Override
     public void setStack(int slot, ItemStack stack) {
-        if(slot == catalystSlotID) {
+        if (slot == catalystSlotID) {
             catalystInventory.set(0, stack);
         } else {
-            craftingInventory.setStack(slot,stack);
+            craftingInventory.setStack(slot, stack);
         }
         if (checkMatrixChanges) {
             this.container.onContentChanged(this);

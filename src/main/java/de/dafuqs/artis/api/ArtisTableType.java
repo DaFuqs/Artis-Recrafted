@@ -3,14 +3,13 @@ package de.dafuqs.artis.api;
 import de.dafuqs.artis.*;
 import de.dafuqs.artis.compat.rei.crafting.*;
 import de.dafuqs.artis.recipe.crafting.*;
-import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import me.shedaniel.math.*;
+import me.shedaniel.rei.api.common.category.*;
+import net.minecraft.recipe.*;
+import net.minecraft.text.*;
+import net.minecraft.util.*;
 import net.minecraft.util.registry.*;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.*;
 
 import java.util.*;
 

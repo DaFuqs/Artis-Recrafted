@@ -1,32 +1,26 @@
 package de.dafuqs.artis.compat.rei.crafting;
 
-import com.google.common.collect.Lists;
-import de.dafuqs.artis.api.ArtisExistingItemType;
-import de.dafuqs.artis.api.ArtisTableType;
+import com.google.common.collect.*;
+import de.dafuqs.artis.api.*;
 import de.dafuqs.artis.compat.rei.*;
-import me.shedaniel.math.Point;
-import me.shedaniel.math.Rectangle;
-import me.shedaniel.rei.api.client.gui.Renderer;
-import me.shedaniel.rei.api.client.gui.widgets.Widget;
-import me.shedaniel.rei.api.client.gui.widgets.Widgets;
-import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
-import me.shedaniel.rei.api.common.entry.EntryIngredient;
-import me.shedaniel.rei.api.common.util.EntryIngredients;
-import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.registry.Registry;
-import org.jetbrains.annotations.NotNull;
+import me.shedaniel.math.*;
+import me.shedaniel.rei.api.client.gui.*;
+import me.shedaniel.rei.api.client.gui.widgets.*;
+import me.shedaniel.rei.api.client.registry.display.*;
+import me.shedaniel.rei.api.common.category.*;
+import me.shedaniel.rei.api.common.entry.*;
+import me.shedaniel.rei.api.common.util.*;
+import net.fabricmc.api.*;
+import net.minecraft.text.*;
+import net.minecraft.util.*;
+import net.minecraft.util.registry.*;
+import org.jetbrains.annotations.*;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Environment(EnvType.CLIENT)
 public class ArtisRecipeCategory implements DisplayCategory<ArtisRecipeDisplay> {
-    
+
     private final ArtisTableType artisTableType;
 
     public ArtisRecipeCategory(ArtisTableType artisTableType) {
@@ -38,30 +32,30 @@ public class ArtisRecipeCategory implements DisplayCategory<ArtisRecipeDisplay> 
         int y = (num - x) / recipeDisplay.getDisplay().getWidth();
         return craftingGridWidth * y + x;
     }
-    
+
     @Override
     public CategoryIdentifier<? extends ArtisRecipeDisplay> getCategoryIdentifier() {
         return artisTableType.getCategoryIdentifier();
     }
-    
+
     @Override
     public Renderer getIcon() {
-        if(artisTableType instanceof ArtisExistingItemType) {
+        if (artisTableType instanceof ArtisExistingItemType) {
             return EntryStacks.of(Registry.ITEM.get(artisTableType.getId()));
         } else {
             return EntryStacks.of(Registry.BLOCK.get(artisTableType.getId()));
         }
     }
-    
+
     @Override
     public Text getTitle() {
         return Text.translatable("rei.category." + artisTableType.getId().getPath());
     }
-    
+
     @Override
     public List<Widget> setupDisplay(ArtisRecipeDisplay recipeDisplay, @NotNull Rectangle bounds) {
         Point startPoint = new Point(bounds.getCenterX() - (getDisplayWidth(recipeDisplay) / 2) + 17, bounds.getCenterY() - (getDisplayHeight() / 2) + 15);
-        
+
         if (artisTableType.hasCatalystSlot() && artisTableType.getHeight() == 1) {
             bounds.setSize(bounds.width, bounds.height + 18);
         }
@@ -89,7 +83,7 @@ public class ArtisRecipeCategory implements DisplayCategory<ArtisRecipeDisplay> 
             }
         }
         widgets.addAll(slots);
-    
+
         List<EntryIngredient> output = recipeDisplay.getOutputEntries();
         EntryIngredient catalyst = EntryIngredients.ofIngredient(recipeDisplay.getCatalyst());
         widgets.add(TransparentArrowWidget.create(new Point(slots.get(slots.size() - 1).getX() + 24, startPoint.y + (getDisplayHeight() / 2) - 23)).disableAnimation());
@@ -108,7 +102,7 @@ public class ArtisRecipeCategory implements DisplayCategory<ArtisRecipeDisplay> 
         if (artisTableType.hasCatalystSlot()) {
             widgets.add(Widgets.createLabel(new Point(slots.get(slots.size() - 1).getX() + 35, startPoint.y + (getDisplayHeight() / 2) + 14), Text.literal(Formatting.RED + "-" + recipeDisplay.getCatalystCost())).centered());
         }
-        
+
         return widgets;
     }
 

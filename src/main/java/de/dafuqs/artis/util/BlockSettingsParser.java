@@ -1,20 +1,16 @@
 package de.dafuqs.artis.util;
 
-import blue.endless.jankson.JsonObject;
-import de.dafuqs.artis.Artis;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.Material;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import org.apache.logging.log4j.Level;
-import org.jetbrains.annotations.NotNull;
+import blue.endless.jankson.*;
+import de.dafuqs.artis.*;
+import net.fabricmc.fabric.api.object.builder.v1.block.*;
+import net.minecraft.block.*;
+import net.minecraft.sound.*;
+import net.minecraft.util.*;
+import net.minecraft.util.registry.*;
+import org.apache.logging.log4j.*;
+import org.jetbrains.annotations.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class BlockSettingsParser {
     public static final Map<String, Material> MATERIALS = new HashMap<>();
@@ -222,8 +218,8 @@ public class BlockSettingsParser {
             settings = FabricBlockSettings.copyOf(Registry.BLOCK.get(new Identifier(copyBlockArg)));
         } else if (json.containsKey("material")) {
             String materialArg = json.get(String.class, "material");
-            
-            if(MATERIALS.containsKey(materialArg)) {
+
+            if (MATERIALS.containsKey(materialArg)) {
                 settings = FabricBlockSettings.of(MATERIALS.get(materialArg));
             } else {
                 Artis.log(Level.ERROR, "Specified Material \"" + materialArg + "\" does not exist. Falling back to a copy of crafting table...");
@@ -239,7 +235,7 @@ public class BlockSettingsParser {
 
         if (json.containsKey("material_color")) {
             String colorString = json.get(String.class, "material_color");
-            if(MAP_COLORS.containsKey(colorString)) {
+            if (MAP_COLORS.containsKey(colorString)) {
                 settings.mapColor(MAP_COLORS.get(colorString));
             } else {
                 Artis.log(Level.ERROR, "Specified Material Color \"" + colorString + "\" does not exist. Falling back to white_gray...");
@@ -257,7 +253,7 @@ public class BlockSettingsParser {
 
         if (json.containsKey("sounds")) {
             String sounds = json.get(String.class, "sounds");
-            if(SOUND_GROUPS.containsKey(sounds)) {
+            if (SOUND_GROUPS.containsKey(sounds)) {
                 settings.sounds(SOUND_GROUPS.get(sounds));
             } else {
                 Artis.log(Level.ERROR, "Specified Sound Group \"" + sounds + "\" does not exist. Falling back to wood...");
