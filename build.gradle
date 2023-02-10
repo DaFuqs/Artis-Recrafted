@@ -11,11 +11,8 @@ group = project.maven_group
 version = "${project.mod_version}+${project.minecraft_version}"
 
 repositories {
-	mavenLocal()
-	mavenCentral()
 	maven { url "https://server.bbkr.space/artifactory/libs-release" }
 	maven { url "https://maven.terraformersmc.com" }
-	maven { url "https://cursemaven.com" }
 	maven { url "https://jitpack.io" }
 	maven { url "https://maven.siphalor.de" }
 	maven { url "https://maven.shedaniel.me/" }
