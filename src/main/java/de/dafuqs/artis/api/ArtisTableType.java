@@ -1,18 +1,18 @@
 package de.dafuqs.artis.api;
 
+import de.dafuqs.artis.*;
 import de.dafuqs.artis.compat.rei.crafting.*;
 import de.dafuqs.artis.recipe.crafting.*;
-import io.github.alloffabric.artis.Artis;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.*;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import java.util.*;
 
 public class ArtisTableType implements RecipeType {
     private final Identifier id;
@@ -80,24 +80,24 @@ public class ArtisTableType implements RecipeType {
     public int getColor() {
         return color;
     }
-    
+
     public List<Identifier> getBlockTags() {
         return this.blockTags;
     }
-    
+
     public CategoryIdentifier<ArtisRecipeDisplay> getCategoryIdentifier() {
         return CategoryIdentifier.of(id);
     }
 
     public Rectangle getREIClickArea() {
         ContainerLayout containerLayout = new ContainerLayout(getWidth(), getHeight(), hasCatalystSlot());
-        return new Rectangle(containerLayout.getArrowX() + 8, containerLayout.getArrowY() + 2, 21,16);
+        return new Rectangle(containerLayout.getArrowX() + 8, containerLayout.getArrowY() + 2, 21, 16);
     }
-    
+
     public String getRawName() {
         return this.name;
     }
-    
+
     public Text getName() {
         return Text.translatable(getTranslationString());
     }
@@ -118,5 +118,5 @@ public class ArtisTableType implements RecipeType {
     public String toString() {
         return this.id.toString();
     }
-    
+
 }
