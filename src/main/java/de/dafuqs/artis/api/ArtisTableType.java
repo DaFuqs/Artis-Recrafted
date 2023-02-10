@@ -1,8 +1,8 @@
 package de.dafuqs.artis.api;
 
+import de.dafuqs.artis.*;
 import de.dafuqs.artis.compat.rei.crafting.*;
 import de.dafuqs.artis.recipe.crafting.*;
-import io.github.alloffabric.artis.*;
 import me.shedaniel.math.*;
 import me.shedaniel.rei.api.common.category.*;
 import net.minecraft.recipe.*;

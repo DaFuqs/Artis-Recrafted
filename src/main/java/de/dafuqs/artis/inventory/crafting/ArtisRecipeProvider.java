@@ -1,8 +1,8 @@
 package de.dafuqs.artis.inventory.crafting;
 
+import de.dafuqs.artis.*;
 import de.dafuqs.artis.api.*;
 import de.dafuqs.artis.inventory.slot.*;
-import io.github.alloffabric.artis.*;
 import io.github.cottonmc.cotton.gui.*;
 import io.github.cottonmc.cotton.gui.client.*;
 import io.github.cottonmc.cotton.gui.widget.*;

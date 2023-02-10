@@ -1,7 +1,6 @@
 package de.dafuqs.artis;
 
 import de.dafuqs.artis.api.*;
-import io.github.alloffabric.artis.Artis;
 import net.fabricmc.fabric.api.itemgroup.v1.*;
 import net.minecraft.item.*;
 import net.minecraft.registry.*;
