@@ -34,7 +34,17 @@ public class ArtisConfig {
                 return;
             }
             JsonObject json = jankson.load(file);
-            loadEntries(json.containsKey("tables") ? json.getObject("tables") : json);
+
+            if(!json.containsKey("tables")) {
+                Artis.log(Level.WARN, "Artis config has no tag 'table'. No tables will be added.");
+                return;
+            }
+            JsonObject tables = json.getObject("tables");
+            if(tables == null) {
+                Artis.log(Level.ERROR, "Artis config 'table' tag is not a valid object. Will be ignored.");
+                return;
+            }
+            loadEntries(tables);
         } catch (IOException | SyntaxError e) {
             Artis.log(Level.ERROR, "Error loading config: " + e.getMessage());
         }
