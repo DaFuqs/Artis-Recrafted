@@ -6,7 +6,6 @@ import de.dafuqs.artis.api.ArtisExistingBlockType;
 import de.dafuqs.artis.api.ArtisExistingItemType;
 import de.dafuqs.artis.api.ArtisTableType;
 import de.dafuqs.artis.util.BlockSettingsParser;
-import io.github.cottonmc.jankson.JanksonFactory;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.Block;
@@ -29,7 +28,7 @@ import java.util.List;
 public class ArtisConfig {
     
     public static final Identifier artisTableBlockTagIdentifier = new Identifier(Artis.MODID, "blocks/crafting_tables");
-    public static final Jankson jankson = JanksonFactory.createJankson();
+    public static final Jankson jankson = Jankson.builder().build();
 
     public static void loadConfig() {
         try {

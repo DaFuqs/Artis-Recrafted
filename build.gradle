@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.0-SNAPSHOT'
+	id 'fabric-loom' version '1.1-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -24,6 +24,7 @@ repositories {
 	maven { url "https://storage.googleapis.com/devan-maven/" }
 	maven { url "https://maven.blamejared.com" }
 	maven { url "https://ladysnake.jfrog.io/artifactory/mods" }
+	maven { url "https://ueaj.dev/maven" }
 }
 
 dependencies {
@@ -37,8 +38,9 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	
 	modImplementation include("io.github.cottonmc:LibGui:${project.libgui_version}")
-	modImplementation include("net.devtech:arrp:${project.aarp_version}")
-	modImplementation include("azzy.fabric:incubus-core:${project.incubus_core_version}")
+	//modImplementation include("net.devtech:arrp:${project.aarp_version}")
+	modImplementation include("curse.maven:project-463113:3680866") // arrp
+	modImplementation include("com.github.devs-immortal:Incubus-Core:${project.incubus_core_version}")
 }
 
 processResources {
