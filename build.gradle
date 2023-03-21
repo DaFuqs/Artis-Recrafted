@@ -24,6 +24,7 @@ repositories {
 	maven { url "https://storage.googleapis.com/devan-maven/" }
 	maven { url "https://maven.blamejared.com" }
 	maven { url "https://ladysnake.jfrog.io/artifactory/mods" }
+	maven { url "https://ueaj.dev/maven" } // aarp
 }
 
 dependencies {
