@@ -13,10 +13,10 @@ version = "${project.mod_version}+${project.minecraft_version}"
 repositories {
 	mavenLocal()
 	mavenCentral()
+	maven { url "https://jitpack.io" }
 	maven { url "https://server.bbkr.space/artifactory/libs-release" }
 	maven { url "https://maven.terraformersmc.com" }
 	maven { url "https://cursemaven.com" }
-	maven { url "https://jitpack.io" }
 	maven { url "https://maven.siphalor.de" }
 	maven { url "https://maven.shedaniel.me/" }
 	maven { url "https://maven.architectury.dev/" }
@@ -43,7 +43,7 @@ dependencies {
 
 	modImplementation include("io.github.cottonmc:LibGui:${project.libgui_version}")
 	modImplementation include("net.devtech:arrp:${project.aarp_version}")
-	modImplementation include("com.github.devs-immortal:Incubus-Core:${project.incubus_core_version}")
+	modImplementation include("com.github.Devs-Immortal:Incubus-Core:${project.incubus_core_version}")
 
 	modCompileOnly "dev.emi:emi-fabric:${emi_version}:api"
 

@@ -10,10 +10,9 @@ import net.fabricmc.fabric.api.client.screenhandler.v1.*;
 import net.fabricmc.fabric.api.screenhandler.v1.*;
 import net.minecraft.client.gui.screen.ingame.*;
 import net.minecraft.client.render.*;
-import net.minecraft.registry.*;
-import net.minecraft.resource.featuretoggle.*;
 import net.minecraft.screen.*;
 import net.minecraft.util.*;
+import net.minecraft.util.registry.*;
 
 public class ArtisScreenHandlers {
 	
@@ -21,13 +20,13 @@ public class ArtisScreenHandlers {
 	public static ScreenHandlerType<CondenserScreenHandler> CONDENSER_SCREEN_HANDLER;
 	
 	public static <T extends ScreenHandler> ScreenHandlerType<T> registerSimple(Identifier id, ScreenHandlerType.Factory<T> factory) {
-		ScreenHandlerType<T> type = new ScreenHandlerType<>(factory, FeatureSet.empty());
-		return Registry.register(Registries.SCREEN_HANDLER, id, type);
+		ScreenHandlerType<T> type = new ScreenHandlerType<>(factory);
+		return Registry.register(Registry.SCREEN_HANDLER, id, type);
 	}
 	
 	public static <T extends ScreenHandler> ScreenHandlerType<T> registerExtended(Identifier id, ExtendedScreenHandlerType.ExtendedFactory<T> factory) {
 		ScreenHandlerType<T> type = new ExtendedScreenHandlerType<>(factory);
-		return Registry.register(Registries.SCREEN_HANDLER, id, type);
+		return Registry.register(Registry.SCREEN_HANDLER, id, type);
 	}
 	
 	public static void register() {
@@ -38,16 +37,16 @@ public class ArtisScreenHandlers {
 		HandledScreens.register(CONDENSER_SCREEN_HANDLER, CondenserScreen::new);
 		
 		for (ArtisCraftingRecipeType type : ArtisBlocks.ARTIS_TABLE_TYPES) {
-			ScreenHandlerType<ArtisRecipeProvider> screenHandlerType = (ScreenHandlerType<ArtisRecipeProvider>) Registries.SCREEN_HANDLER.get(type.getId());
+			ScreenHandlerType<ArtisRecipeProvider> screenHandlerType = (ScreenHandlerType<ArtisRecipeProvider>) Registry.SCREEN_HANDLER.get(type.getId());
 			ScreenRegistry.<ArtisRecipeProvider, ArtisCraftingScreen>register(screenHandlerType, ArtisCraftingScreen::new);
 			
 			if (!(type instanceof ArtisExistingBlockType) && !(type instanceof ArtisExistingItemType)) {
 				if (type.hasColor()) {
-					ColorProviderRegistry.BLOCK.register((state, world, pos, index) -> type.getColor(), Registries.BLOCK.get(type.getId()));
-					ColorProviderRegistry.ITEM.register((stack, index) -> type.getColor(), Registries.ITEM.get(type.getId()));
+					ColorProviderRegistry.BLOCK.register((state, world, pos, index) -> type.getColor(), Registry.BLOCK.get(type.getId()));
+					ColorProviderRegistry.ITEM.register((stack, index) -> type.getColor(), Registry.ITEM.get(type.getId()));
 				}
 				
-				BlockRenderLayerMap.INSTANCE.putBlock(Registries.BLOCK.get(type.getId()), RenderLayer.getCutout());
+				BlockRenderLayerMap.INSTANCE.putBlock(Registry.BLOCK.get(type.getId()), RenderLayer.getCutout());
 			}
 		}
 	}

@@ -12,13 +12,13 @@ import net.minecraft.item.*;
 import net.minecraft.nbt.*;
 import net.minecraft.network.*;
 import net.minecraft.recipe.*;
-import net.minecraft.registry.*;
 import net.minecraft.screen.*;
 import net.minecraft.server.network.*;
 import net.minecraft.text.*;
 import net.minecraft.util.*;
 import net.minecraft.util.collection.*;
 import net.minecraft.util.math.*;
+import net.minecraft.util.registry.*;
 import org.jetbrains.annotations.*;
 
 public class ArtisTableBlockEntity extends BlockEntity implements DefaultInventory, ExtendedScreenHandlerFactory, RecipeInputProvider {
@@ -44,7 +44,7 @@ public class ArtisTableBlockEntity extends BlockEntity implements DefaultInvento
 	
 	@Override
 	public ScreenHandler createMenu(int syncId, PlayerInventory inventory, PlayerEntity player) {
-		return new ArtisRecipeProvider(Registries.SCREEN_HANDLER.get(tableType.getId()), tableType, syncId, player, ScreenHandlerContext.create(world, getPos()));
+		return new ArtisRecipeProvider(Registry.SCREEN_HANDLER.get(tableType.getId()), tableType, syncId, player, ScreenHandlerContext.create(world, getPos()));
 	}
 	
 	@Override

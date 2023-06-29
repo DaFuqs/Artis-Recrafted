@@ -5,8 +5,8 @@ import de.dafuqs.artis.api.*;
 import net.fabricmc.fabric.api.object.builder.v1.block.*;
 import net.fabricmc.loader.api.*;
 import net.minecraft.block.*;
-import net.minecraft.registry.*;
 import net.minecraft.util.*;
+import net.minecraft.util.registry.*;
 import org.apache.logging.log4j.*;
 import org.jetbrains.annotations.*;
 
@@ -75,7 +75,7 @@ public class ArtisConfig {
 		FabricBlockSettings settings;
 		if (json.has("copy")) {
 			String blockSettingsOf = json.get("copy").getAsString();
-			Block block = Registries.BLOCK.get(Identifier.tryParse(blockSettingsOf));
+			Block block = Registry.BLOCK.get(Identifier.tryParse(blockSettingsOf));
 			if (block != Blocks.AIR) {
 				settings = FabricBlockSettings.copyOf(block);
 			} else {
@@ -130,9 +130,9 @@ public class ArtisConfig {
 				name = JsonHelper.getString(json, "display_name");
 			} else {
 				if (tableType.equals("existing_block")) {
-					name = Language.getInstance().get(Registries.BLOCK.get(id).getName().getString());
+					name = Language.getInstance().get(Registry.BLOCK.get(id).getName().getString());
 				} else if (tableType.equals("existing_item")) {
-					name = Language.getInstance().get(Registries.ITEM.get(id).getName().getString());
+					name = Language.getInstance().get(Registry.ITEM.get(id).getName().getString());
 				} else {
 					name = key;
 				}

@@ -7,8 +7,8 @@ import net.devtech.arrp.json.blockstate.*;
 import net.devtech.arrp.json.lang.*;
 import net.devtech.arrp.json.models.*;
 import net.devtech.arrp.json.tags.*;
-import net.minecraft.registry.*;
 import net.minecraft.util.*;
+import net.minecraft.util.registry.*;
 import org.jetbrains.annotations.*;
 
 import java.util.*;
@@ -29,7 +29,7 @@ public class ArtisResources {
 								.rolls(1)
 								.entry(entry()
 										.type("minecraft:item")
-										.name(Registries.ITEM.getId(block.asItem()).toString()))
+										.name(Registry.ITEM.getId(block.asItem()).toString()))
 								.condition(predicate("minecraft:survives_explosion"))));
 		
 		// localisation

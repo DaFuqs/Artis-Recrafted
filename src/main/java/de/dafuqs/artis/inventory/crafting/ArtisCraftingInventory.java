@@ -114,7 +114,7 @@ public class ArtisCraftingInventory extends CraftingInventory {
 		return artisRecipeProvider.getPlayer();
 	}
 	
-	public RecipeInputInventory getCraftingInventory() {
+	public CraftingInventory getCraftingInventory() {
 		return this.craftingInventory;
 	}
 	

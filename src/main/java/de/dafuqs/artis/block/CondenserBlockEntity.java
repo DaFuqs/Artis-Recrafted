@@ -14,7 +14,6 @@ import net.minecraft.entity.player.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
 import net.minecraft.nbt.*;
-import net.minecraft.registry.*;
 import net.minecraft.screen.*;
 import net.minecraft.text.*;
 import net.minecraft.util.math.*;
@@ -170,8 +169,7 @@ public class CondenserBlockEntity extends BlockEntity implements NamedScreenHand
 			}
 			
 			// find and use fuel
-			DynamicRegistryManager dynamicRegistryManager = world.getRegistryManager();
-			if (!blockEntity.isBurning() && canAcceptRecipeOutput(dynamicRegistryManager, recipe, inventory)) {
+			if (!blockEntity.isBurning() && canAcceptRecipeOutput(recipe, inventory)) {
 				blockEntity.burnTime = blockEntity.burnTime + getFuelTime(fuelVariant.getItem());
 				blockEntity.fuelTime = blockEntity.burnTime;
 				if (blockEntity.isBurning()) {
@@ -191,7 +189,7 @@ public class CondenserBlockEntity extends BlockEntity implements NamedScreenHand
 			}
 			
 			// progress cooking
-			if (blockEntity.isBurning() && canAcceptRecipeOutput(dynamicRegistryManager, recipe, inventory)) {
+			if (blockEntity.isBurning() && canAcceptRecipeOutput(recipe, inventory)) {
 				++blockEntity.cookTime;
 				if (blockEntity.cookTime == blockEntity.cookTimeTotal) {
 					blockEntity.cookTime = 0;
@@ -232,9 +230,9 @@ public class CondenserBlockEntity extends BlockEntity implements NamedScreenHand
 		return world.getRecipeManager().getFirstMatch(ArtisRecipeTypes.CONDENSER, inv, world).map(condenserRecipe -> condenserRecipe.getInput().testCountless(stack)).orElse(false);
 	}
 	
-	private static boolean canAcceptRecipeOutput(DynamicRegistryManager registryManager, @Nullable CondenserRecipe recipe, @NotNull Inventory inventory) {
+	private static boolean canAcceptRecipeOutput(@Nullable CondenserRecipe recipe, @NotNull Inventory inventory) {
 		if (recipe != null && !(inventory.getStack(0)).isEmpty()) {
-			ItemStack recipeOutput = recipe.getOutput(registryManager);
+			ItemStack recipeOutput = recipe.getOutput();
 			if (recipeOutput.isEmpty()) {
 				return false;
 			} else {
@@ -251,9 +249,9 @@ public class CondenserBlockEntity extends BlockEntity implements NamedScreenHand
 	}
 	
 	private static boolean craftRecipe(CondenserRecipe recipe, CondenserBlockEntity condenser, Inventory inventory) {
-		if (canAcceptRecipeOutput(condenser.world.getRegistryManager(), recipe, inventory)) {
+		if (canAcceptRecipeOutput(recipe, inventory)) {
 			ItemVariant output = condenser.output.variant;
-			ItemStack recipeOutput = recipe.getOutput(condenser.world.getRegistryManager());
+			ItemStack recipeOutput = recipe.getOutput();
 			if (output.isBlank()) {
 				condenser.output.variant = ItemVariant.of(recipeOutput);
 				condenser.output.amount = recipeOutput.getCount();

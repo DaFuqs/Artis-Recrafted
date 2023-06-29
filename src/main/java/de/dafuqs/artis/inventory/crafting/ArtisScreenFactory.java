@@ -5,11 +5,11 @@ import net.fabricmc.fabric.api.screenhandler.v1.*;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.*;
 import net.minecraft.network.*;
-import net.minecraft.registry.*;
 import net.minecraft.screen.*;
 import net.minecraft.server.network.*;
 import net.minecraft.text.*;
 import net.minecraft.util.hit.*;
+import net.minecraft.util.registry.*;
 import org.jetbrains.annotations.*;
 
 public record ArtisScreenFactory(ArtisCraftingRecipeType tableType, Block block,
@@ -19,9 +19,9 @@ public record ArtisScreenFactory(ArtisCraftingRecipeType tableType, Block block,
 	@Override
 	public @NotNull ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
 		if (this.block == null || this.blockHitResult == null) {
-			return new ArtisRecipeProvider(Registries.SCREEN_HANDLER.get(tableType.getId()), tableType, syncId, player, ScreenHandlerContext.create(player.getWorld(), player.getBlockPos()));
+			return new ArtisRecipeProvider(Registry.SCREEN_HANDLER.get(tableType.getId()), tableType, syncId, player, ScreenHandlerContext.create(player.getWorld(), player.getBlockPos()));
 		} else {
-			return new ArtisRecipeProvider(Registries.SCREEN_HANDLER.get(tableType.getId()), tableType, syncId, player, ScreenHandlerContext.create(player.getWorld(), blockHitResult.getBlockPos()));
+			return new ArtisRecipeProvider(Registry.SCREEN_HANDLER.get(tableType.getId()), tableType, syncId, player, ScreenHandlerContext.create(player.getWorld(), blockHitResult.getBlockPos()));
 		}
 	}
 	

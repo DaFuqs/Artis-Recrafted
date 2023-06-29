@@ -8,8 +8,8 @@ import dev.emi.emi.api.recipe.*;
 import dev.emi.emi.api.stack.*;
 import net.minecraft.inventory.*;
 import net.minecraft.recipe.*;
-import net.minecraft.registry.*;
 import net.minecraft.util.*;
+import net.minecraft.util.registry.*;
 
 import java.util.*;
 import java.util.function.*;
@@ -32,9 +32,9 @@ public class ArtisEmiPlugin implements EmiPlugin {
 			
 			EmiStack stack;
 			if (tableType instanceof ArtisExistingItemType) {
-				stack = EmiStack.of(Registries.ITEM.get(tableType.getId()));
+				stack = EmiStack.of(Registry.ITEM.get(tableType.getId()));
 			} else {
-				stack = EmiStack.of(Registries.BLOCK.get(tableType.getId()).asItem());
+				stack = EmiStack.of(Registry.BLOCK.get(tableType.getId()).asItem());
 			}
 			
 			EmiRecipeCategory category = new EmiRecipeCategory(tableType.getId(), stack);

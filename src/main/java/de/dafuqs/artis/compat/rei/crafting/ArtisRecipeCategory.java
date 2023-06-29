@@ -11,9 +11,9 @@ import me.shedaniel.rei.api.common.category.*;
 import me.shedaniel.rei.api.common.entry.*;
 import me.shedaniel.rei.api.common.util.*;
 import net.fabricmc.api.*;
-import net.minecraft.registry.*;
 import net.minecraft.text.*;
 import net.minecraft.util.*;
+import net.minecraft.util.registry.*;
 import org.jetbrains.annotations.*;
 
 import java.util.*;
@@ -41,9 +41,9 @@ public class ArtisRecipeCategory implements DisplayCategory<ArtisRecipeDisplay> 
 	@Override
 	public Renderer getIcon() {
 		if (artisCraftingRecipeType instanceof ArtisExistingItemType) {
-			return EntryStacks.of(Registries.ITEM.get(artisCraftingRecipeType.getId()));
+			return EntryStacks.of(Registry.ITEM.get(artisCraftingRecipeType.getId()));
 		} else {
-			return EntryStacks.of(Registries.BLOCK.get(artisCraftingRecipeType.getId()));
+			return EntryStacks.of(Registry.BLOCK.get(artisCraftingRecipeType.getId()));
 		}
 	}
 	

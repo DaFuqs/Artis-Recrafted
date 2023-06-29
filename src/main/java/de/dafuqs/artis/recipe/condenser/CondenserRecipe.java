@@ -9,7 +9,6 @@ import net.id.incubus_core.recipe.*;
 import net.minecraft.inventory.*;
 import net.minecraft.item.*;
 import net.minecraft.recipe.*;
-import net.minecraft.registry.*;
 import net.minecraft.util.*;
 import net.minecraft.util.collection.*;
 import net.minecraft.world.*;
@@ -46,7 +45,7 @@ public class CondenserRecipe implements Recipe<Inventory> {
 	}
 	
 	@Override
-	public ItemStack craft(Inventory inventory, DynamicRegistryManager registryManager) {
+	public ItemStack craft(Inventory inventory) {
 		return null;
 	}
 	
@@ -56,7 +55,7 @@ public class CondenserRecipe implements Recipe<Inventory> {
 	}
 	
 	@Override
-	public ItemStack getOutput(DynamicRegistryManager registryManager) {
+	public ItemStack getOutput() {
 		return this.output;
 	}
 	

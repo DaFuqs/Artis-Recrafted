@@ -146,8 +146,8 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
 	}
 	
 	@Override
-	public void onClosed(PlayerEntity player) {
-		super.onClosed(player);
+	public void close(PlayerEntity player) {
+		super.close(player);
 		this.context.run((world, pos) -> {
 			if (!tableType.hasBlockEntity()) {
 				dropInventory(player, craftInv);
@@ -197,7 +197,7 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
 		
 		Recipe recipe = findRecipe(artisCraftingRecipeType, inv, world, resultInv.getLastRecipe());
 		if (recipe != null) {
-			itemstack = recipe.craft(inv, world.getRegistryManager());
+			itemstack = recipe.craft(inv);
 		}
 		
 		resultInv.setStack(0, itemstack);
@@ -212,7 +212,7 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
 	}
 	
 	@Override
-	public ItemStack quickMove(PlayerEntity player, int slotIndex) {
+	public ItemStack transferSlot(PlayerEntity player, int slotIndex) {
 		ItemStack stack = ItemStack.EMPTY;
 		Slot slot = this.slots.get(slotIndex);
 		if (slot.hasStack()) {
@@ -251,7 +251,7 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
 	@Override
 	public void onSlotClick(int slotNumber, int button, SlotActionType action, PlayerEntity player) {
 		if (slotNumber == getCraftingResultSlotIndex() && action == SlotActionType.QUICK_MOVE) {
-			quickMove(player, slotNumber);
+			transferSlot(player, slotNumber);
 		} else {
 			super.onSlotClick(slotNumber, button, action, player);
 		}

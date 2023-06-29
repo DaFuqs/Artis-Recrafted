@@ -6,9 +6,9 @@ import de.dafuqs.artis.recipe.crafting.*;
 import me.shedaniel.math.*;
 import me.shedaniel.rei.api.common.category.*;
 import net.minecraft.recipe.*;
-import net.minecraft.registry.*;
 import net.minecraft.text.*;
 import net.minecraft.util.*;
+import net.minecraft.util.registry.*;
 import org.jetbrains.annotations.*;
 
 import java.util.*;
@@ -44,8 +44,8 @@ public class ArtisCraftingRecipeType implements RecipeType<ArtisCraftingRecipe> 
 		this.includeNormalRecipes = includeNormalRecipes;
 		Identifier shapedId = new Identifier(id.getNamespace(), id.getPath() + "_shaped");
 		Identifier shapelessId = new Identifier(id.getNamespace(), id.getPath() + "_shapeless");
-		this.shaped = Registry.register(Registries.RECIPE_SERIALIZER, shapedId, new ShapedArtisSerializer(this));
-		this.shapeless = Registry.register(Registries.RECIPE_SERIALIZER, shapelessId, new ShapelessArtisSerializer(this));
+		this.shaped = Registry.register(Registry.RECIPE_SERIALIZER, shapedId, new ShapedArtisSerializer(this));
+		this.shapeless = Registry.register(Registry.RECIPE_SERIALIZER, shapelessId, new ShapelessArtisSerializer(this));
 		this.blockTags = blockTags;
 	}
 	

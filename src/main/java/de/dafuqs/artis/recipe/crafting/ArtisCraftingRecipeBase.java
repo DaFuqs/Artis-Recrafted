@@ -6,7 +6,6 @@ import net.id.incubus_core.recipe.*;
 import net.minecraft.entity.player.*;
 import net.minecraft.item.*;
 import net.minecraft.recipe.*;
-import net.minecraft.registry.*;
 import net.minecraft.util.*;
 import net.minecraft.util.collection.*;
 import net.minecraft.world.*;
@@ -62,7 +61,7 @@ public abstract class ArtisCraftingRecipeBase implements Recipe<ArtisCraftingInv
 	}
 	
 	@Override
-	public ItemStack getOutput(DynamicRegistryManager registryManager) {
+	public ItemStack getOutput() {
 		return this.output;
 	}
 	
@@ -83,7 +82,7 @@ public abstract class ArtisCraftingRecipeBase implements Recipe<ArtisCraftingInv
 	}
 	
 	@Override
-	public ItemStack craft(ArtisCraftingInventory inventory, DynamicRegistryManager registryManager) {
+	public ItemStack craft(ArtisCraftingInventory inventory) {
 		return this.output.copy();
 	}
 	

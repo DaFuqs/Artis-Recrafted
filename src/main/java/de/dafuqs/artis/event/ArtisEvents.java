@@ -6,15 +6,15 @@ import de.dafuqs.artis.inventory.crafting.*;
 import net.fabricmc.fabric.api.event.player.*;
 import net.minecraft.block.*;
 import net.minecraft.item.*;
-import net.minecraft.registry.*;
 import net.minecraft.util.*;
+import net.minecraft.util.registry.*;
 
 public class ArtisEvents {
 	
 	public static void init() {
 		UseBlockCallback.EVENT.register((playerEntity, world, hand, blockHitResult) -> {
 			Block block = world.getBlockState(blockHitResult.getBlockPos()).getBlock();
-			Identifier identifier = Registries.BLOCK.getId(block);
+			Identifier identifier = Registry.BLOCK.getId(block);
 			if (ArtisBlocks.ARTIS_TABLE_TYPES.containsId(identifier)) {
 				ArtisCraftingRecipeType type = ArtisBlocks.ARTIS_TABLE_TYPES.get(identifier);
 				if (type instanceof ArtisExistingBlockType) {
@@ -29,7 +29,7 @@ public class ArtisEvents {
 		UseItemCallback.EVENT.register((playerEntity, world, hand) -> {
 			if (!playerEntity.getStackInHand(hand).isEmpty()) {
 				Item item = playerEntity.getStackInHand(hand).getItem();
-				Identifier identifier = Registries.ITEM.getId(item);
+				Identifier identifier = Registry.ITEM.getId(item);
 				if (ArtisBlocks.ARTIS_TABLE_TYPES.containsId(identifier)) {
 					ArtisCraftingRecipeType type = ArtisBlocks.ARTIS_TABLE_TYPES.get(identifier);
 					if (type instanceof ArtisExistingItemType) {

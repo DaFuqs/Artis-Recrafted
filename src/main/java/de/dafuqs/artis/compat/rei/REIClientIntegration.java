@@ -18,7 +18,7 @@ import me.shedaniel.rei.plugin.common.*;
 import net.fabricmc.api.*;
 import net.minecraft.block.*;
 import net.minecraft.item.*;
-import net.minecraft.registry.*;
+import net.minecraft.util.registry.*;
 
 import java.util.*;
 
@@ -39,13 +39,13 @@ public class REIClientIntegration implements REIClientPlugin {
 			registry.add(new ArtisRecipeCategory(type));
 			
 			if (type instanceof ArtisExistingItemType) {
-				Item item = Registries.ITEM.get(type.getId());
+				Item item = Registry.ITEM.get(type.getId());
 				registry.addWorkstations(type.getCategoryIdentifier(), EntryStacks.of(item));
 				if (type.shouldIncludeNormalRecipes()) {
 					registry.addWorkstations(BuiltinPlugin.CRAFTING, EntryStacks.of(item));
 				}
 			} else {
-				Block block = Registries.BLOCK.get(type.getId());
+				Block block = Registry.BLOCK.get(type.getId());
 				registry.addWorkstations(type.getCategoryIdentifier(), EntryStacks.of(block));
 				if (type.shouldIncludeNormalRecipes()) {
 					registry.addWorkstations(BuiltinPlugin.CRAFTING, EntryStacks.of(block));

@@ -1,8 +1,10 @@
 package de.dafuqs.artis.inventory.condenser;
 
+import com.mojang.blaze3d.systems.*;
 import de.dafuqs.artis.*;
-import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.ingame.*;
+import net.minecraft.client.render.*;
+import net.minecraft.client.util.math.*;
 import net.minecraft.entity.player.*;
 import net.minecraft.text.*;
 import net.minecraft.util.*;
@@ -18,29 +20,33 @@ public class CondenserScreen extends HandledScreen<CondenserScreenHandler> {
 	}
 	
 	@Override
-	protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
-		context.drawTexture(BACKGROUND, x, y, 0, 0, this.backgroundWidth, this.backgroundHeight);
+	protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.setShaderTexture(0, BACKGROUND);
+		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		
+		drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
+		
 		if (this.handler.isBurning()) {
 			int fuelProgress = this.handler.getFuelProgress();
-			context.drawTexture(BACKGROUND, x + 56, y + 36 + 12 - fuelProgress, 176, 12 - fuelProgress, 14, fuelProgress + 1);
+			drawTexture(matrices, x + 56, y + 36 + 12 - fuelProgress, 176, 12 - fuelProgress, 14, fuelProgress + 1);
 		}
 		
 		int cookProgress = this.handler.getCookProgress();
-		context.drawTexture(BACKGROUND, x + 79, y + 34, 176, 14, cookProgress + 1, 16);
+		drawTexture(matrices, x + 79, y + 34, 176, 14, cookProgress + 1, 16);
 	}
 	
 	@Override
-	protected void drawForeground(DrawContext context, int mouseX, int mouseY) {
-		super.drawForeground(context, mouseX, mouseY);
-		
-		context.drawText(this.textRenderer, "x" + this.handler.getInputItemCount(), 76, titleY + 16, 4210752, false);
+	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		renderBackground(matrices);
+		super.render(matrices, mouseX, mouseY, delta);
+		drawMouseoverTooltip(matrices, mouseX, mouseY);
 	}
 	
 	@Override
-	public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-		renderBackground(context);
-		super.render(context, mouseX, mouseY, delta);
-		drawMouseoverTooltip(context, mouseX, mouseY);
+	protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
+		super.drawForeground(matrices, mouseX, mouseY);
+		this.textRenderer.draw(matrices, "x" + this.handler.getInputItemCount(), 76, titleY + 16, 4210752);
 	}
 	
 }

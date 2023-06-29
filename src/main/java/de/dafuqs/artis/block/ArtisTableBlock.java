@@ -6,13 +6,13 @@ import net.fabricmc.fabric.api.screenhandler.v1.*;
 import net.minecraft.block.*;
 import net.minecraft.entity.player.*;
 import net.minecraft.network.*;
-import net.minecraft.registry.*;
 import net.minecraft.screen.*;
 import net.minecraft.server.network.*;
 import net.minecraft.text.*;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.*;
 import net.minecraft.util.math.*;
+import net.minecraft.util.registry.*;
 import net.minecraft.world.*;
 import org.jetbrains.annotations.*;
 
@@ -47,7 +47,7 @@ public class ArtisTableBlock extends Block implements ExtendedScreenHandlerFacto
 	
 	@Override
 	public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-		return new ArtisRecipeProvider(Registries.SCREEN_HANDLER.get(type.getId()), type, syncId, player, ScreenHandlerContext.create(player.getWorld(), player.getBlockPos()));
+		return new ArtisRecipeProvider(Registry.SCREEN_HANDLER.get(type.getId()), type, syncId, player, ScreenHandlerContext.create(player.getWorld(), player.getBlockPos()));
 	}
 	
 	@Override

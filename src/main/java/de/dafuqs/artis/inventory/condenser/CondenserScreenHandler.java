@@ -57,7 +57,7 @@ public class CondenserScreenHandler extends ScreenHandler {
 	}
 	
 	@Override
-	public ItemStack quickMove(PlayerEntity player, int slotIndex) {
+	public ItemStack transferSlot(PlayerEntity player, int slotIndex) {
 		ItemStack leftoverStack = ItemStack.EMPTY;
 		Slot slot = this.slots.get(slotIndex);
 		if (slot.hasStack()) {
@@ -114,8 +114,8 @@ public class CondenserScreenHandler extends ScreenHandler {
 	}
 	
 	@Override
-	public void onClosed(PlayerEntity player) {
-		super.onClosed(player);
+	public void close(PlayerEntity player) {
+		super.close(player);
 		this.inventory.onClose(player);
 	}
 	

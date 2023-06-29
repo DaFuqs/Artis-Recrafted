@@ -1,9 +1,11 @@
 package de.dafuqs.artis.compat.rei;
 
+import com.mojang.blaze3d.systems.*;
 import de.dafuqs.artis.*;
 import me.shedaniel.math.*;
 import me.shedaniel.rei.api.client.gui.widgets.*;
 import net.minecraft.client.gui.*;
+import net.minecraft.client.util.math.*;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import org.jetbrains.annotations.*;
@@ -50,11 +52,12 @@ public class TransparentArrowWidget extends Arrow {
 	}
 	
 	@Override
-	public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-		context.drawTexture(TEXTURE, getX(), getY(), 24, 0, 24, 17, 48, 17);
+	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+		RenderSystem.setShaderTexture(0, TEXTURE);
+		drawTexture(matrices, getX(), getY(), 24, 0, 24, 17, 48, 17);
 		if (getAnimationDuration() > 0) {
 			int width = MathHelper.ceil((System.currentTimeMillis() / (animationDuration / 24) % 24d));
-			context.drawTexture(TEXTURE, getX(), getY(), 0, 0, width, 17, 48, 17);
+			drawTexture(matrices, getX(), getY(), 0, 0, width, 17, 48, 17);
 		}
 	}
 	

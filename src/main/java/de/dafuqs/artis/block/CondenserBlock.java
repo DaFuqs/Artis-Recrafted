@@ -51,7 +51,7 @@ public class CondenserBlock extends BlockWithEntity {
 	
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		return this.getDefaultState().with(FACING, ctx.getHorizontalPlayerFacing().getOpposite());
+		return this.getDefaultState().with(FACING, ctx.getPlayerFacing().getOpposite());
 	}
 	
 	@Override
@@ -89,9 +89,9 @@ public class CondenserBlock extends BlockWithEntity {
 	}
 	
 	@Override
-	public List<ItemStack> getDroppedStacks(BlockState state, LootContextParameterSet.Builder builder) {
+	public List<ItemStack> getDroppedStacks(BlockState state, LootContext.Builder builder) {
 		List<ItemStack> stacks = super.getDroppedStacks(state, builder);
-		BlockEntity blockEntity = builder.getOptional(LootContextParameters.BLOCK_ENTITY);
+		BlockEntity blockEntity = builder.get(LootContextParameters.BLOCK_ENTITY);
 		if (blockEntity instanceof CondenserBlockEntity condenserBlockEntity) {
 			for (ItemStack stack : stacks) {
 				if (stack.getItem() == this.asItem()) {
