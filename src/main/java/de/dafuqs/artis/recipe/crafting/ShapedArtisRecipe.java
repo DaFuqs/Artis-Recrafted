@@ -2,117 +2,123 @@ package de.dafuqs.artis.recipe.crafting;
 
 import de.dafuqs.artis.api.*;
 import de.dafuqs.artis.inventory.crafting.*;
-import net.minecraft.inventory.*;
+import net.id.incubus_core.recipe.*;
+import net.minecraft.entity.player.*;
 import net.minecraft.item.*;
-import net.minecraft.recipe.*;
-import net.minecraft.recipe.book.*;
 import net.minecraft.util.*;
 import net.minecraft.util.collection.*;
 import net.minecraft.world.*;
+import org.jetbrains.annotations.*;
+import oshi.util.tuples.*;
 
-public class ShapedArtisRecipe extends ShapedRecipe implements ArtisCraftingRecipe {
-    private final RecipeType type;
-    private final RecipeSerializer serializer;
-    private final Ingredient catalyst;
-    private final int catalystCost;
-
-    public ShapedArtisRecipe(RecipeType type, RecipeSerializer serializer, Identifier id, String group, int width, int height, DefaultedList<Ingredient> ingredients, ItemStack output, Ingredient catalyst, int catalystCost) {
-        super(id, group, CraftingRecipeCategory.MISC, width, height, ingredients, output);
-        this.type = type;
-        this.serializer = serializer;
-        this.catalyst = catalyst;
-        this.catalystCost = catalystCost;
-    }
-
-    @Override
-    public boolean isIgnoredInRecipeBook() {
-        return true;
-    }
-
-    @Override
-    public boolean matches(CraftingInventory inventory, World world) {
-        if (!(inventory instanceof ArtisCraftingInventory)) return false;
-        ArtisCraftingInventory artis = (ArtisCraftingInventory) inventory;
-        ItemStack toTest = artis.getCatalyst();
-        if (artis.shouldCompareCatalyst()) {
-            if (!catalyst.test(toTest)) return false;
-            if (toTest.isDamageable()) {
-                if (toTest.getMaxDamage() - toTest.getDamage() < catalystCost) return false;
-            } else if (toTest.getItem() instanceof SpecialCatalyst) {
-                if (!((SpecialCatalyst) toTest.getItem()).matches(toTest, catalystCost)) return false;
-            } else {
-                if (toTest.getCount() < catalystCost) return false;
-            }
-        }
-
-        for (int i = 0; i <= artis.getWidth() - this.getWidth(); ++i) {
-            for (int j = 0; j <= artis.getHeight() - this.getHeight(); ++j) {
-                if (this.matchesSmall(artis, i, j, true)) {
-                    return true;
-                }
-
-                if (this.matchesSmall(artis, i, j, false)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean matchesSmall(CraftingInventory inventory, int maxWidth, int maxHeight, boolean tall) {
-        for (int i = 0; i < inventory.getWidth(); ++i) {
-            for (int j = 0; j < inventory.getHeight(); ++j) {
-                int x = i - maxWidth;
-                int y = j - maxHeight;
-                Ingredient ingredient = Ingredient.EMPTY;
-                if (x >= 0 && y >= 0 && x < this.getWidth() && y < this.getHeight()) {
-                    if (tall) {
-                        ingredient = this.getIngredients().get(this.getWidth() - x - 1 + y * this.getWidth());
-                    } else {
-                        ingredient = this.getIngredients().get(x + y * this.getWidth());
-                    }
-                }
-
-                if (!ingredient.test(inventory.getStack(i + j * inventory.getWidth()))) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    @Override
-    public ItemStack craft(CraftingInventory inv) {
-        return this.getOutput().copy();
-    }
-
-    public int getWidth() {
-        return super.getWidth();
-    }
-
-    public int getHeight() {
-        return super.getHeight();
-    }
-
-    @Override
-    public RecipeType getType() {
-        return type;
-    }
-
-    @Override
-    public RecipeSerializer getSerializer() {
-        return serializer;
-    }
-
-    @Override
-    public Ingredient getCatalyst() {
-        return catalyst;
-    }
-
-    @Override
-    public int getCatalystCost() {
-        return catalystCost;
-    }
-
+public class ShapedArtisRecipe extends ArtisCraftingRecipeBase {
+	
+	private final int width;
+	private final int height;
+	
+	public ShapedArtisRecipe(ArtisCraftingRecipeType type, Identifier id, String group, int width, int height, DefaultedList<IngredientStack> ingredients, ItemStack output, IngredientStack catalyst, int catalystCost) {
+		super(type, id, group, ingredients, output, catalyst, catalystCost);
+		this.serializer = type.getShapedSerializer();
+		
+		this.width = width;
+		this.height = height;
+	}
+	
+	@Override
+	public boolean matches(ArtisCraftingInventory inventory, World world) {
+		if (!super.matches(inventory, world)) {
+			return false;
+		}
+		return getRecipeOrientation(inventory) != null;
+	}
+	
+	@Override
+	public boolean fits(int width, int height) {
+		return this.width <= width && this.height <= height;
+	}
+	
+	public int getWidth() {
+		return this.width;
+	}
+	
+	public int getHeight() {
+		return this.height;
+	}
+	
+	private boolean matchesPattern(ArtisCraftingInventory inv, int offsetX, int offsetY, boolean flipped) {
+		for (int i = 0; i < inv.getWidth(); ++i) {
+			for (int j = 0; j < inv.getHeight(); ++j) {
+				int k = i - offsetX;
+				int l = j - offsetY;
+				IngredientStack ingredientStack = IngredientStack.EMPTY;
+				if (k >= 0 && l >= 0 && k < this.width && l < this.height) {
+					if (flipped) {
+						ingredientStack = this.ingredientStacks.get(this.width - k - 1 + l * this.width);
+					} else {
+						ingredientStack = this.ingredientStacks.get(k + l * this.width);
+					}
+				}
+				
+				if (!ingredientStack.test(inv.getStack(i + j * inv.getWidth()))) {
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	}
+	
+	// Triplet<XOffset, YOffset, Flipped>
+	public @Nullable Triplet<Integer, Integer, Boolean> getRecipeOrientation(ArtisCraftingInventory inv) {
+		for (int i = 0; i <= inv.getWidth() - this.width; ++i) {
+			for (int j = 0; j <= inv.getHeight() - this.height; ++j) {
+				if (this.matchesPattern(inv, i, j, true)) {
+					return new Triplet<>(i, j, true);
+				}
+				if (this.matchesPattern(inv, i, j, false)) {
+					return new Triplet<>(i, j, false);
+				}
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public void useUpIngredients(ArtisCraftingInventory inventory, PlayerEntity player) {
+		Triplet<Integer, Integer, Boolean> orientation = getRecipeOrientation(inventory);
+		if (orientation != null) {
+			decrementIngredientStacks(inventory, orientation, player);
+		}
+	}
+	
+	protected void decrementIngredientStacks(ArtisCraftingInventory inventory, Triplet<Integer, Integer, Boolean> orientation, PlayerEntity player) {
+		for (int x = 0; x < this.width; x++) {
+			for (int y = 0; y < this.height; y++) {
+				int ingredientStackId = orientation.getC() ? ((this.width - 1) - x) + this.width * y : x + this.width * y;
+				int invStackId = (x + orientation.getA()) + inventory.getWidth() * (y + orientation.getB());
+				
+				IngredientStack ingredientStackAtPos = this.getIngredientStacks().get(ingredientStackId);
+				ItemStack invStack = inventory.getStack(invStackId);
+				
+				if (!invStack.isEmpty()) {
+					Item recipeReminderItem = invStack.getItem().getRecipeRemainder();
+					if (recipeReminderItem == null) {
+						invStack.decrement(ingredientStackAtPos.getCount());
+					} else {
+						if (inventory.getStack(invStackId).getCount() == ingredientStackAtPos.getCount()) {
+							ItemStack remainderStack = recipeReminderItem.getDefaultStack();
+							remainderStack.setCount(ingredientStackAtPos.getCount());
+							inventory.setStack(invStackId, remainderStack);
+						} else {
+							inventory.getStack(invStackId).decrement(ingredientStackAtPos.getCount());
+							ItemStack remainderStack = recipeReminderItem.getDefaultStack();
+							player.giveItemStack(remainderStack);
+						}
+					}
+				}
+				
+			}
+		}
+	}
+	
 }

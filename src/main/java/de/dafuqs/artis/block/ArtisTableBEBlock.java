@@ -11,21 +11,21 @@ import org.jetbrains.annotations.*;
 import javax.annotation.Nullable;
 
 public class ArtisTableBEBlock extends ArtisTableBlock implements BlockEntityProvider {
-
-    public ArtisTableBEBlock(ArtisTableType type, Settings settings) {
-        super(type, settings);
-    }
-
-    @Nullable
-    @Override
-    public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, @NotNull World world, BlockPos pos) {
-        BlockEntity blockEntity = world.getBlockEntity(pos);
-        return blockEntity instanceof NamedScreenHandlerFactory ? (NamedScreenHandlerFactory) blockEntity : null;
-    }
-
-    @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new ArtisTableBlockEntity(getType(), pos, state);
-    }
-
+	
+	public ArtisTableBEBlock(ArtisCraftingRecipeType type, Settings settings) {
+		super(type, settings);
+	}
+	
+	@Nullable
+	@Override
+	public NamedScreenHandlerFactory createScreenHandlerFactory(BlockState state, @NotNull World world, BlockPos pos) {
+		BlockEntity blockEntity = world.getBlockEntity(pos);
+		return blockEntity instanceof NamedScreenHandlerFactory ? (NamedScreenHandlerFactory) blockEntity : null;
+	}
+	
+	@Override
+	public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+		return new ArtisTableBlockEntity(getType(), pos, state);
+	}
+	
 }

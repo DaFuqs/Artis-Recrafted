@@ -27,12 +27,11 @@
   },
   "mixins": [ ],
   "depends": {
-    "fabricloader": ">=0.13.0",
+    "minecraft": ">=1.20.0",
+    "fabricloader": "*",
     "fabric": "*",
-    "minecraft": ">=1.19.0",
-    "java": ">=17",
-    "libgui": ">=5.2.0+1.18",
-    "advanced_runtime_resource_pack": ">=0.5.1"
+    "libgui": "*",
+    "advanced_runtime_resource_pack": "*"
   },
   "suggests": { }
 }

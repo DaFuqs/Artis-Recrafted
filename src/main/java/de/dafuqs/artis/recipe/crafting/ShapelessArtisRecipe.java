@@ -2,83 +2,72 @@ package de.dafuqs.artis.recipe.crafting;
 
 import de.dafuqs.artis.api.*;
 import de.dafuqs.artis.inventory.crafting.*;
-import net.minecraft.inventory.*;
+import net.id.incubus_core.recipe.*;
+import net.minecraft.entity.player.*;
 import net.minecraft.item.*;
 import net.minecraft.recipe.*;
-import net.minecraft.recipe.book.*;
 import net.minecraft.util.*;
 import net.minecraft.util.collection.*;
 import net.minecraft.world.*;
 
-public class ShapelessArtisRecipe extends ShapelessRecipe implements ArtisCraftingRecipe {
-    private final RecipeType type;
-    private final RecipeSerializer serializer;
-    private final Ingredient catalyst;
-    private final int catalystCost;
-
-    public ShapelessArtisRecipe(RecipeType type, RecipeSerializer serializer, Identifier id, String group, DefaultedList<Ingredient> ingredients, ItemStack output, Ingredient catalyst, int catalystCost) {
-        super(id, group, CraftingRecipeCategory.MISC, output, ingredients);
-        this.type = type;
-        this.serializer = serializer;
-        this.catalyst = catalyst;
-        this.catalystCost = catalystCost;
-    }
-
-    @Override
-    public boolean isIgnoredInRecipeBook() {
-        return true;
-    }
-
-    @Override
-    public boolean matches(CraftingInventory inventory, World world) {
-        if (!(inventory instanceof ArtisCraftingInventory artisCraftingInventory)) return false;
-        ItemStack toTest = artisCraftingInventory.getCatalyst();
-        if (artisCraftingInventory.shouldCompareCatalyst()) {
-            if (!catalyst.test(toTest)) return false;
-            if (toTest.isDamageable()) {
-                if (toTest.getMaxDamage() - toTest.getDamage() < catalystCost) return false;
-            } else if (toTest.getItem() instanceof SpecialCatalyst) {
-                if (!((SpecialCatalyst) toTest.getItem()).matches(toTest, catalystCost)) return false;
-            } else {
-                if (toTest.getCount() < catalystCost) return false;
-            }
-        }
-        return super.matches(inventory, world);
-    }
-
-    @Override
-    public ItemStack craft(CraftingInventory inv) {
-        return this.getOutput().copy();
-    }
-
-    @Override
-    public RecipeType getType() {
-        return type;
-    }
-
-    @Override
-    public RecipeSerializer getSerializer() {
-        return serializer;
-    }
-
-    @Override
-    public Ingredient getCatalyst() {
-        return catalyst;
-    }
-
-    @Override
-    public int getCatalystCost() {
-        return catalystCost;
-    }
-
-    @Override
-    public int getWidth() {
-        return ((ArtisTableType) type).getWidth();
-    }
-
-    @Override
-    public int getHeight() {
-        return ((ArtisTableType) type).getHeight();
-    }
-
+public class ShapelessArtisRecipe extends ArtisCraftingRecipeBase {
+	
+	public ShapelessArtisRecipe(ArtisCraftingRecipeType type, Identifier id, String group, DefaultedList<IngredientStack> ingredients, ItemStack output, IngredientStack catalyst, int catalystCost) {
+		super(type, id, group, ingredients, output, catalyst, catalystCost);
+		this.serializer = type.getShapelessSerializer();
+	}
+	
+	@Override
+	public boolean matches(ArtisCraftingInventory inventory, World world) {
+		if (!super.matches(inventory, world)) {
+			return false;
+		}
+		
+		RecipeMatcher recipeMatcher = new RecipeMatcher();
+		int foundCount = 0;
+		for (int slot = 0; slot < inventory.size(); ++slot) {
+			ItemStack itemStack = inventory.getStack(slot);
+			if (!itemStack.isEmpty()) {
+				++foundCount;
+				recipeMatcher.addInput(itemStack, 1);
+			}
+		}
+		
+		return foundCount == this.ingredientStacks.size() && recipeMatcher.match(this, null);
+	}
+	
+	@Override
+	public boolean fits(int width, int height) {
+		return this.ingredientStacks.size() >= width * height;
+	}
+	
+	@Override
+	public int getWidth() {
+		return this.getType().getWidth();
+	}
+	
+	@Override
+	public int getHeight() {
+		return this.getType().getHeight();
+	}
+	
+	@Override
+	public void useUpIngredients(ArtisCraftingInventory inventory, PlayerEntity player) {
+		for(IngredientStack ingredientStack : this.ingredientStacks) {
+			for(int slot = 0; slot < inventory.size(); slot++) {
+				ItemStack slotStack = inventory.getStack(slot);
+				if(ingredientStack.test(slotStack)) {
+					ItemStack remainder = slotStack.getRecipeRemainder();
+					slotStack.decrement(ingredientStack.getCount());
+					if(slotStack.isEmpty()) {
+						inventory.setStack(slot, remainder);
+					} else {
+						player.dropStack(remainder);
+					}
+					break;
+				}
+			}
+		}
+	}
+	
 }

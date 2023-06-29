@@ -25,6 +25,10 @@ repositories {
 	maven { url "https://maven.blamejared.com" }
 	maven { url "https://ladysnake.jfrog.io/artifactory/mods" }
 	maven { url "https://ueaj.dev/maven" } // aarp
+	maven {
+		name = "CottonMC"
+		url = "https://server.bbkr.space/artifactory/libs-release"
+	}
 }
 
 dependencies {
@@ -40,7 +44,7 @@ dependencies {
 
 	modImplementation include("io.github.cottonmc:LibGui:${project.libgui_version}")
 	modImplementation include("net.devtech:arrp:${project.aarp_version}")
-	modImplementation include("com.github.Devs-Immortal:Incubus-Core:${project.incubus_core_version}")
+	modImplementation include("com.github.devs-immortal:Incubus-Core:${project.incubus_core_version}")
 }
 
 processResources {
