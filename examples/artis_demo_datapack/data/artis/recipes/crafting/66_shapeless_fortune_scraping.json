@@ -1,0 +1,27 @@
+{
+  "type": "artis:test_table66_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:wooden_axe",
+      "recipeViewNbt": "{Enchantments: [{id: \"minecraft:fortune\", lvl:1s}]}",
+      "matchbook": {
+        "mode": "AND",
+        "matches": [
+          {
+            "type": "enchantment",
+            "key": "Enchantments",
+            "minLevel": 1,
+            "maxLevel": 255,
+            "enchantmentId": "minecraft:fortune"
+          }
+        ]
+      }
+    },
+    {
+      "item": "minecraft:waxed_copper_block"
+    }
+  ],
+  "result": {
+    "item": "minecraft:copper_block"
+  }
+ } 

@@ -1,0 +1,20 @@
+{
+   "type": "artis:test_table66_shaped",
+   "pattern": [
+     "####",
+     "####"
+   ],
+   "key": {
+     "#": {
+       "item": "minecraft:copper_ingot"
+     }
+   },
+   "result": {
+     "item": "minecraft:copper_block",
+     "count": 2
+   },
+   "catalyst": {
+     "item": "minecraft:diamond_pickaxe"
+   },
+   "cost": 10
+ } 

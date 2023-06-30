@@ -1,0 +1,14 @@
+{
+  "type": "artis:test_table66_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:stone"
+    },
+    {
+      "item": "minecraft:stone_axe"
+    }
+  ],
+  "result": {
+    "item": "minecraft:cobbled_deepslate"
+  }
+ } 

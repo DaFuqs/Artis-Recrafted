@@ -1,0 +1,33 @@
+{
+   "type": "artis:test_table66_shaped",
+   "pattern": [
+     "####",
+     "####"
+   ],
+   "key": {
+     "#": {
+       "item": "minecraft:iron_ingot"
+     }
+   },
+   "result": {
+     "item": "minecraft:iron_block",
+     "count": 2
+   },
+   "catalyst": {
+     "item": "minecraft:diamond_pickaxe",
+     "recipeViewNbt": "{Enchantments: [{id: \"minecraft:fortune\", lvl:1s}]}",
+     "matchbook": {
+       "mode": "AND",
+       "matches": [
+         {
+           "type": "enchantment",
+           "key": "Enchantments",
+           "minLevel": 1,
+           "maxLevel": 255,
+           "enchantmentId": "minecraft:fortune"
+         }
+       ]
+     }
+   },
+   "cost": 10
+ } 
