@@ -20,18 +20,18 @@ public class CondenserRecipe implements Recipe<Inventory> {
 	protected final String group;
 	protected final IngredientStack input;
 	protected final int fuelPerTick;
-	protected final int time;
+	protected final int timeTicks;
 	protected final boolean preservesInput;
 	protected final ItemStack output;
 	
-	public CondenserRecipe(Identifier id, String group, IngredientStack input, int fuelPerTick, int time, boolean preservesInput, ItemStack output) {
+	public CondenserRecipe(Identifier id, String group, IngredientStack input, int fuelPerTick, int timeTicks, boolean preservesInput, ItemStack output) {
 		this.id = id;
 		this.group = group;
 		this.input = input;
 		this.output = output;
 		this.fuelPerTick = fuelPerTick;
 		this.preservesInput = preservesInput;
-		this.time = time;
+		this.timeTicks = timeTicks;
 	}
 	
 	@Override
@@ -102,8 +102,8 @@ public class CondenserRecipe implements Recipe<Inventory> {
 		return fuelPerTick;
 	}
 	
-	public int getTime() {
-		return time;
+	public int getTimeTicks() {
+		return timeTicks;
 	}
 	
 	public boolean preservesInput() {

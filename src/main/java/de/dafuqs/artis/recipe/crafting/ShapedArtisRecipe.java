@@ -45,6 +45,11 @@ public class ShapedArtisRecipe extends ArtisCraftingRecipeBase {
 		return this.height;
 	}
 	
+	@Override
+	public boolean isShapeless() {
+		return false;
+	}
+	
 	private boolean matchesPattern(ArtisCraftingInventory inv, int offsetX, int offsetY, boolean flipped) {
 		for (int i = 0; i < inv.getWidth(); ++i) {
 			for (int j = 0; j < inv.getHeight(); ++j) {

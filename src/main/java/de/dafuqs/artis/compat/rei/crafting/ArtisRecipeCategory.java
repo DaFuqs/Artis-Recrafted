@@ -49,7 +49,7 @@ public class ArtisRecipeCategory implements DisplayCategory<ArtisRecipeDisplay> 
 	
 	@Override
 	public Text getTitle() {
-		return Text.translatable("rei.category." + artisCraftingRecipeType.getId().getPath());
+		return Text.translatable("recipe.category." + artisCraftingRecipeType.getId().getPath());
 	}
 	
 	@Override
@@ -93,8 +93,8 @@ public class ArtisRecipeCategory implements DisplayCategory<ArtisRecipeDisplay> 
 		widgets.add(ColorableEntryWidget.create(slots.get(slots.size() - 1).getX() + 55, startPoint.y + (displayHeight / 2) - 22, color).markOutput().entries(output.get(0)));
 		
 		// catalyst
-		if (artisCraftingRecipeType.hasCatalystSlot()) {
-			EntryIngredient catalyst = recipeDisplay.getCatalyst();
+		EntryIngredient catalyst = recipeDisplay.getCatalyst();
+		if (artisCraftingRecipeType.hasCatalystSlot() && !catalyst.isEmpty()) {
 			widgets.add(ColorableEntryWidget.create(slots.get(slots.size() - 1).getX() + 28, startPoint.y + (displayHeight / 2) - 4, color).entries(catalyst));
 			
 			if(recipeDisplay.getCatalystCost() > 0) {

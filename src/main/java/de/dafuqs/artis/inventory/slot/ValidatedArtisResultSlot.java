@@ -58,6 +58,7 @@ public class ValidatedArtisResultSlot extends ValidatedSlot {
 		if (this.inventory instanceof CraftingResultInventory craftingResultInventory && craftingResultInventory.getLastRecipe() instanceof ArtisCraftingRecipe artisCraftingRecipe) {
 			artisCraftingRecipe.useUpCatalyst(this.craftingInv, this.player);
 			artisCraftingRecipe.useUpIngredients(this.craftingInv, this.player);
+			this.craftingInv.onContentChanged();
 		}
 	}
 	

@@ -80,7 +80,6 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
 		mainPanel.add(arrow, layout.getArrowX() + offsetX, layout.getArrowY() + 5, 22, 15);
 		
 		mainPanel.validate(this);
-		craftInv.setCheckMatrixChanges(true);
 		
 		int width = Math.max(176, 74 + tableType.getWidth() * 18);
 		int height;
@@ -188,7 +187,7 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
 	@Override
 	public void onContentChanged(Inventory inv) {
 		super.onContentChanged(resultInv);
-		if (world instanceof ServerWorld serverWorld) { // TODO: check
+		if (world instanceof ServerWorld serverWorld) {
 			updateResult(serverWorld, craftInv, resultInv, tableType);
 		}
 	}
@@ -276,7 +275,6 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
 	
 	public static ItemStack handleShiftCraft(PlayerEntity player, ArtisRecipeProvider container, Slot resultSlot, ArtisCraftingInventory input, CraftingResultInventory craftResult, int outStart, int outEnd) {
 		ItemStack outputCopy = ItemStack.EMPTY;
-		input.setCheckMatrixChanges(false);
 		if (resultSlot != null && resultSlot.hasStack()) {
 			Recipe recipe = findRecipe(container.tableType, input, player.getWorld(), craftResult.getLastRecipe());
 			while (recipe != null && recipe.matches(input, player.getWorld())) {
@@ -286,7 +284,6 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
 				recipeOutput.getItem().onCraft(recipeOutput, player.getWorld(), player);
 				
 				if (!player.getWorld().isClient && !container.insertItem(recipeOutput, outStart, outEnd, true)) {
-					input.setCheckMatrixChanges(true);
 					return ItemStack.EMPTY;
 				}
 				
@@ -294,7 +291,6 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
 				resultSlot.markDirty();
 				
 				if (!player.getWorld().isClient && recipeOutput.getCount() == outputCopy.getCount()) {
-					input.setCheckMatrixChanges(true);
 					return ItemStack.EMPTY;
 				}
 				
@@ -302,7 +298,6 @@ public class ArtisRecipeProvider extends SyncedGuiDescription implements RecipeP
 				player.dropItem(recipeOutput, false);
 			}
 		}
-		input.setCheckMatrixChanges(true);
 		return craftResult.getLastRecipe() == null ? ItemStack.EMPTY : outputCopy;
 	}
 	

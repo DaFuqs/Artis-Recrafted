@@ -13,7 +13,6 @@ public class ArtisCraftingInventory extends CraftingInventory {
 	private final CraftingInventory craftingInventory;
 	private final DefaultedList<ItemStack> catalystInventory;
 	private final ArtisRecipeProvider artisRecipeProvider;
-	private boolean checkMatrixChanges = false;
 	
 	private final int catalystSlotID;
 	
@@ -58,9 +57,7 @@ public class ArtisCraftingInventory extends CraftingInventory {
 	public ItemStack removeStack(int slot, int amount) {
 		if (slot == catalystSlotID) {
 			ItemStack stack = Inventories.splitStack(this.catalystInventory, 0, amount);
-			if (!stack.isEmpty() && checkMatrixChanges) {
-				this.artisRecipeProvider.onContentChanged(this);
-			}
+			onContentChanged();
 			return stack;
 		} else {
 			return craftingInventory.removeStack(slot, amount);
@@ -74,9 +71,11 @@ public class ArtisCraftingInventory extends CraftingInventory {
 		} else {
 			craftingInventory.setStack(slot, stack);
 		}
-		if (checkMatrixChanges) {
-			this.artisRecipeProvider.onContentChanged(this);
-		}
+		onContentChanged();
+	}
+	
+	public void onContentChanged() {
+		this.artisRecipeProvider.onContentChanged(this);
 	}
 	
 	@Override
@@ -113,10 +112,6 @@ public class ArtisCraftingInventory extends CraftingInventory {
 	
 	public PlayerEntity getPlayer() {
 		return artisRecipeProvider.getPlayer();
-	}
-	
-	public void setCheckMatrixChanges(boolean checkMatrixChanges) {
-		this.checkMatrixChanges = checkMatrixChanges;
 	}
 	
 	public RecipeInputInventory getCraftingInventory() {

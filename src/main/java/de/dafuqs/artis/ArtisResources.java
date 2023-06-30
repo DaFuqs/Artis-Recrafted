@@ -63,12 +63,16 @@ public class ArtisResources {
 	
 	public static void registerDataForExistingBlock(@NotNull ArtisExistingBlockType artisTableType) {
 		String tableIdPath = artisTableType.getId().getPath();
-		translations.entry("rei.category." + tableIdPath, artisTableType.getRawName() + " Crafting");
+		String tableIdNameSpace = artisTableType.getId().getNamespace();
+		translations.entry("emi.category." + tableIdNameSpace + "." + tableIdPath, artisTableType.getRawName() + " Crafting");
+		translations.entry("recipe.category." + tableIdPath, artisTableType.getRawName() + " Crafting");
 	}
 	
 	public static void registerDataForExistingItem(@NotNull ArtisExistingItemType artisTableType) {
 		String tableIdPath = artisTableType.getId().getPath();
-		translations.entry("rei.category." + tableIdPath, artisTableType.getRawName() + " Crafting");
+		String tableIdNameSpace = artisTableType.getId().getNamespace();
+		translations.entry("emi.category." + tableIdNameSpace + "." + tableIdPath, artisTableType.getRawName() + " Crafting");
+		translations.entry("recipe.category." + tableIdPath, artisTableType.getRawName() + " Crafting");
 	}
 	
 }

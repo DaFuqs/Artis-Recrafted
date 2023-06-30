@@ -52,6 +52,11 @@ public class ShapelessArtisRecipe extends ArtisCraftingRecipeBase {
 	}
 	
 	@Override
+	public boolean isShapeless() {
+		return true;
+	}
+	
+	@Override
 	public void useUpIngredients(ArtisCraftingInventory inventory, PlayerEntity player) {
 		for(IngredientStack ingredientStack : this.ingredientStacks) {
 			for(int slot = 0; slot < inventory.size(); slot++) {
