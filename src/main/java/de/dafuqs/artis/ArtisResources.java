@@ -35,6 +35,7 @@ public class ArtisResources {
 		// localisation
 		translations.entry(artisCraftingRecipeType.getTranslationString(), artisCraftingRecipeType.getRawName());
 		translations.entry(artisCraftingRecipeType.getREITranslationString(), artisCraftingRecipeType.getRawName() + " Crafting");
+		translations.entry(artisCraftingRecipeType.getEMITranslationString(), artisCraftingRecipeType.getRawName() + " Crafting");
 		
 		// block tags (like mineable / break by tool, if set via the config)
 		for (Identifier identifier : artisCraftingRecipeType.getBlockTags()) {

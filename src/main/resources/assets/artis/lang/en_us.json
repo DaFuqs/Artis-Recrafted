@@ -1,8 +1,11 @@
 {
   "itemGroup.artis.group": "Artis Tables",
   "block.artis.condenser": "Matter Compressor",
-  "artis.rei.tooltip.normal_fuel": "%d seconds",
-  "artis.rei.tooltip.no_fuel": "%d sec - consumes no fuel",
-  "artis.rei.tooltip.increased_fuel": "%d seconds - x%d fuel",
+
+  "emi.category.artis.condenser": "Matter Condensing",
+
+  "artis.recipe.tooltip.normal_fuel": "%d seconds",
+  "artis.recipe.tooltip.no_fuel": "%d sec - consumes no fuel",
+  "artis.recipe.tooltip.increased_fuel": "%d seconds - x%d fuel",
   "artis.recipe.tooltip.not_consumed": "not consumed"
 }

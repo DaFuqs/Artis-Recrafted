@@ -23,6 +23,9 @@
     ],
     "rei_client": [
       "de.dafuqs.artis.compat.rei.REIClientIntegration"
+    ],
+    "emi": [
+      "de.dafuqs.artis.compat.emi.ArtisEmiPlugin"
     ]
   },
   "mixins": [ ],

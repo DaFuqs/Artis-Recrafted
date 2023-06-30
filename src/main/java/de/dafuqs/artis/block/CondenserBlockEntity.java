@@ -164,7 +164,7 @@ public class CondenserBlockEntity extends BlockEntity implements NamedScreenHand
 				if (recipe == null) {
 					blockEntity.cookTimeTotal = 0;
 				} else {
-					blockEntity.cookTimeTotal = recipe.getTime();
+					blockEntity.cookTimeTotal = recipe.getTimeTicks();
 				}
 				shouldMarkDirty = true;
 			}

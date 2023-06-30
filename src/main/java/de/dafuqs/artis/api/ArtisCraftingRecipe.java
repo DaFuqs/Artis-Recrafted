@@ -17,4 +17,5 @@ public interface ArtisCraftingRecipe extends Recipe<ArtisCraftingInventory> {
 	int getHeight();
 	void useUpCatalyst(ArtisCraftingInventory inventory, PlayerEntity player);
 	void useUpIngredients(ArtisCraftingInventory inventory, PlayerEntity player);
+	boolean isShapeless();
 }

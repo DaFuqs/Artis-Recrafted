@@ -111,7 +111,11 @@ public class ArtisCraftingRecipeType implements RecipeType<ArtisCraftingRecipe> 
 	}
 	
 	public String getREITranslationString() {
-		return "rei.category." + getTableIDPath();
+		return "recipe.category." + getTableIDPath();
+	}
+	
+	public String getEMITranslationString() {
+		return "emi.category." + getId().getNamespace() + "." + getId().getPath();
 	}
 	
 	@Override
