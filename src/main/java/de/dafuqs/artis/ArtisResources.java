@@ -21,6 +21,15 @@ public class ArtisResources {
 	public static final JLang translations = JLang.lang();
 	public static final HashMap<Identifier, JTag> blockTags = new HashMap<>();
 	
+	public static void registerPack() {
+		//RESOURCE_PACK.addLang(new Identifier(Artis.MODID, "en_us"), translations);
+		for (Map.Entry<Identifier, JTag> tags : blockTags.entrySet()) {
+			RESOURCE_PACK.addTag(tags.getKey(), tags.getValue());
+		}
+		
+		RRPCallback.BEFORE_VANILLA.register(a -> a.add(RESOURCE_PACK));
+	}
+	
 	public static void registerDataForTable(@NotNull ArtisCraftingRecipeType artisCraftingRecipeType, @NotNull ArtisTableBlock block) {
 		// loot table (drops)
 		RESOURCE_PACK.addLootTable(block.getLootTableId(),
@@ -49,17 +58,8 @@ public class ArtisResources {
 		// block and item models
 		JBlockModel blockModel = JState.model(new Identifier(Artis.MODID, "block/table" + (artisCraftingRecipeType.hasColor() ? "_overlay" : "")));
 		JModel model = JModel.model(new Identifier(Artis.MODID, "block/table" + (artisCraftingRecipeType.hasColor() ? "_overlay" : "")));
-		RESOURCE_PACK.addBlockState(JState.state(JState.variant(blockModel)), new Identifier(Artis.MODID, artisCraftingRecipeType.getTableIDPath()));
-		RESOURCE_PACK.addModel(model, new Identifier(Artis.MODID, "item/" + artisCraftingRecipeType.getTableIDPath()));
-	}
-	
-	public static void registerPack() {
-		RESOURCE_PACK.addLang(new Identifier(Artis.MODID, "en_us"), translations);
-		for (Map.Entry<Identifier, JTag> tags : blockTags.entrySet()) {
-			RESOURCE_PACK.addTag(tags.getKey(), tags.getValue());
-		}
-		
-		RRPCallback.BEFORE_VANILLA.register(a -> a.add(RESOURCE_PACK));
+		//RESOURCE_PACK.addBlockState(JState.state(JState.variant(blockModel)), new Identifier(Artis.MODID, artisCraftingRecipeType.getTableIDPath()));
+		//RESOURCE_PACK.addModel(model, new Identifier(Artis.MODID, "item/" + artisCraftingRecipeType.getTableIDPath()));
 	}
 	
 	public static void registerDataForExistingBlock(@NotNull ArtisExistingBlockType artisTableType) {

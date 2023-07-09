@@ -63,8 +63,6 @@ public class ArtisConfig {
 				ArtisBlocks.registerTable(type, settings);
 			}
 		}
-		
-		ArtisResources.registerPack();
 	}
 	
 	public static Block.@NotNull Settings parseSettings(com.google.gson.JsonObject json) {

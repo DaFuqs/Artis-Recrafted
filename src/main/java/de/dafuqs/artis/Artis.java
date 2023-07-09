@@ -27,6 +27,7 @@ public class Artis implements ModInitializer {
 		ArtisBlocks.register();
 		ArtisRecipeTypes.register();
 		ArtisScreenHandlers.register();
+		ArtisResources.registerPack();
 		
 		//seems to be required to not have the recipe vanish when initially opened
 		ServerPlayNetworking.registerGlobalReceiver(Artis.REQUEST_SYNC_IDENTIFIER, (server, player, handler, buf, responseSender) -> {

@@ -8,8 +8,6 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.*;
 import org.jetbrains.annotations.*;
 
-import javax.annotation.Nullable;
-
 public class ArtisTableBEBlock extends ArtisTableBlock implements BlockEntityProvider {
 	
 	public ArtisTableBEBlock(ArtisCraftingRecipeType type, Settings settings) {
