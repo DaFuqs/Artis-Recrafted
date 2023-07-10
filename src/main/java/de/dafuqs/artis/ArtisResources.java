@@ -22,7 +22,7 @@ public class ArtisResources {
 	public static final HashMap<Identifier, JTag> blockTags = new HashMap<>();
 	
 	public static void registerPack() {
-		//RESOURCE_PACK.addLang(new Identifier(Artis.MODID, "en_us"), translations);
+		RESOURCE_PACK.addLang(new Identifier(Artis.MODID, "en_us"), translations);
 		for (Map.Entry<Identifier, JTag> tags : blockTags.entrySet()) {
 			RESOURCE_PACK.addTag(tags.getKey(), tags.getValue());
 		}
@@ -58,8 +58,8 @@ public class ArtisResources {
 		// block and item models
 		JBlockModel blockModel = JState.model(new Identifier(Artis.MODID, "block/table" + (artisCraftingRecipeType.hasColor() ? "_overlay" : "")));
 		JModel model = JModel.model(new Identifier(Artis.MODID, "block/table" + (artisCraftingRecipeType.hasColor() ? "_overlay" : "")));
-		//RESOURCE_PACK.addBlockState(JState.state(JState.variant(blockModel)), new Identifier(Artis.MODID, artisCraftingRecipeType.getTableIDPath()));
-		//RESOURCE_PACK.addModel(model, new Identifier(Artis.MODID, "item/" + artisCraftingRecipeType.getTableIDPath()));
+		RESOURCE_PACK.addBlockState(JState.state(JState.variant(blockModel)), new Identifier(Artis.MODID, artisCraftingRecipeType.getTableIDPath()));
+		RESOURCE_PACK.addModel(model, new Identifier(Artis.MODID, "item/" + artisCraftingRecipeType.getTableIDPath()));
 	}
 	
 	public static void registerDataForExistingBlock(@NotNull ArtisExistingBlockType artisTableType) {

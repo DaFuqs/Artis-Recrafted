@@ -27,7 +27,6 @@ public class ArtisConfig {
 				out.write(DEFAULT_CONFIG.getBytes());
 				out.flush();
 				out.close();
-				return;
 			}
 			
 			JsonObject json = JsonHelper.deserialize(new FileReader(file), true);
