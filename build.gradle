@@ -21,7 +21,7 @@ repositories {
 	maven { url "https://storage.googleapis.com/devan-maven/" }
 	maven { url "https://maven.blamejared.com" }
 	maven { url "https://ladysnake.jfrog.io/artifactory/mods" }
-	maven { url = uri("https://ueaj.dev/maven") }
+	maven { url "https://ueaj.dev/maven" }
 }
 
 dependencies {
@@ -36,7 +36,7 @@ dependencies {
 	modApi "dev.architectury:architectury-fabric:${project.architectury_version}"
 
 	modImplementation include("io.github.cottonmc:LibGui:${project.libgui_version}")
-	modImplementation include("net.devtech:arrp:${project.aarp_version}")
+	modImplementation include(files('/deps/arrp-0.6.2.jar'))
 	modImplementation include("com.github.Devs-Immortal:Incubus-Core:${project.incubus_core_version}")
 }
 
