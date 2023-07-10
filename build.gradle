@@ -11,12 +11,9 @@ group = project.maven_group
 version = "${project.mod_version}+${project.minecraft_version}"
 
 repositories {
-	mavenLocal()
-	mavenCentral()
-	maven { url "https://jitpack.io" }
 	maven { url "https://server.bbkr.space/artifactory/libs-release" }
 	maven { url "https://maven.terraformersmc.com" }
-	maven { url "https://cursemaven.com" }
+	maven { url "https://jitpack.io" }
 	maven { url "https://maven.siphalor.de" }
 	maven { url "https://maven.shedaniel.me/" }
 	maven { url "https://maven.architectury.dev/" }
@@ -34,12 +31,16 @@ repositories {
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+	modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
+	modApi "dev.architectury:architectury-fabric:${project.architectury_version}"
 
 	modImplementation include("io.github.cottonmc:LibGui:${project.libgui_version}")
-	modImplementation include("net.devtech:arrp:${project.aarp_version}")
+	modImplementation include(files('/deps/arrp-0.6.2.jar'))
 	modImplementation include("com.github.Devs-Immortal:Incubus-Core:${project.incubus_core_version}")
 
 	modCompileOnly "dev.emi:emi-fabric:${emi_version}:api"
