@@ -18,14 +18,14 @@ repositories {
 	maven { url "https://maven.shedaniel.me/" }
 	maven { url "https://maven.architectury.dev/" }
 	maven { url "https://maven.saps.dev/minecraft/" }
-	//maven { url "https://storage.googleapis.com/devan-maven/" }
 	maven { url "https://maven.blamejared.com" }
 	maven { url "https://ladysnake.jfrog.io/artifactory/mods" }
-	//maven { url "https://ueaj.dev/maven" } // aarp
-	/*maven {
-		name = "CottonMC"
-		url = "https://server.bbkr.space/artifactory/libs-release"
-	}*/
+	maven {
+		url = "https://api.modrinth.com/maven"
+		content {
+			includeGroup "maven.modrinth"
+		}
+	}
 }
 
 dependencies {
@@ -36,9 +36,9 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	modImplementation include("io.github.cottonmc:LibGui:${project.libgui_version}")
-	modImplementation include(files('/deps/arrp-0.6.2.jar')) // https://github.com/Devan-Kerman/ARRP
 	modImplementation include("com.github.Devs-Immortal:Incubus-Core:${project.incubus_core_version}")
 
+	modImplementation include("maven.modrinth:arrp:0.6.2")
 	modCompileOnly "dev.emi:emi-fabric:${emi_version}:api"
 	modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
 	modApi "dev.architectury:architectury-fabric:${project.architectury_version}"
